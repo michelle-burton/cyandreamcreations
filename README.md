@@ -1,16 +1,60 @@
-# React + Vite
+# Cyandream Creations
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An evolving online home for Cyandream's handmade sun catchers—created to bring color, wonder, and intention into everyday spaces.
 
-Currently, two official plugins are available:
+The storefront is currently in its early design and development stage. It will launch with a collection of handmade sun catchers, with original oracle cards planned for a future collection.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Current progress
 
-## React Compiler
+- Responsive homepage foundation
+- Bootstrap navigation and page layout
+- Introductory hero section
+- Sun-catcher product-card placeholders
+- Shopping-cart interface placeholder
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Product photography, final branding, working cart behavior, checkout, and payment processing will be added as the shop develops.
 
-## Expanding the ESLint configuration
+## Built with
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- [React](https://react.dev/)
+- [Vite](https://vite.dev/)
+- [Bootstrap](https://getbootstrap.com/)
+
+## Run the project locally
+
+You will need a current version of [Node.js](https://nodejs.org/) installed.
+
+```bash
+git clone https://github.com/michelle-burton/cyandreamcreations.git
+cd cyandreamcreations
+npm install
+npm run dev
+```
+
+Open the local address displayed in the terminal, usually `http://localhost:5173`.
+
+## Available commands
+
+```bash
+npm run dev      # Start the local development site
+npm run build    # Create a production build
+npm run lint     # Check the project for code issues
+npm run preview  # Preview the production build locally
+```
+
+## Roadmap
+
+- Establish the final Cyandream colors, typography, and visual style
+- Add real sun-catcher photography and product details
+- Build an interactive shopping cart
+- Connect secure checkout and payment processing
+- Add product inventory and order handling
+- Introduce the oracle-card collection
+
+## Project status
+
+This is an active work in progress. Product names, prices, images, and written content currently shown on the site may be placeholders.
+
+---
+
+Made with intention for **Cyandream Creations**.
