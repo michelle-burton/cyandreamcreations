@@ -1,83 +1,113 @@
+import heroSuncatcher from './assets/hero-suncatcher.png'
+import ProductGrid from './components/ProductGrid.jsx'
+import StorySection from './components/StorySection.jsx'
+import OraclePreview from './components/OraclePreview.jsx'
+import SiteFooter from './components/SiteFooter.jsx'
 
 function App() {
   return (
-    <>
-      <nav className="navbar navbar-expand-md bg-light border-bottom">
-        <div className="container">
-          <a className="navbar-brand fs-3" href="#">
-            Cyandream
-          </a>
+    <div className="site-shell">
+      <header className="site-header">
+        <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
+          <div className="container-xl">
+            <a className="brand-mark" href="#top" aria-label="Cyan Dream Creations home">
+              <span className="brand-name">Cyan Dream</span>
+              <span className="brand-subtitle">Creations</span>
+            </a>
 
-          <div className="ms-auto d-flex gap-3 align-items-center">
-            <a className="nav-link" href="#shop">Shop</a>
-            <a className="nav-link" href="#story">Our Story</a>
-            <button className="btn btn-outline-dark">
-              Cart (0)
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main>
-        <section className="container py-5">
-          <div className="row align-items-center min-vh-75">
-            <div className="col-lg-6 py-5">
-              <p className="text-uppercase text-secondary">
-                Handmade with intention
-              </p>
-
-              <h1 className="display-2">
-                Catch the light. Carry the magic.
-              </h1>
-
-              <p className="lead my-4">
-                Handmade sun catchers created to fill everyday spaces with
-                color, wonder, and intention.
-              </p>
-
-              <a className="btn btn-dark btn-lg" href="#shop">
-                Shop Sun Catchers
+            <div className="d-flex align-items-center gap-2 order-lg-3">
+              <a className="cart-link" href="#cart" aria-label="Shopping cart, 0 items">
+                <span aria-hidden="true">♢</span>
+                <span className="d-none d-sm-inline">Cart</span>
+                <span>(0)</span>
               </a>
+
+              <button
+                className="navbar-toggler menu-toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainMenu"
+                aria-controls="mainMenu"
+                aria-expanded="false"
+                aria-label="Open navigation menu"
+              >
+                <span className="menu-line" />
+                <span className="menu-line" />
+                <span className="menu-line" />
+              </button>
             </div>
 
-            <div className="col-lg-6">
-              <div className="bg-light rounded-4 p-5 text-center">
-                Your main sun-catcher photo will go here
+            <div className="collapse navbar-collapse order-lg-2" id="mainMenu">
+              <ul className="navbar-nav mx-auto align-items-lg-center">
+                <li className="nav-item">
+                  <a className="nav-link" href="#shop">Sun Catchers</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="#story">Our Story</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="#oracle">Oracle</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section className="hero-section" aria-labelledby="hero-title">
+          <div className="container-xl">
+            <div className="hero-frame">
+              <span className="hero-flourish hero-flourish-left" aria-hidden="true">✦</span>
+              <span className="hero-flourish hero-flourish-right" aria-hidden="true">✦</span>
+
+              <div className="row g-0 align-items-stretch">
+                <div className="col-lg-6 order-1">
+                  <div className="hero-copy">
+                    <div className="celestial-divider" aria-hidden="true">
+                      <span />
+                      <b>✦</b>
+                      <span />
+                    </div>
+
+                    <h1 id="hero-title">Where Dreams Become Light.</h1>
+                    <p>
+                      Handmade sun catchers and symbolic creations for
+                      reflection, ritual, and the sacred within.
+                    </p>
+
+                    <a className="dream-button" href="#shop">
+                      <span aria-hidden="true">✦</span>
+                      Shop Sun Catchers
+                      <span aria-hidden="true">✦</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="col-lg-6 order-2">
+                  <figure className="hero-image-wrap">
+                    <img
+                      src={heroSuncatcher}
+                      className="hero-image"
+                      alt="A temporary concept image of a crystal sun catcher casting rainbow light beside a dark window"
+                    />
+                    <figcaption className="visually-hidden">
+                      Temporary concept artwork; final product photography will replace this image.
+                    </figcaption>
+                  </figure>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="shop" className="bg-light py-5">
-          <div className="container">
-            <h2 className="display-5 text-center mb-5">
-              Made for moments of wonder
-            </h2>
-
-            <div className="row g-4">
-              {['Luna', 'Morning Prism', 'Solstice'].map((name) => (
-                <div className="col-md-4" key={name}>
-                  <div className="card h-100 border-0 shadow-sm">
-                    <div className="card-body p-4">
-                      <div className="bg-secondary-subtle rounded mb-4 p-5 text-center">
-                        Product photo
-                      </div>
-
-                      <h3 className="h5">{name} Sun Catcher</h3>
-                      <p>$48.00</p>
-
-                      <button className="btn btn-outline-dark w-100">
-                        Add to cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <ProductGrid />
+        <StorySection />
+        <OraclePreview />
       </main>
-    </>
+
+      <SiteFooter />
+    </div>
   )
 }
 
