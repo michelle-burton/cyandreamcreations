@@ -1,10 +1,32 @@
+import { useCallback, useEffect, useState } from 'react'
 import heroSuncatcher from './assets/hero-suncatcher.png'
+import { findProduct } from './data/products.js'
 import ProductGrid from './components/ProductGrid.jsx'
+import ProductDetail from './components/ProductDetail.jsx'
+import QuickView from './components/QuickView.jsx'
 import StorySection from './components/StorySection.jsx'
 import OraclePreview from './components/OraclePreview.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 
 function App() {
+  const [quickViewProduct, setQuickViewProduct] = useState(null)
+  const [cartCount, setCartCount] = useState(0)
+  const [route, setRoute] = useState(window.location.hash)
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setRoute(window.location.hash)
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
+  const addToCart = (quantity) => setCartCount((count) => count + quantity)
+  const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
+  const activeProduct = productId ? findProduct(productId) : null
+
   return (
     <div className="site-shell">
       <header className="site-header">
@@ -16,10 +38,10 @@ function App() {
             </a>
 
             <div className="d-flex align-items-center gap-2 order-lg-3">
-              <a className="cart-link" href="#cart" aria-label="Shopping cart, 0 items">
+              <a className="cart-link" href="#cart" aria-label={`Shopping cart, ${cartCount} items`}>
                 <span aria-hidden="true">♢</span>
                 <span className="d-none d-sm-inline">Cart</span>
-                <span>(0)</span>
+                <span>({cartCount})</span>
               </a>
 
               <button
@@ -54,6 +76,9 @@ function App() {
         </nav>
       </header>
 
+      {activeProduct ? (
+        <ProductDetail product={activeProduct} onAddToCart={addToCart} />
+      ) : (
       <main id="top">
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="container-xl">
@@ -101,12 +126,20 @@ function App() {
           </div>
         </section>
 
-        <ProductGrid />
+        <ProductGrid onQuickView={setQuickViewProduct} />
         <StorySection />
         <OraclePreview />
       </main>
+      )}
 
       <SiteFooter />
+      {quickViewProduct && (
+        <QuickView
+          product={quickViewProduct}
+          onClose={closeQuickView}
+          onAddToCart={addToCart}
+        />
+      )}
     </div>
   )
 }

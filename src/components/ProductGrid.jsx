@@ -1,12 +1,7 @@
-import heroSuncatcher from '../assets/hero-suncatcher.png'
+import products from '../data/products.js'
+import ProductCard from './ProductCard.jsx'
 
-const sampleProducts = [
-  { name: 'Celestial Prism Sun Catcher', price: '$48.00', position: '64% center' },
-  { name: 'Solar Radiance Sun Catcher', price: '$52.00', position: '72% center' },
-  { name: 'Tree of Light Sun Catcher', price: '$50.00', position: '58% center' },
-]
-
-function ProductGrid() {
+function ProductGrid({ onQuickView }) {
   return (
     <section className="products-section" id="shop" aria-labelledby="products-title">
       <div className="container-xl">
@@ -22,27 +17,9 @@ function ProductGrid() {
         </header>
 
         <div className="row g-4">
-          {sampleProducts.map((product) => (
-            <div className="col-12 col-md-6 col-lg-4" key={product.name}>
-              <article className="product-card h-100">
-                <div className="product-image-wrap">
-                  <img
-                    src={heroSuncatcher}
-                    className="product-image"
-                    style={{ objectPosition: product.position }}
-                    alt="Temporary sun catcher concept used to review the product-card layout"
-                  />
-                </div>
-
-                <div className="product-card-body">
-                  <h3>{product.name}</h3>
-                  <div className="product-divider" aria-hidden="true">✦</div>
-                  <p className="product-price">{product.price}</p>
-                  <button className="product-button" type="button">
-                    Add to Cart
-                  </button>
-                </div>
-              </article>
+          {products.map((product) => (
+            <div className="col-12 col-md-6 col-lg-4" key={product.id}>
+              <ProductCard product={product} onQuickView={onQuickView} />
             </div>
           ))}
         </div>
