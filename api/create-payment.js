@@ -47,7 +47,7 @@ const emailFrame = ({ eyebrow, title, body }) => `
     </body>
   </html>`
 
-const sendOrderEmail = async ({ apiKey, from, to, subject, html, idempotencyKey }) => {
+const sendOrderEmail = async ({ apiKey, from, to, subject, html, text, idempotencyKey }) => {
   const resendResponse = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -55,7 +55,7 @@ const sendOrderEmail = async ({ apiKey, from, to, subject, html, idempotencyKey 
       'Content-Type': 'application/json',
       'Idempotency-Key': idempotencyKey,
     },
-    body: JSON.stringify({ from, to: [to], subject, html }),
+    body: JSON.stringify({ from, to: [to], subject, html, text }),
   })
 
   if (!resendResponse.ok) {
@@ -77,6 +77,11 @@ const sendOrderEmails = async ({ paymentId, customer, orderItems, subtotalCents,
     customer.addressLine2,
     `${customer.city}, ${customer.state} ${customer.postalCode}`,
   ].filter(Boolean).map(escapeHtml).join('<br>')
+  const plainAddress = [
+    customer.addressLine1,
+    customer.addressLine2,
+    `${customer.city}, ${customer.state} ${customer.postalCode}`,
+  ].filter(Boolean).join('\n')
   const itemRows = orderItems.map((item) => `
     <tr>
       <td style="padding:12px 0;border-bottom:1px solid #24334a;">${item.quantity} × ${escapeHtml(item.name)}</td>
@@ -89,6 +94,10 @@ const sendOrderEmails = async ({ paymentId, customer, orderItems, subtotalCents,
       <tr><td>U.S. flat-rate shipping</td><td style="text-align:right;">${formatMoney(flatShippingCents)}</td></tr>
       <tr><td style="padding-top:12px;color:#f2ce78;font-weight:bold;">Total</td><td style="padding-top:12px;text-align:right;color:#f2ce78;font-weight:bold;">${formatMoney(totalCents)}</td></tr>
     </table>`
+  const plainItems = orderItems
+    .map((item) => `${item.quantity} × ${item.name} — ${formatMoney(item.lineTotalCents)}`)
+    .join('\n')
+  const plainTotals = `${plainItems}\nSubtotal — ${formatMoney(subtotalCents)}\nU.S. flat-rate shipping — ${formatMoney(flatShippingCents)}\nTotal — ${formatMoney(totalCents)}`
 
   const customerHtml = emailFrame({
     eyebrow: 'Order received',
@@ -102,6 +111,26 @@ const sendOrderEmails = async ({ paymentId, customer, orderItems, subtotalCents,
       <p>We’ll send another note when your order ships.</p>
       <p style="color:#7f91a7;font-size:13px;">Payment reference: ${escapeHtml(paymentId)}</p>`,
   })
+  const customerText = `CYAN DREAM CREATIONS
+
+Your light is on its way.
+
+Dear ${customer.firstName},
+
+Thank you for choosing a Cyan Dream creation. Your payment was received successfully, and your order is now being prepared with care.
+
+ORDER SUMMARY
+${plainTotals}
+
+SHIPPING TO
+${customer.firstName} ${customer.lastName}
+${plainAddress}
+
+We’ll send another note when your order ships.
+
+Payment reference: ${paymentId}
+
+Cyan Dream Creations · Made with intention`
 
   const ownerHtml = emailFrame({
     eyebrow: 'A new light has found a home',
@@ -115,6 +144,25 @@ const sendOrderEmails = async ({ paymentId, customer, orderItems, subtotalCents,
       <p style="margin-top:0;">${address}</p>
       <p style="color:#7f91a7;font-size:13px;">Square payment: ${escapeHtml(paymentId)}</p>`,
   })
+  const ownerText = `CYAN DREAM CREATIONS
+
+New order received
+
+${customer.firstName} ${customer.lastName} completed an order.
+
+ORDER SUMMARY
+${plainTotals}
+
+CUSTOMER
+${customer.firstName} ${customer.lastName}
+${customer.email}
+
+SHIP TO
+${plainAddress}
+
+Square payment: ${paymentId}
+
+Cyan Dream Creations · Made with intention`
 
   await Promise.all([
     sendOrderEmail({
@@ -123,6 +171,7 @@ const sendOrderEmails = async ({ paymentId, customer, orderItems, subtotalCents,
       to: customer.email,
       subject: 'Your Cyan Dream Creations order is confirmed',
       html: customerHtml,
+      text: customerText,
       idempotencyKey: `customer-${paymentId}`,
     }),
     sendOrderEmail({
@@ -131,6 +180,7 @@ const sendOrderEmails = async ({ paymentId, customer, orderItems, subtotalCents,
       to: ownerEmail,
       subject: `New Cyan Dream order from ${customer.firstName} ${customer.lastName}`,
       html: ownerHtml,
+      text: ownerText,
       idempotencyKey: `owner-${paymentId}`,
     }),
   ])
