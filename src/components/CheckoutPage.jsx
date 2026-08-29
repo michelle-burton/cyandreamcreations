@@ -166,6 +166,9 @@ function CheckoutPage({ items, subtotal, onPaymentSuccess }) {
             <p className="section-kicker">Sandbox Test Complete</p>
             <h1>Your light is on its way.</h1>
             <p>The Square test payment completed successfully. No real card was charged.</p>
+            <p>{confirmation.emailStatus === 'sent'
+              ? 'A confirmation email has been sent to the address you provided.'
+              : 'Your payment is confirmed. The confirmation email may take a little longer to arrive.'}</p>
             <p className="confirmation-number">Test payment: {confirmation.paymentId}</p>
             <a className="dream-button" href="#shop">Return to the Shop</a>
           </section>
