@@ -10,6 +10,14 @@ const escapeHtml = (value = '') => String(value)
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#039;')
 
+const cleanEnvironmentEmail = (value) => {
+  const cleaned = String(value || '').trim()
+  const quote = cleaned[0]
+  return ((quote === '"' || quote === "'") && cleaned.at(-1) === quote
+    ? cleaned.slice(1, -1)
+    : cleaned).trim()
+}
+
 export default async function handler(request, response) {
   if (request.method !== 'POST') {
     response.setHeader('Allow', 'POST')
@@ -17,8 +25,8 @@ export default async function handler(request, response) {
   }
 
   const apiKey = process.env.RESEND_API_KEY
-  const from = process.env.ORDER_FROM_EMAIL
-  const ownerEmail = process.env.ORDER_NOTIFICATION_EMAIL
+  const from = cleanEnvironmentEmail(process.env.ORDER_FROM_EMAIL)
+  const ownerEmail = cleanEnvironmentEmail(process.env.ORDER_NOTIFICATION_EMAIL)
   if (!apiKey || !from || !ownerEmail) return sendJson(response, 503, { error: 'The contact form is not configured.' })
 
   const { name: rawName, email: rawEmail, subject: rawSubject, message: rawMessage, website = '' } = request.body || {}
