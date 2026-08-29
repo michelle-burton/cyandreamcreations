@@ -7,6 +7,13 @@ const confirmationMessages = {
   error: 'We could not confirm your place just now. Please try again.',
 }
 
+const statusDetails = {
+  sent: { icon: '✉', title: 'Confirmation Email Sent' },
+  confirmation: { icon: '✦', title: 'Almost There' },
+  confirmed: { icon: '✓', title: 'You’re on the Dream List' },
+  error: { icon: '!', title: 'Something Went Quiet' },
+}
+
 function SiteFooter() {
   const query = new URLSearchParams(window.location.search)
   const confirmationOutcome = query.get('newsletter')
@@ -14,7 +21,7 @@ function SiteFooter() {
   const [signupStatus, setSignupStatus] = useState(() => confirmationToken
     ? { type: 'confirmation', message: 'One final step: confirm your place on the Dream List.' }
     : confirmationOutcome
-      ? { type: confirmationOutcome === 'confirmed' ? 'success' : 'error', message: confirmationMessages[confirmationOutcome] || confirmationMessages.error }
+      ? { type: confirmationOutcome === 'confirmed' ? 'confirmed' : 'error', message: confirmationMessages[confirmationOutcome] || confirmationMessages.error }
       : null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -33,7 +40,7 @@ function SiteFooter() {
       })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'The Dream List is temporarily unavailable.')
-      setSignupStatus({ type: 'success', message: 'Check your inbox to confirm your place on the Dream List.' })
+      setSignupStatus({ type: 'sent', message: 'Check your inbox to confirm your place on the Dream List.' })
       form.reset()
     } catch (error) {
       setSignupStatus({ type: 'error', message: error.message })
@@ -53,7 +60,7 @@ function SiteFooter() {
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || confirmationMessages.error)
       window.history.replaceState({}, '', '/?newsletter=confirmed#join')
-      setSignupStatus({ type: 'success', message: confirmationMessages.confirmed })
+      setSignupStatus({ type: 'confirmed', message: confirmationMessages.confirmed })
     } catch (error) {
       setSignupStatus({ type: 'error', message: error.message })
     } finally {
@@ -65,7 +72,7 @@ function SiteFooter() {
     <>
       <section className="signup-section" id="join" aria-labelledby="signup-title">
         <div className="container-xl">
-          <div className="signup-frame text-center">
+          <div className={`signup-frame text-center${signupStatus ? ` signup-frame-${signupStatus.type}` : ''}`}>
             <div className="signup-star" aria-hidden="true">✦</div>
             <p className="section-kicker">The Dream List</p>
             <h2 id="signup-title">Stay Close to What Is Emerging</h2>
@@ -74,7 +81,7 @@ function SiteFooter() {
               of Cyan Dream—sent with intention.
             </p>
 
-            <form className="signup-form" onSubmit={handleSubmit}>
+            {(!signupStatus || signupStatus.type === 'error') && <form className="signup-form" onSubmit={handleSubmit}>
               <label className="visually-hidden" htmlFor="dream-list-email">
                 Email address
               </label>
@@ -93,16 +100,25 @@ function SiteFooter() {
                 <input name="website" tabIndex="-1" autoComplete="off" />
               </label>
               <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending…' : 'Join the Dream List'}</button>
-            </form>
+            </form>}
 
             {signupStatus ? (
-              <div className={`signup-status ${signupStatus.type}`} id="signup-note" role="status">
+              <div className={`signup-status ${signupStatus.type}`} id="signup-note" role="status" aria-live="polite">
+                <span className="signup-status-icon" aria-hidden="true">{statusDetails[signupStatus.type].icon}</span>
+                <h3>{statusDetails[signupStatus.type].title}</h3>
                 <p>{signupStatus.message}</p>
-                {signupStatus.type === 'confirmation' && (
-                  <button className="signup-confirm-button" type="button" onClick={handleConfirmation} disabled={isSubmitting}>
-                    {isSubmitting ? 'Confirming…' : 'Confirm My Place'}
-                  </button>
-                )}
+                <div className="signup-status-actions">
+                  {signupStatus.type === 'confirmation' && (
+                    <button className="signup-confirm-button" type="button" onClick={handleConfirmation} disabled={isSubmitting}>
+                      {isSubmitting ? 'Confirming…' : 'Confirm My Place'}
+                    </button>
+                  )}
+                  {signupStatus.type === 'sent' && (
+                    <button className="signup-secondary-button" type="button" onClick={() => setSignupStatus(null)}>
+                      Use a different email
+                    </button>
+                  )}
+                </div>
               </div>
             ) : (
               <p className="layout-note" id="signup-note">Please confirm your subscription by email. You can unsubscribe at any time.</p>

@@ -1265,7 +1265,28 @@ body.cart-open { overflow: hidden; }
   border-radius: 1.25rem;
   background: rgba(5, 11, 24, 0.72);
   box-shadow: 0 24px 65px rgba(0, 0, 0, 0.3);
+  transition: border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
 }
+
+.signup-frame-sent {
+  border-color: rgba(107, 226, 241, 0.95);
+  background: radial-gradient(circle at 50% 72%, rgba(77, 216, 230, 0.16), transparent 28rem), rgba(5, 11, 24, 0.82);
+  box-shadow: 0 0 0 1px rgba(107, 226, 241, 0.16), 0 24px 70px rgba(19, 160, 181, 0.2);
+}
+
+.signup-frame-confirmation {
+  border-color: var(--pale-gold);
+  background: radial-gradient(circle at 50% 72%, rgba(217, 164, 65, 0.16), transparent 28rem), rgba(5, 11, 24, 0.82);
+  box-shadow: 0 0 0 1px rgba(217, 164, 65, 0.18), 0 24px 70px rgba(217, 164, 65, 0.16);
+}
+
+.signup-frame-confirmed {
+  border-color: #72e0c1;
+  background: radial-gradient(circle at 50% 72%, rgba(68, 202, 164, 0.2), transparent 28rem), rgba(5, 11, 24, 0.82);
+  box-shadow: 0 0 0 1px rgba(114, 224, 193, 0.2), 0 24px 70px rgba(68, 202, 164, 0.2);
+}
+
+.signup-frame-error { border-color: rgba(255, 118, 118, 0.8); }
 
 .signup-star {
   margin-bottom: 1rem;
@@ -1345,11 +1366,56 @@ body.cart-open { overflow: hidden; }
 
 .signup-form button:disabled { cursor: not-allowed; opacity: 0.55; }
 .signup-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.signup-status { max-width: 44rem; margin: 1rem auto 0; color: var(--bright-cyan); font-size: 1rem; }
-.signup-status p { margin: 0; }
-.signup-status.error { color: #ffd2d2; }
-.signup-confirm-button { margin-top: 1rem; padding: 0.75rem 1.25rem; border: 1px solid var(--old-gold); border-radius: 0.5rem; color: var(--bright-cyan); background: rgba(7, 42, 66, 0.95); font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; }
-.signup-confirm-button:hover { color: var(--abyss); background: var(--bright-cyan); }
+.signup-status {
+  max-width: 42rem;
+  margin: 2rem auto 0;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.9rem;
+  font-size: 1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+.signup-status.sent { color: var(--bright-cyan); background: rgba(13, 91, 111, 0.28); }
+.signup-status.confirmation { color: var(--pale-gold); background: rgba(117, 80, 19, 0.25); }
+.signup-status.confirmed { color: #8ff0d5; background: rgba(26, 108, 88, 0.3); }
+.signup-status.error { color: #ffd2d2; background: rgba(126, 35, 47, 0.28); }
+
+.signup-status-icon {
+  display: inline-grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  margin-bottom: 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: rgba(5, 11, 24, 0.55);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.signup-status h3 {
+  margin: 0 0 0.45rem;
+  color: currentColor;
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.signup-status p { margin: 0; color: var(--star-white); font-size: 1.05rem; }
+.signup-status-actions { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; }
+.signup-status-actions:empty { display: none; }
+.signup-confirm-button,
+.signup-secondary-button { padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-family: var(--display); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.signup-confirm-button { border: 1px solid var(--old-gold); color: var(--abyss); background: var(--bright-cyan); }
+.signup-confirm-button:hover { background: var(--star-white); }
+.signup-secondary-button { border: 1px solid currentColor; color: var(--bright-cyan); background: transparent; }
+.signup-secondary-button:hover { color: var(--abyss); background: var(--bright-cyan); }
+.signup-confirm-button:focus-visible,
+.signup-secondary-button:focus-visible { outline: 2px solid var(--star-white); outline-offset: 3px; }
+.signup-confirm-button:disabled { cursor: not-allowed; opacity: 0.55; }
 
 .signup-frame .layout-note {
   margin-top: 1rem;
