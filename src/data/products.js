@@ -16,6 +16,7 @@ const products = [
     id: 'radiance-within',
     name: 'Radiance Within Sun Catcher',
     price: 42,
+    inventory: 1,
     house: 'Sun',
     houseSymbol: '☀',
     guidingWord: 'Illuminate',

@@ -4,6 +4,7 @@ import ProductMediaGallery from './ProductMediaGallery.jsx'
 
 function ProductDetail({ product, onAddToCart }) {
   const [quantity, setQuantity] = useState(1)
+  const maxQuantity = product.inventory ?? 99
 
   return (
     <main className="product-detail-page" id="top">
@@ -30,13 +31,22 @@ function ProductDetail({ product, onAddToCart }) {
               <ul className="product-facts">
                 {product.details.map((detail) => <li key={detail}>{detail}</li>)}
               </ul>
-              <label className="quantity-label" htmlFor="detail-quantity">Quantity</label>
-              <div className="quantity-control">
-                <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity">−</button>
-                <input id="detail-quantity" value={quantity} readOnly aria-label="Quantity" />
-                <button type="button" onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity">+</button>
-              </div>
-              <button className="add-cart-button" type="button" onClick={() => onAddToCart(quantity)}>
+              {maxQuantity === 1 ? (
+                <div className="single-availability">
+                  <span>Quantity: 1</span>
+                  <strong>One available</strong>
+                </div>
+              ) : (
+                <>
+                  <label className="quantity-label" htmlFor="detail-quantity">Quantity</label>
+                  <div className="quantity-control">
+                    <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity">−</button>
+                    <input id="detail-quantity" value={quantity} readOnly aria-label="Quantity" />
+                    <button type="button" onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))} aria-label="Increase quantity" disabled={quantity >= maxQuantity}>+</button>
+                  </div>
+                </>
+              )}
+              <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, quantity)}>
                 <span aria-hidden="true">✦</span> Add to Cart <span aria-hidden="true">✦</span>
               </button>
             </div>

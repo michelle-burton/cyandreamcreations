@@ -4,13 +4,21 @@ import { findProduct } from './data/products.js'
 import ProductGrid from './components/ProductGrid.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import QuickView from './components/QuickView.jsx'
+import CartDrawer from './components/CartDrawer.jsx'
 import StorySection from './components/StorySection.jsx'
 import OraclePreview from './components/OraclePreview.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 
 function App() {
   const [quickViewProduct, setQuickViewProduct] = useState(null)
-  const [cartCount, setCartCount] = useState(0)
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(window.localStorage.getItem('cyan-dream-cart')) || []
+    } catch {
+      return []
+    }
+  })
   const [route, setRoute] = useState(window.location.hash)
 
   useEffect(() => {
@@ -22,8 +30,43 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
+  useEffect(() => {
+    window.localStorage.setItem('cyan-dream-cart', JSON.stringify(cart))
+  }, [cart])
+
   const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
-  const addToCart = (quantity) => setCartCount((count) => count + quantity)
+  const closeCart = useCallback(() => setIsCartOpen(false), [])
+  const addToCart = (product, quantity) => {
+    const maxQuantity = product.inventory ?? 99
+    setCart((currentCart) => {
+      const existing = currentCart.find((item) => item.productId === product.id)
+      if (existing) {
+        return currentCart.map((item) => item.productId === product.id
+          ? { ...item, quantity: Math.min(maxQuantity, item.quantity + quantity) }
+          : item)
+      }
+      return [...currentCart, { productId: product.id, quantity: Math.min(maxQuantity, quantity) }]
+    })
+    setQuickViewProduct(null)
+    setIsCartOpen(true)
+  }
+  const updateCartQuantity = (productId, quantity) => {
+    if (quantity < 1) {
+      setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
+      return
+    }
+    const product = findProduct(productId)
+    const maxQuantity = product?.inventory ?? 99
+    setCart((currentCart) => currentCart.map((item) => item.productId === productId
+      ? { ...item, quantity: Math.min(maxQuantity, quantity) }
+      : item))
+  }
+  const removeFromCart = (productId) => setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
+  const cartItems = cart
+    .map((item) => ({ ...item, product: findProduct(item.productId) }))
+    .filter((item) => item.product)
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+  const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
   const activeProduct = productId ? findProduct(productId) : null
 
@@ -38,11 +81,11 @@ function App() {
             </a>
 
             <div className="d-flex align-items-center gap-2 order-lg-3">
-              <a className="cart-link" href="#cart" aria-label={`Shopping cart, ${cartCount} items`}>
+              <button className="cart-link" type="button" onClick={() => setIsCartOpen(true)} aria-label={`Shopping cart, ${cartCount} ${cartCount === 1 ? 'item' : 'items'}`}>
                 <span aria-hidden="true">♢</span>
                 <span className="d-none d-sm-inline">Cart</span>
                 <span>({cartCount})</span>
-              </a>
+              </button>
 
               <button
                 className="navbar-toggler menu-toggle"
@@ -140,6 +183,15 @@ function App() {
           onAddToCart={addToCart}
         />
       )}
+      <CartDrawer
+        isOpen={isCartOpen}
+        items={cartItems}
+        itemCount={cartCount}
+        subtotal={cartSubtotal}
+        onClose={closeCart}
+        onUpdateQuantity={updateCartQuantity}
+        onRemove={removeFromCart}
+      />
     </div>
   )
 }
