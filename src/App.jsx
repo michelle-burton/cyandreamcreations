@@ -101,6 +101,25 @@ function App() {
     ['#terms', 'terms'],
     ['#contact', 'contact'],
   ]).get(route)
+
+  useEffect(() => {
+    const infoTitles = {
+      shipping: 'Shipping',
+      returns: 'Returns & Refunds',
+      privacy: 'Privacy',
+      terms: 'Terms',
+      contact: 'Contact',
+    }
+    let pageTitle = 'Handmade Sun Catchers'
+    if (activeProduct) pageTitle = activeProduct.name
+    else if (isCheckout) pageTitle = 'Checkout'
+    else if (isShippingAdmin) pageTitle = 'Shipping Notice'
+    else if (infoPage) pageTitle = infoTitles[infoPage]
+    else if (isShop) pageTitle = 'Sun Catchers'
+    else if (isStory) pageTitle = 'The Dream'
+    else if (isOracle) pageTitle = 'The Oracle'
+    document.title = `${pageTitle} | Cyan Dream Creations`
+  }, [activeProduct, infoPage, isCheckout, isOracle, isShippingAdmin, isShop, isStory])
   const handleCheckout = () => {
     setIsCartOpen(false)
     window.location.hash = 'checkout'

@@ -64,6 +64,7 @@ function StorySection() {
             </div>
           </div>
         </div>
+        <a className="section-home-link" href="#top">Return Home <span aria-hidden="true">✦</span></a>
       </div>
     </section>
   )

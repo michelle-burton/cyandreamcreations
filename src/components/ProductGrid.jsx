@@ -25,6 +25,7 @@ function ProductGrid({ onQuickView, featured = false }) {
           ))}
         </div>
         {featured && <div className="featured-shop-link"><a className="dream-button" href="#shop"><span aria-hidden="true">✦</span> View All Sun Catchers <span aria-hidden="true">✦</span></a></div>}
+        {!featured && <a className="section-home-link" href="#top">Return Home <span aria-hidden="true">✦</span></a>}
       </div>
     </section>
   )
