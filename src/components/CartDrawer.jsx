@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { formatPrice } from '../data/products.js'
 
-function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuantity, onRemove }) {
+function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuantity, onRemove, onCheckout }) {
   useEffect(() => {
     if (!isOpen) return undefined
 
@@ -87,8 +87,8 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuant
                 <span>Subtotal · {itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
-              <p>Shipping and taxes will be calculated at checkout.</p>
-              <button className="checkout-button" type="button" disabled>Checkout — Coming Next</button>
+              <p>Shipping and taxes are being finalized before production launch.</p>
+              <button className="checkout-button" type="button" onClick={onCheckout}>Continue to Sandbox Checkout</button>
               <button className="continue-shopping" type="button" onClick={onClose}>Continue Shopping</button>
             </footer>
           </>

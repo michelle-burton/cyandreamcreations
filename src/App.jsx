@@ -9,6 +9,7 @@ import StorySection from './components/StorySection.jsx'
 import OraclePreview from './components/OraclePreview.jsx'
 import QuantumPomSection from './components/QuantumPomSection.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
+import CheckoutPage from './components/CheckoutPage.jsx'
 
 function App() {
   const [quickViewProduct, setQuickViewProduct] = useState(null)
@@ -75,6 +76,12 @@ function App() {
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
   const activeProduct = productId ? findProduct(productId) : null
+  const isCheckout = route === '#checkout'
+  const handleCheckout = () => {
+    setIsCartOpen(false)
+    window.location.hash = 'checkout'
+  }
+  const handlePaymentSuccess = () => setCart([])
 
   return (
     <div className="site-shell">
@@ -125,7 +132,9 @@ function App() {
         </nav>
       </header>
 
-      {activeProduct ? (
+      {isCheckout ? (
+        <CheckoutPage items={cartItems} subtotal={cartSubtotal} onPaymentSuccess={handlePaymentSuccess} />
+      ) : activeProduct ? (
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />
       ) : (
       <main id="top">
@@ -198,6 +207,7 @@ function App() {
         onClose={closeCart}
         onUpdateQuantity={updateCartQuantity}
         onRemove={removeFromCart}
+        onCheckout={handleCheckout}
       />
     </div>
   )
