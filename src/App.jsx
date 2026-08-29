@@ -12,6 +12,7 @@ import SiteFooter from './components/SiteFooter.jsx'
 import CheckoutPage from './components/CheckoutPage.jsx'
 import ShippingAdmin from './components/ShippingAdmin.jsx'
 import InfoPage from './components/InfoPage.jsx'
+import HomePathways from './components/HomePathways.jsx'
 
 function App() {
   const [quickViewProduct, setQuickViewProduct] = useState(null)
@@ -34,7 +35,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const sectionRoutes = new Set(['#top', '#shop', '#story', '#oracle', '#join'])
+    const sectionRoutes = new Set(['#top', '#join'])
     if (sectionRoutes.has(route)) {
       window.requestAnimationFrame(() => {
         document.getElementById(route.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -90,6 +91,9 @@ function App() {
   const activeProduct = productId ? findProduct(productId) : null
   const isCheckout = route === '#checkout'
   const isShippingAdmin = route === '#shipping-admin'
+  const isShop = route === '#shop'
+  const isStory = route === '#story'
+  const isOracle = route === '#oracle'
   const infoPage = new Map([
     ['#shipping', 'shipping'],
     ['#returns', 'returns'],
@@ -164,6 +168,12 @@ function App() {
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />
       ) : infoPage ? (
         <InfoPage page={infoPage} />
+      ) : isShop ? (
+        <main id="top"><ProductGrid onQuickView={setQuickViewProduct} /></main>
+      ) : isStory ? (
+        <main id="top"><StorySection /><QuantumPomSection /></main>
+      ) : isOracle ? (
+        <main id="top"><OraclePreview /></main>
       ) : (
       <main id="top">
         <section className="hero-section" aria-labelledby="hero-title">
@@ -212,14 +222,12 @@ function App() {
           </div>
         </section>
 
-        <ProductGrid onQuickView={setQuickViewProduct} />
-        <StorySection />
-        <OraclePreview />
-        <QuantumPomSection />
+        <ProductGrid onQuickView={setQuickViewProduct} featured />
+        <HomePathways />
       </main>
       )}
 
-      <SiteFooter showSignup={!isShippingAdmin && !isCheckout && !activeProduct && !infoPage} />
+      <SiteFooter showSignup={!isShippingAdmin && !isCheckout && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
       {quickViewProduct && (
         <QuickView
           product={quickViewProduct}

@@ -332,6 +332,34 @@ a {
     rgba(5, 11, 24, 0.76);
 }
 
+.products-featured { padding-block: clamp(3.5rem, 6vw, 5rem); }
+.products-featured .section-heading { margin-bottom: 2.5rem; }
+.featured-shop-link { margin-top: 2.25rem; text-align: center; }
+
+.home-pathways {
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  border-top: 1px solid rgba(217, 164, 65, 0.3);
+  background: linear-gradient(180deg, rgba(5, 11, 24, 0.78), rgba(10, 26, 47, 0.5));
+}
+
+.pathway-card {
+  position: relative;
+  height: 100%;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  overflow: hidden;
+  border: 1px solid rgba(217, 164, 65, 0.68);
+  border-radius: 1rem;
+  background: radial-gradient(circle at 100% 0%, rgba(77, 216, 230, 0.11), transparent 18rem), rgba(5, 11, 24, 0.85);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.pathway-star { position: absolute; top: 1.5rem; right: 1.75rem; color: var(--old-gold); }
+.pathway-card h2 { max-width: 18ch; margin: 0 0 1rem; color: var(--pale-gold); font-family: var(--display); font-size: clamp(1.65rem, 3vw, 2.4rem); font-weight: 500; line-height: 1.18; text-transform: uppercase; }
+.pathway-card > p:not(.section-kicker) { max-width: 32rem; margin: 0 0 1.4rem; color: var(--muted-white); font-size: 1.05rem; line-height: 1.65; }
+.pathway-card a { color: var(--bright-cyan); font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; }
+.pathway-card a:hover,
+.pathway-card a:focus-visible { color: var(--pale-gold); }
+
 .section-heading {
   max-width: 52rem;
   margin: 0 auto clamp(2.5rem, 5vw, 4rem);
