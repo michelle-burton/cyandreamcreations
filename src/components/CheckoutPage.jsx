@@ -7,6 +7,28 @@ const squareLocationId = import.meta.env.VITE_SQUARE_LOCATION_ID
 
 let squareLoadPromise
 
+const friendlyPaymentMessage = (message = '') => {
+  const normalizedMessage = message.toUpperCase()
+
+  if (normalizedMessage.includes('GENERIC_DECLINE') || normalizedMessage.includes('CARD_DECLINED')) {
+    return 'Your card was declined. Please check the card details or try another payment method.'
+  }
+
+  if (normalizedMessage.includes('CVV')) {
+    return 'The security code could not be verified. Please check the CVV and try again.'
+  }
+
+  if (normalizedMessage.includes('POSTAL')) {
+    return 'The billing ZIP code could not be verified. Please check it and try again.'
+  }
+
+  if (normalizedMessage.includes('EXPIR')) {
+    return 'The card expiration date could not be verified. Please check it and try again.'
+  }
+
+  return message || 'The payment could not be completed. Please check your information and try again.'
+}
+
 const loadSquare = () => {
   if (window.Square) return Promise.resolve(window.Square)
   if (squareLoadPromise) return squareLoadPromise
@@ -127,7 +149,7 @@ function CheckoutPage({ items, subtotal, onPaymentSuccess }) {
       setConfirmation(payment)
       onPaymentSuccess()
     } catch (error) {
-      setPaymentError(error.message)
+      setPaymentError(friendlyPaymentMessage(error.message))
     } finally {
       setIsPaying(false)
     }
