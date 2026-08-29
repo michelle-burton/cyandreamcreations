@@ -1,3 +1,5 @@
+import ContactForm from './ContactForm.jsx'
+
 const pages = {
   shipping: {
     kicker: 'Order Care',
@@ -16,7 +18,7 @@ const pages = {
     intro: 'We want your Cyan Dream creation to arrive safely and feel right in its new home.',
     sections: [
       ['Return window', 'Contact us within 14 calendar days after tracking shows your order was delivered. Items must be unused and returned in their original condition and protective packaging.'],
-      ['Starting a return', 'Email hello@cyandreamcreations.com with your order information before mailing anything back. Returns sent without contacting us first may be delayed.'],
+      ['Starting a return', 'Use the Contact page with your order information before mailing anything back. Returns sent without contacting us first may be delayed.'],
       ['Return shipping and refunds', 'For preference-based returns, the customer is responsible for return postage. Original shipping charges are nonrefundable. Approved refunds are issued to the original payment method after the returned item is received and inspected.'],
       ['Damage or an incorrect order', 'Please email us within 3 calendar days of delivery and include clear photographs of the item and packaging. If your order arrived damaged, defective, or incorrect, we will work with you on an appropriate replacement or refund and cover any required return shipping.'],
       ['Final-sale pieces', 'Any item specifically marked final sale or made to a customer’s specifications cannot be returned unless it arrives damaged, defective, or materially different from what was ordered.'],
@@ -46,7 +48,7 @@ const pages = {
       ['Shipping and returns', 'Orders are governed by the Shipping and Returns & Refunds pages available in this website’s footer.'],
       ['Safe use', 'Sun catchers contain glass, crystal, metal, wire, and small components. They are decorative objects, not toys. Keep them securely hung and away from small children and pets. Inspect the hanging point and hardware periodically.'],
       ['Website content', 'Unless otherwise stated, the artwork, photography, writing, product names, and visual design on this website belong to Cyan Dream Creations and may not be reproduced or used commercially without permission.'],
-      ['Changes and contact', 'We may update these terms as the shop evolves. Questions may be sent to hello@cyandreamcreations.com. These terms are governed by the laws applicable in Wisconsin, United States.'],
+      ['Changes and contact', 'We may update these terms as the shop evolves. Questions may be sent through the Contact page. These terms are governed by the laws applicable in Wisconsin, United States.'],
     ],
   },
   contact: {
@@ -54,7 +56,7 @@ const pages = {
     title: 'Contact',
     intro: 'Questions about a creation, an order, or the Dream List are always welcome.',
     sections: [
-      ['Email Cyan Dream', 'Write to hello@cyandreamcreations.com. Please include your order reference when asking about an existing purchase.'],
+      ['Contact Cyan Dream', 'Use the private form below. Please include your order reference when asking about an existing purchase.'],
       ['Response time', 'Messages are normally answered within 1–2 business days.'],
       ['Damaged delivery', 'For damage during shipping, contact us within 3 calendar days of delivery and attach clear photographs of the item and its packaging.'],
     ],
@@ -78,16 +80,10 @@ function InfoPage({ page }) {
             {content.sections.map(([title, body]) => (
               <section key={title}>
                 <h2>{title}</h2>
-                <p>
-                  {body.split('hello@cyandreamcreations.com').map((part, index, parts) => (
-                    <span key={`${title}-${index}`}>
-                      {part}
-                      {index < parts.length - 1 && <a href="mailto:hello@cyandreamcreations.com">hello@cyandreamcreations.com</a>}
-                    </span>
-                  ))}
-                </p>
+                <p>{body}</p>
               </section>
             ))}
+            {page === 'contact' && <ContactForm />}
           </div>
           <a className="info-home-link" href="#top">Return to the shop <span aria-hidden="true">✦</span></a>
         </article>

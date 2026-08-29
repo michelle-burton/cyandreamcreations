@@ -1542,6 +1542,22 @@ body.cart-open { overflow: hidden; }
 .info-home-link:hover,
 .info-home-link:focus-visible { color: var(--bright-cyan); background: rgba(77, 216, 230, 0.06); }
 
+.contact-form { display: grid; gap: 1rem; margin-top: 1.5rem; padding: 1.5rem; border: 1px solid rgba(77, 216, 230, 0.38); border-radius: 0.75rem; background: rgba(10, 26, 47, 0.55); }
+.contact-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.contact-form label { display: block; margin-bottom: 0.35rem; color: var(--pale-gold); font-family: var(--display); font-size: 0.67rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.contact-form input,
+.contact-form textarea { width: 100%; padding: 0.75rem 0.85rem; border: 1px solid rgba(217, 164, 65, 0.55); border-radius: 0.5rem; color: var(--star-white); background: rgba(5, 11, 24, 0.8); font-family: var(--body); font-size: 1rem; }
+.contact-form input { min-height: 3rem; }
+.contact-form textarea { resize: vertical; }
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: var(--bright-cyan); outline: 0; box-shadow: 0 0 0 2px rgba(77, 216, 230, 0.16); }
+.contact-form button { justify-self: start; padding: 0.8rem 1.35rem; border: 1px solid var(--old-gold); border-radius: 0.5rem; color: var(--abyss); background: var(--bright-cyan); font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.contact-form button:hover { background: var(--star-white); }
+.contact-form button:disabled { cursor: not-allowed; opacity: 0.55; }
+.contact-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.contact-status { padding: 0.9rem 1rem; border: 1px solid rgba(114, 224, 193, 0.7); border-radius: 0.5rem; color: #8ff0d5; background: rgba(26, 108, 88, 0.3); }
+.contact-status.error { border-color: rgba(255, 118, 118, 0.7); color: #ffd2d2; background: rgba(126, 35, 47, 0.28); }
+
 @media (min-width: 992px) {
   .hero-frame {
     height: auto;
@@ -1794,6 +1810,10 @@ body.cart-open { overflow: hidden; }
   .signup-form {
     flex-direction: column;
   }
+
+  .contact-form-grid { grid-template-columns: 1fr; }
+  .contact-form { padding: 1.25rem; }
+  .contact-form button { width: 100%; }
 
   .signup-form button {
     width: 100%;
