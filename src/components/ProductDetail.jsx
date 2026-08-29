@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { formatPrice } from '../data/products.js'
+import { formatPrice, isPurchasable } from '../data/products.js'
 import ProductMediaGallery from './ProductMediaGallery.jsx'
+import ProductStatus from './ProductStatus.jsx'
 
 function ProductDetail({ product, onAddToCart }) {
   const [quantity, setQuantity] = useState(1)
   const maxQuantity = product.inventory ?? 99
+  const canPurchase = isPurchasable(product)
 
   return (
     <main className="product-detail-page" id="top">
@@ -23,6 +25,7 @@ function ProductDetail({ product, onAddToCart }) {
               <p className={`house-label house-${product.house.toLowerCase()}`}>
                 <span aria-hidden="true">{product.houseSymbol}</span> House of the {product.house}
               </p>
+              <ProductStatus product={product} showMessage={!canPurchase} />
               <h1 id="product-detail-title">{product.name}</h1>
               <div className="product-divider" aria-hidden="true">✦</div>
               <p className="quick-view-price">{formatPrice(product.price)}</p>
@@ -31,7 +34,7 @@ function ProductDetail({ product, onAddToCart }) {
               <ul className="product-facts">
                 {product.details.map((detail) => <li key={detail}>{detail}</li>)}
               </ul>
-              {maxQuantity === 1 ? (
+              {canPurchase && (maxQuantity === 1 ? (
                 <div className="single-availability">
                   <span>Quantity: 1</span>
                   <strong>One available</strong>
@@ -45,9 +48,9 @@ function ProductDetail({ product, onAddToCart }) {
                     <button type="button" onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))} aria-label="Increase quantity" disabled={quantity >= maxQuantity}>+</button>
                   </div>
                 </>
-              )}
-              <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, quantity)}>
-                <span aria-hidden="true">✦</span> Add to Cart <span aria-hidden="true">✦</span>
+              ))}
+              <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, quantity)} disabled={!canPurchase}>
+                <span aria-hidden="true">✦</span> {canPurchase ? 'Add to Cart' : 'Not Yet Available'} <span aria-hidden="true">✦</span>
               </button>
             </div>
           </div>

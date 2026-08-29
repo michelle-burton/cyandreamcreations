@@ -67,6 +67,13 @@ function SiteFooter() {
             <p>© 2026 Cyan Dream Creations</p>
             <p>Created with reflection, intention, and care.</p>
           </div>
+
+          <p className="quantum-footer-link">
+            Curious about the ideas and technology behind the studio?{' '}
+            <a href="https://www.youtube.com/@QuantumAIDesign" target="_blank" rel="noreferrer">
+              Visit Quantum AI Design
+            </a>
+          </p>
         </div>
       </footer>
     </>

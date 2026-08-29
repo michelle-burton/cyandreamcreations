@@ -14,6 +14,7 @@ const radianceStory = [
 const products = [
   {
     id: 'radiance-within',
+    status: 'available',
     name: 'Radiance Within Sun Catcher',
     price: 42,
     inventory: 1,
@@ -52,6 +53,7 @@ const products = [
   },
   {
     id: 'solar-radiance',
+    status: 'coming-soon',
     name: 'Solar Radiance Sun Catcher',
     price: 52,
     house: 'Sun',
@@ -64,6 +66,7 @@ const products = [
   },
   {
     id: 'tree-of-light',
+    status: 'coming-soon',
     name: 'Tree of Light Sun Catcher',
     price: 50,
     house: 'Creation',
@@ -77,6 +80,17 @@ const products = [
 ]
 
 export const formatPrice = (price) => `$${price.toFixed(2)}`
+
+export const productStatuses = {
+  available: { label: 'Available', message: 'Available to purchase' },
+  reserved: { label: 'Reserved', message: 'This piece is currently reserved' },
+  sold: { label: 'Sold', message: 'This one-of-a-kind piece has found its home' },
+  'coming-soon': { label: 'Coming Soon', message: 'This piece is still taking form' },
+}
+
+export const getProductStatus = (product) => productStatuses[product.status] || productStatuses.available
+
+export const isPurchasable = (product) => product.status === 'available'
 
 export const findProduct = (id) => products.find((product) => product.id === id)
 

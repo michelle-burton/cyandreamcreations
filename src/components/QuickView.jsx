@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { formatPrice } from '../data/products.js'
+import { formatPrice, isPurchasable } from '../data/products.js'
 import ProductMediaGallery from './ProductMediaGallery.jsx'
+import ProductStatus from './ProductStatus.jsx'
 
 function QuickView({ product, onClose, onAddToCart }) {
   const [quantity, setQuantity] = useState(1)
   const maxQuantity = product.inventory ?? 99
+  const canPurchase = isPurchasable(product)
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -44,6 +46,7 @@ function QuickView({ product, onClose, onAddToCart }) {
             <p className={`house-label house-${product.house.toLowerCase()}`}>
               <span aria-hidden="true">{product.houseSymbol}</span> House of the {product.house}
             </p>
+            <ProductStatus product={product} showMessage={!canPurchase} />
             <h2 id="quick-view-title">{product.name}</h2>
             <div className="product-divider" aria-hidden="true">✦</div>
             <p className="quick-view-price">{formatPrice(product.price)}</p>
@@ -53,7 +56,7 @@ function QuickView({ product, onClose, onAddToCart }) {
               {product.details.map((detail) => <li key={detail}>{detail}</li>)}
             </ul>
 
-            {maxQuantity === 1 ? (
+            {canPurchase && (maxQuantity === 1 ? (
               <div className="single-availability">
                 <span>Quantity: 1</span>
                 <strong>One available</strong>
@@ -67,10 +70,10 @@ function QuickView({ product, onClose, onAddToCart }) {
                   <button type="button" onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))} aria-label="Increase quantity" disabled={quantity >= maxQuantity}>+</button>
                 </div>
               </>
-            )}
+            ))}
 
-            <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, quantity)}>
-              <span aria-hidden="true">✦</span> Add to Cart <span aria-hidden="true">✦</span>
+            <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, quantity)} disabled={!canPurchase}>
+              <span aria-hidden="true">✦</span> {canPurchase ? 'Add to Cart' : 'Not Yet Available'} <span aria-hidden="true">✦</span>
             </button>
             <a className="full-detail-link" href={`#product/${product.id}`} onClick={onClose}>View Full Details</a>
           </div>

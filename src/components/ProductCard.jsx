@@ -1,4 +1,5 @@
 import { formatPrice } from '../data/products.js'
+import ProductStatus from './ProductStatus.jsx'
 
 function ProductCard({ product, onQuickView }) {
   const detailUrl = `#product/${product.id}`
@@ -17,6 +18,7 @@ function ProductCard({ product, onQuickView }) {
           style={{ objectPosition: product.imagePosition, objectFit: product.imageFit || 'cover' }}
           alt={product.name}
         />
+        <ProductStatus product={product} />
         <span className="quick-view-label">Quick View</span>
       </button>
 

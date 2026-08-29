@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import heroSuncatcher from './assets/hero-suncatcher.png'
-import { findProduct } from './data/products.js'
+import { findProduct, isPurchasable } from './data/products.js'
 import ProductGrid from './components/ProductGrid.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import QuickView from './components/QuickView.jsx'
 import CartDrawer from './components/CartDrawer.jsx'
 import StorySection from './components/StorySection.jsx'
 import OraclePreview from './components/OraclePreview.jsx'
+import QuantumPomSection from './components/QuantumPomSection.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
   const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
   const closeCart = useCallback(() => setIsCartOpen(false), [])
   const addToCart = (product, quantity) => {
+    if (!isPurchasable(product)) return
     const maxQuantity = product.inventory ?? 99
     setCart((currentCart) => {
       const existing = currentCart.find((item) => item.productId === product.id)
@@ -56,6 +58,10 @@ function App() {
       return
     }
     const product = findProduct(productId)
+    if (!product || !isPurchasable(product)) {
+      setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
+      return
+    }
     const maxQuantity = product?.inventory ?? 99
     setCart((currentCart) => currentCart.map((item) => item.productId === productId
       ? { ...item, quantity: Math.min(maxQuantity, quantity) }
@@ -64,7 +70,7 @@ function App() {
   const removeFromCart = (productId) => setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
   const cartItems = cart
     .map((item) => ({ ...item, product: findProduct(item.productId) }))
-    .filter((item) => item.product)
+    .filter((item) => item.product && isPurchasable(item.product))
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
@@ -172,6 +178,7 @@ function App() {
         <ProductGrid onQuickView={setQuickViewProduct} />
         <StorySection />
         <OraclePreview />
+        <QuantumPomSection />
       </main>
       )}
 

@@ -426,6 +426,36 @@ a {
   text-transform: uppercase;
 }
 
+.product-image-wrap > .product-status-wrap {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.product-status-wrap { margin: 0 0 0.9rem; }
+.product-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: var(--bright-cyan);
+  background: rgba(5, 11, 24, 0.9);
+  font-family: var(--display);
+  font-size: 0.58rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.status-reserved .product-status { color: var(--pale-gold); }
+.status-sold .product-status { color: rgba(234, 246, 255, 0.68); }
+.status-coming-soon .product-status { color: #c7a4ef; }
+.product-status-wrap > p { margin: 0.55rem 0 0; color: var(--muted-white); font-size: 0.98rem; }
+.quick-view-copy > .product-status-wrap,
+.detail-purchase-copy > .product-status-wrap { margin-top: -0.35rem; }
+.quick-view-copy > .product-status-wrap + h2,
+.detail-purchase-copy > .product-status-wrap + h1 { margin-top: 0.2rem; }
+
 .product-card-body {
   display: flex;
   flex-direction: column;
@@ -821,6 +851,8 @@ body.cart-open { overflow: hidden; }
 .add-cart-button { display: flex; width: 100%; min-height: 3.6rem; align-items: center; justify-content: center; gap: 1rem; padding: 0.75rem 1rem; border: 1px solid var(--old-gold); border-radius: 0.6rem; color: var(--bright-cyan); background: linear-gradient(180deg, rgba(17, 99, 121, 0.88), rgba(7, 42, 66, 0.95)); box-shadow: inset 0 0 0 3px rgba(5, 11, 24, 0.8); font-family: var(--display); font-size: 0.84rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .add-cart-button:hover,
 .add-cart-button:focus-visible { color: var(--abyss); background: var(--bright-cyan); }
+.add-cart-button:disabled,
+.add-cart-button:disabled:hover { cursor: not-allowed; color: rgba(234, 246, 255, 0.48); background: rgba(10, 26, 47, 0.72); }
 .full-detail-link { align-self: center; margin-top: 1rem; }
 
 .product-detail-page { padding: 1rem 0 clamp(4rem, 7vw, 7rem); }
@@ -864,6 +896,72 @@ body.cart-open { overflow: hidden; }
     radial-gradient(circle at 85% 40%, rgba(155, 127, 212, 0.1), transparent 28rem),
     linear-gradient(180deg, rgba(10, 26, 47, 0.32), rgba(5, 11, 24, 0.82));
 }
+
+.quantum-pom-section {
+  padding: clamp(4rem, 7vw, 6.5rem) 0;
+  border-top: 1px solid rgba(217, 164, 65, 0.3);
+  background:
+    radial-gradient(circle at 22% 50%, rgba(155, 127, 212, 0.13), transparent 24rem),
+    rgba(5, 11, 24, 0.8);
+}
+
+.quantum-pom-frame {
+  overflow: hidden;
+  border: 1px solid rgba(217, 164, 65, 0.72);
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, rgba(10, 26, 47, 0.92), rgba(5, 11, 24, 0.98));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+}
+
+.quantum-pom-image-wrap {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-right: 1px solid rgba(217, 164, 65, 0.45);
+  background: var(--midnight);
+}
+
+.quantum-pom-image-wrap img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.quantum-pom-image-wrap > span {
+  position: absolute;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid var(--old-gold);
+  border-radius: 50%;
+  color: var(--pale-gold);
+  background: rgba(5, 11, 24, 0.88);
+  font-size: 0.8rem;
+}
+
+.quantum-pom-copy { padding: clamp(2rem, 5vw, 4.5rem); }
+.quantum-pom-copy h2 {
+  margin: 0 0 1rem;
+  color: var(--pale-gold);
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.6vw, 3.35rem);
+  font-weight: 500;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.quantum-pom-copy > p:not(.section-kicker) { max-width: 42rem; color: var(--muted-white); font-size: 1.2rem; line-height: 1.5; }
+.quantum-pom-copy .quantum-pom-signoff { margin-bottom: 1.6rem; color: var(--bright-cyan); font-family: var(--display); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.quantum-pom-copy .dream-button { display: inline-flex; }
+
+.quantum-footer-link {
+  margin: 1.25rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(217, 164, 65, 0.18);
+  color: rgba(234, 246, 255, 0.52);
+  font-size: 0.86rem;
+  text-align: center;
+}
+.quantum-footer-link a { color: var(--bright-cyan); text-decoration: none; }
+.quantum-footer-link a:hover { color: var(--pale-gold); }
 
 .story-frame {
   overflow: hidden;
@@ -1087,8 +1185,6 @@ body.cart-open { overflow: hidden; }
 }
 
 .signup-frame {
-  max-width: 64rem;
-  margin: 0 auto;
   padding: clamp(2.75rem, 6vw, 5rem);
   border: 1px solid rgba(217, 164, 65, 0.7);
   border-radius: 1.25rem;
@@ -1445,6 +1541,12 @@ body.cart-open { overflow: hidden; }
   .oracle-section {
     padding-block: 4rem;
   }
+
+  .quantum-pom-section { padding-block: 4rem; }
+  .quantum-pom-image-wrap { border-right: 0; border-bottom: 1px solid rgba(217, 164, 65, 0.45); }
+  .quantum-pom-copy { padding: 2.25rem 1.5rem; text-align: center; }
+  .quantum-pom-copy .section-kicker { text-align: center; }
+  .quantum-pom-copy .dream-button { width: 100%; }
 
   .oracle-frame {
     padding: 2.25rem 1rem 1rem;
