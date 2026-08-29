@@ -10,6 +10,7 @@ import OraclePreview from './components/OraclePreview.jsx'
 import QuantumPomSection from './components/QuantumPomSection.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 import CheckoutPage from './components/CheckoutPage.jsx'
+import ShippingAdmin from './components/ShippingAdmin.jsx'
 
 function App() {
   const [quickViewProduct, setQuickViewProduct] = useState(null)
@@ -77,6 +78,7 @@ function App() {
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
   const activeProduct = productId ? findProduct(productId) : null
   const isCheckout = route === '#checkout'
+  const isShippingAdmin = route === '#shipping-admin'
   const handleCheckout = () => {
     setIsCartOpen(false)
     window.location.hash = 'checkout'
@@ -132,7 +134,9 @@ function App() {
         </nav>
       </header>
 
-      {isCheckout ? (
+      {isShippingAdmin ? (
+        <ShippingAdmin />
+      ) : isCheckout ? (
         <CheckoutPage items={cartItems} subtotal={cartSubtotal} onPaymentSuccess={handlePaymentSuccess} />
       ) : activeProduct ? (
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />

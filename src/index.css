@@ -725,6 +725,22 @@ body.cart-open { overflow: hidden; }
 .checkout-confirmation .confirmation-number { color: var(--bright-cyan); font-family: var(--display); font-size: 0.7rem; overflow-wrap: anywhere; }
 .checkout-confirmation .dream-button { display: inline-flex; margin-top: 1rem; }
 
+.shipping-admin-page { min-height: 70vh; padding: clamp(2rem, 5vw, 5rem) 0; }
+.shipping-admin-frame { max-width: 52rem; margin: 0 auto; overflow: hidden; border: 1px solid rgba(217, 164, 65, 0.75); border-radius: 1.25rem; background: linear-gradient(145deg, rgba(10, 26, 47, 0.92), rgba(5, 11, 24, 0.98)); box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38); }
+.shipping-admin-form { display: grid; gap: 1.2rem; padding: clamp(1.5rem, 4vw, 3.5rem); }
+.shipping-admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.shipping-admin-form label { display: block; margin-bottom: 0.35rem; color: var(--muted-white); font-family: var(--display); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.shipping-admin-form label span { color: rgba(234, 246, 255, 0.45); font-family: var(--body); letter-spacing: 0; text-transform: none; }
+.shipping-admin-form input,
+.shipping-admin-form textarea { width: 100%; padding: 0.7rem 0.8rem; border: 1px solid rgba(217, 164, 65, 0.55); border-radius: 0.45rem; color: var(--star-white); background: rgba(5, 11, 24, 0.76); font-family: var(--body); font-size: 1.05rem; }
+.shipping-admin-form input { min-height: 3rem; }
+.shipping-admin-form textarea { resize: vertical; }
+.shipping-admin-form input:focus,
+.shipping-admin-form textarea:focus { border-color: var(--bright-cyan); outline: 0; box-shadow: 0 0 0 2px rgba(77, 216, 230, 0.16); }
+.shipping-admin-status { margin: 0; padding: 1rem; border: 1px solid rgba(127, 233, 245, 0.6); border-radius: 0.55rem; color: var(--bright-cyan); background: rgba(5, 11, 24, 0.7); }
+.shipping-admin-status.error { border-color: rgba(232, 120, 120, 0.65); color: #ffd2d2; }
+.shipping-admin-privacy { margin: 0; color: rgba(234, 246, 255, 0.5); font-size: 0.9rem; text-align: center; }
+
 .quick-view-backdrop {
   position: fixed;
   z-index: 1000;
@@ -1553,6 +1569,9 @@ body.cart-open { overflow: hidden; }
   .checkout-summary { border-top: 1px solid rgba(217, 164, 65, 0.34); border-left: 0; }
   .payment-heading { align-items: flex-start; flex-direction: column; gap: 0; }
   .checkout-pay-button { font-size: 0.68rem; }
+  .shipping-admin-page { padding-top: 0; }
+  .shipping-admin-frame { margin-inline: -0.5rem; border-radius: 0; }
+  .shipping-admin-grid { grid-template-columns: 1fr; }
   .quick-view-modal { min-height: 100svh; padding: 4rem 1rem 2rem; border-radius: 0; }
   .quick-view-heading { left: 1rem; transform: none; }
   .quick-view-copy h2 { font-size: 2.35rem; }
