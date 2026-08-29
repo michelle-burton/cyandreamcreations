@@ -1,5 +1,7 @@
 import { randomUUID } from 'node:crypto'
 
+const flatShippingCents = 995
+
 const catalog = {
   'radiance-within': {
     name: 'Radiance Within Sun Catcher',
@@ -47,6 +49,7 @@ export default async function handler(request, response) {
       amount += product.priceCents * quantity
       orderLines.push(`${quantity} × ${product.name}`)
     }
+    amount += flatShippingCents
 
     const baseUrl = squareEnvironment === 'production'
       ? 'https://connect.squareup.com'
@@ -66,7 +69,7 @@ export default async function handler(request, response) {
         autocomplete: true,
         location_id: locationId,
         buyer_email_address: customer.email,
-        note: `Cyan Dream Creations — ${orderLines.join(', ')}`,
+        note: `Cyan Dream Creations — ${orderLines.join(', ')} — U.S. flat shipping $9.95`,
         shipping_address: {
           first_name: customer.firstName,
           last_name: customer.lastName,

@@ -4,6 +4,7 @@ import { formatPrice } from '../data/products.js'
 const squareEnvironment = import.meta.env.VITE_SQUARE_ENV || 'sandbox'
 const squareAppId = import.meta.env.VITE_SQUARE_APP_ID
 const squareLocationId = import.meta.env.VITE_SQUARE_LOCATION_ID
+const flatShipping = 9.95
 
 let squareLoadPromise
 
@@ -67,6 +68,7 @@ function CheckoutPage({ items, subtotal, onPaymentSuccess }) {
   const [paymentError, setPaymentError] = useState('')
   const [isPaying, setIsPaying] = useState(false)
   const [confirmation, setConfirmation] = useState(null)
+  const orderTotal = subtotal + flatShipping
 
   useEffect(() => {
     if (!squareAppId || !squareLocationId || items.length === 0) return undefined
@@ -113,7 +115,7 @@ function CheckoutPage({ items, subtotal, onPaymentSuccess }) {
 
     try {
       const tokenResult = await cardRef.current.tokenize({
-        amount: subtotal.toFixed(2),
+        amount: orderTotal.toFixed(2),
         currencyCode: 'USD',
         intent: 'CHARGE',
         customerInitiated: true,
@@ -231,7 +233,7 @@ function CheckoutPage({ items, subtotal, onPaymentSuccess }) {
 
                 <button className="checkout-pay-button" type="submit" disabled={!cardReady || isPaying}>
                   <span aria-hidden="true">✦</span>
-                  {isPaying ? 'Completing Test Payment…' : `Pay ${formatPrice(subtotal)} in Sandbox`}
+                  {isPaying ? 'Completing Test Payment…' : `Pay ${formatPrice(orderTotal)} in Sandbox`}
                   <span aria-hidden="true">✦</span>
                 </button>
               </form>
@@ -247,11 +249,11 @@ function CheckoutPage({ items, subtotal, onPaymentSuccess }) {
               ))}
               <dl className="checkout-totals">
                 <div><dt>Subtotal</dt><dd>{formatPrice(subtotal)}</dd></div>
-                <div><dt>Shipping</dt><dd>Pending</dd></div>
+                <div><dt>U.S. flat-rate shipping</dt><dd>{formatPrice(flatShipping)}</dd></div>
                 <div><dt>Tax</dt><dd>Pending</dd></div>
-                <div className="checkout-total"><dt>Sandbox test total</dt><dd>{formatPrice(subtotal)}</dd></div>
+                <div className="checkout-total"><dt>Sandbox test total</dt><dd>{formatPrice(orderTotal)}</dd></div>
               </dl>
-              <p className="checkout-pending-note">Shipping and tax are not included in this Sandbox test. Production payments remain locked until both are finalized.</p>
+              <p className="checkout-pending-note">A $9.95 flat shipping rate is included for U.S. orders. Tax is not yet included, and production payments remain locked until tax and order notifications are finalized.</p>
             </aside>
           </div>
         </div>
