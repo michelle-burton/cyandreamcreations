@@ -11,6 +11,7 @@ const statusDetails = {
   sent: { icon: '✉', title: 'Confirmation Email Sent' },
   confirmation: { icon: '✦', title: 'Almost There' },
   confirmed: { icon: '✓', title: 'You’re on the Dream List' },
+  already: { icon: '✓', title: 'You’re Already on the List' },
   error: { icon: '!', title: 'Something Went Quiet' },
 }
 
@@ -40,7 +41,9 @@ function SiteFooter() {
       })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'The Dream List is temporarily unavailable.')
-      setSignupStatus({ type: 'sent', message: 'Check your inbox to confirm your place on the Dream List.' })
+      setSignupStatus(result.alreadySubscribed
+        ? { type: 'already', message: 'This email is already confirmed—there is nothing else you need to do.' }
+        : { type: 'sent', message: 'Check your inbox to confirm your place on the Dream List.' })
       form.reset()
     } catch (error) {
       setSignupStatus({ type: 'error', message: error.message })

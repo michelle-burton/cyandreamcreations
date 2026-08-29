@@ -20,6 +20,7 @@ export default async function handler(request, response) {
   }
 
   const resendApiKey = process.env.RESEND_API_KEY
+  const contactsApiKey = process.env.RESEND_CONTACTS_API_KEY
   const from = process.env.ORDER_FROM_EMAIL
   const signingSecret = process.env.NEWSLETTER_SIGNING_SECRET
   if (!resendApiKey || !from || !signingSecret) {
@@ -32,6 +33,22 @@ export default async function handler(request, response) {
   const email = String(rawEmail || '').trim().toLowerCase()
   if (email.length > 254 || !/^\S+@\S+\.\S+$/.test(email)) {
     return sendJson(response, 400, { error: 'Enter a valid email address.' })
+  }
+
+  if (contactsApiKey) {
+    try {
+      const contactResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+        headers: { Authorization: `Bearer ${contactsApiKey}`, 'User-Agent': 'Cyan-Dream-Creations/1.0' },
+      })
+      if (contactResponse.ok) {
+        const contact = await contactResponse.json()
+        if (contact.unsubscribed === false) return sendJson(response, 200, { alreadySubscribed: true })
+      } else if (contactResponse.status !== 404) {
+        console.error('Dream List contact lookup error', contactResponse.status, await contactResponse.text())
+      }
+    } catch (error) {
+      console.error('Dream List contact lookup unavailable', error)
+    }
   }
 
   const token = createToken(JSON.stringify({ email, expires: Date.now() + (24 * 60 * 60 * 1000) }), signingSecret)
@@ -61,7 +78,7 @@ export default async function handler(request, response) {
       headers: {
         Authorization: `Bearer ${resendApiKey}`,
         'Content-Type': 'application/json',
-        'Idempotency-Key': `dream-list-${createHash('sha256').update(`${email}:${new Date().toISOString().slice(0, 10)}`).digest('hex')}`,
+        'Idempotency-Key': `dream-list-${createHash('sha256').update(token).digest('hex')}`,
       },
       body: JSON.stringify({ from, to: [email], subject: 'Confirm your place on the Cyan Dream List', html, text }),
     })

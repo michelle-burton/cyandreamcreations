@@ -1280,7 +1280,8 @@ body.cart-open { overflow: hidden; }
   box-shadow: 0 0 0 1px rgba(217, 164, 65, 0.18), 0 24px 70px rgba(217, 164, 65, 0.16);
 }
 
-.signup-frame-confirmed {
+.signup-frame-confirmed,
+.signup-frame-already {
   border-color: #72e0c1;
   background: radial-gradient(circle at 50% 72%, rgba(68, 202, 164, 0.2), transparent 28rem), rgba(5, 11, 24, 0.82);
   box-shadow: 0 0 0 1px rgba(114, 224, 193, 0.2), 0 24px 70px rgba(68, 202, 164, 0.2);
@@ -1378,7 +1379,8 @@ body.cart-open { overflow: hidden; }
 
 .signup-status.sent { color: var(--bright-cyan); background: rgba(13, 91, 111, 0.28); }
 .signup-status.confirmation { color: var(--pale-gold); background: rgba(117, 80, 19, 0.25); }
-.signup-status.confirmed { color: #8ff0d5; background: rgba(26, 108, 88, 0.3); }
+.signup-status.confirmed,
+.signup-status.already { color: #8ff0d5; background: rgba(26, 108, 88, 0.3); }
 .signup-status.error { color: #ffd2d2; background: rgba(126, 35, 47, 0.28); }
 
 .signup-status-icon {
