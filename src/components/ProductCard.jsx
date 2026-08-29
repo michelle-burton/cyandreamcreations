@@ -14,7 +14,7 @@ function ProductCard({ product, onQuickView }) {
         <img
           src={product.image}
           className="product-image"
-          style={{ objectPosition: product.imagePosition }}
+          style={{ objectPosition: product.imagePosition, objectFit: product.imageFit || 'cover' }}
           alt={product.name}
         />
         <span className="quick-view-label">Quick View</span>

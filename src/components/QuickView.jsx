@@ -47,6 +47,7 @@ function QuickView({ product, onClose, onAddToCart }) {
             <div className="product-divider" aria-hidden="true">✦</div>
             <p className="quick-view-price">{formatPrice(product.price)}</p>
             <p className="quick-view-description">{product.shortDescription}</p>
+            {product.meaning && <p className="product-meaning">{product.meaning}</p>}
             <ul className="product-facts">
               {product.details.map((detail) => <li key={detail}>{detail}</li>)}
             </ul>

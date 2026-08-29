@@ -26,6 +26,7 @@ function ProductDetail({ product, onAddToCart }) {
               <div className="product-divider" aria-hidden="true">✦</div>
               <p className="quick-view-price">{formatPrice(product.price)}</p>
               <p className="quick-view-description">{product.shortDescription}</p>
+              {product.meaning && <p className="product-meaning">{product.meaning}</p>}
               <ul className="product-facts">
                 {product.details.map((detail) => <li key={detail}>{detail}</li>)}
               </ul>
@@ -46,15 +47,16 @@ function ProductDetail({ product, onAddToCart }) {
           <section className="product-lore" aria-labelledby="product-story-title">
             <div className="row g-0">
               <div className="col-lg-3 lore-emblem" aria-hidden="true">
-                <div className="moon-emblem"><span>☾</span></div>
+                <div className={`house-emblem house-emblem-${product.house.toLowerCase()}`}><span>{product.houseSymbol}</span></div>
               </div>
               <div className="col-lg-6 lore-story">
                 <p className="section-kicker">The House of the {product.house}</p>
-                <h2 id="product-story-title">The Story of the Moonlit Guardian</h2>
+                <h2 id="product-story-title">{product.storyTitle || `The Story of ${product.name}`}</h2>
                 {product.story.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               </div>
               <aside className="col-lg-3 lore-summary" aria-label={`${product.house} House meaning`}>
                 <dl>
+                  {product.guidingWord && <div><dt>Guiding Word</dt><dd><em>{product.guidingWord}</em></dd></div>}
                   <div><dt>Energy</dt><dd>{product.lore.energy}</dd></div>
                   <div><dt>Motion</dt><dd>{product.lore.motion}</dd></div>
                   <div><dt>Gift</dt><dd>{product.lore.gift}</dd></div>

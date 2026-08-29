@@ -13,7 +13,7 @@ function ProductMediaGallery({ product, variant = 'quick' }) {
         {selectedImage ? (
           <img
             src={selectedImage.src}
-            style={{ objectPosition: selectedImage.position }}
+            style={{ objectPosition: selectedImage.position, objectFit: selectedImage.fit || 'cover' }}
             alt={selectedImage.alt}
           />
         ) : product.videoSrc ? (
@@ -45,7 +45,7 @@ function ProductMediaGallery({ product, variant = 'quick' }) {
             aria-label={`View product image ${index + 1}`}
             aria-pressed={selectedMedia.type === 'image' && selectedMedia.index === index}
           >
-            <img src={image.src} style={{ objectPosition: image.position }} alt="" />
+            <img src={image.src} style={{ objectPosition: image.position, objectFit: image.fit || 'cover' }} alt="" />
           </button>
         ))}
         <button
