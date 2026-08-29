@@ -33,7 +33,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const sectionRoutes = new Set(['#top', '#shop', '#story', '#oracle'])
+    const sectionRoutes = new Set(['#top', '#shop', '#story', '#oracle', '#join'])
     if (sectionRoutes.has(route)) {
       window.requestAnimationFrame(() => {
         document.getElementById(route.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' })

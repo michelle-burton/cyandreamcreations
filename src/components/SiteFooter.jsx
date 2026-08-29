@@ -1,6 +1,64 @@
+import { useState } from 'react'
+
+const confirmationMessages = {
+  confirmed: 'Your place on the Dream List is confirmed. Welcome.',
+  expired: 'That confirmation link has expired. Please join again for a fresh link.',
+  invalid: 'That confirmation link is not valid. Please join again below.',
+  error: 'We could not confirm your place just now. Please try again.',
+}
+
 function SiteFooter() {
-  const handleSubmit = (event) => {
+  const query = new URLSearchParams(window.location.search)
+  const confirmationOutcome = query.get('newsletter')
+  const [confirmationToken] = useState(() => query.get('newsletter-confirm'))
+  const [signupStatus, setSignupStatus] = useState(() => confirmationToken
+    ? { type: 'confirmation', message: 'One final step: confirm your place on the Dream List.' }
+    : confirmationOutcome
+      ? { type: confirmationOutcome === 'confirmed' ? 'success' : 'error', message: confirmationMessages[confirmationOutcome] || confirmationMessages.error }
+      : null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    const form = event.currentTarget
+    const fields = Object.fromEntries(new FormData(form).entries())
+    setIsSubmitting(true)
+    setSignupStatus(null)
+
+    try {
+      const response = await fetch('/api/newsletter-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fields),
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || 'The Dream List is temporarily unavailable.')
+      setSignupStatus({ type: 'success', message: 'Check your inbox to confirm your place on the Dream List.' })
+      form.reset()
+    } catch (error) {
+      setSignupStatus({ type: 'error', message: error.message })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleConfirmation = async () => {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('/api/confirm-newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: confirmationToken }),
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || confirmationMessages.error)
+      window.history.replaceState({}, '', '/?newsletter=confirmed#join')
+      setSignupStatus({ type: 'success', message: confirmationMessages.confirmed })
+    } catch (error) {
+      setSignupStatus({ type: 'error', message: error.message })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -22,18 +80,33 @@ function SiteFooter() {
               </label>
               <input
                 id="dream-list-email"
+                name="email"
                 type="email"
                 inputMode="email"
                 autoComplete="email"
                 placeholder="your@email.com"
                 aria-describedby="signup-note"
+                required
               />
-              <button type="submit">Join the Dream List</button>
+              <label className="signup-honeypot" aria-hidden="true">
+                Website
+                <input name="website" tabIndex="-1" autoComplete="off" />
+              </label>
+              <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Sending…' : 'Join the Dream List'}</button>
             </form>
 
-            <p className="layout-note" id="signup-note">
-              Signup connection will be added later
-            </p>
+            {signupStatus ? (
+              <div className={`signup-status ${signupStatus.type}`} id="signup-note" role="status">
+                <p>{signupStatus.message}</p>
+                {signupStatus.type === 'confirmation' && (
+                  <button className="signup-confirm-button" type="button" onClick={handleConfirmation} disabled={isSubmitting}>
+                    {isSubmitting ? 'Confirming…' : 'Confirm My Place'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <p className="layout-note" id="signup-note">Please confirm your subscription by email. You can unsubscribe at any time.</p>
+            )}
           </div>
         </div>
       </section>
