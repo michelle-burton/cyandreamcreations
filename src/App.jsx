@@ -27,11 +27,21 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       setRoute(window.location.hash)
-      window.scrollTo({ top: 0, behavior: 'auto' })
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
+
+  useEffect(() => {
+    const sectionRoutes = new Set(['#top', '#shop', '#story', '#oracle'])
+    if (sectionRoutes.has(route)) {
+      window.requestAnimationFrame(() => {
+        document.getElementById(route.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+      return
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [route])
 
   useEffect(() => {
     window.localStorage.setItem('cyan-dream-cart', JSON.stringify(cart))
@@ -84,13 +94,17 @@ function App() {
     window.location.hash = 'checkout'
   }
   const handlePaymentSuccess = () => setCart([])
+  const closeMobileMenu = () => {
+    document.getElementById('mainMenu')?.classList.remove('show')
+    document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false')
+  }
 
   return (
     <div className="site-shell">
       <header className="site-header">
         <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
           <div className="container-xl">
-            <a className="brand-mark" href="#top" aria-label="Cyan Dream Creations home">
+            <a className="brand-mark" href="#top" aria-label="Cyan Dream Creations home" onClick={closeMobileMenu}>
               <span className="brand-name">Cyan Dream</span>
               <span className="brand-subtitle">Creations</span>
             </a>
@@ -120,13 +134,13 @@ function App() {
             <div className="collapse navbar-collapse order-lg-2" id="mainMenu">
               <ul className="navbar-nav mx-auto align-items-lg-center">
                 <li className="nav-item">
-                  <a className="nav-link" href="#shop">Sun Catchers</a>
+                  <a className="nav-link" href="#shop" onClick={closeMobileMenu}>Sun Catchers</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#story">Our Story</a>
+                  <a className="nav-link" href="#story" onClick={closeMobileMenu}>The Dream</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#oracle">Oracle</a>
+                  <a className="nav-link" href="#oracle" onClick={closeMobileMenu}>The Oracle</a>
                 </li>
               </ul>
             </div>

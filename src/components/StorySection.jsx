@@ -13,7 +13,7 @@ function StorySection() {
           <div className="row g-0 align-items-stretch">
             <div className="col-lg-7">
               <div className="story-copy">
-                <p className="section-kicker">Our Story</p>
+                <p className="section-kicker">The Dream</p>
                 <h2 id="story-title">
                   Created for dreamers, seekers, and quiet ritualists
                 </h2>

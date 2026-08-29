@@ -52,8 +52,8 @@ function SiteFooter() {
               <nav aria-label="Footer navigation">
                 <ul className="footer-links">
                   <li><a href="#shop">Sun Catchers</a></li>
-                  <li><a href="#story">Our Story</a></li>
-                  <li><a href="#oracle">Oracle</a></li>
+                  <li><a href="#story">The Dream</a></li>
+                  <li><a href="#oracle">The Oracle</a></li>
                 </ul>
               </nav>
             </div>
