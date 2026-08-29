@@ -15,7 +15,7 @@ const statusDetails = {
   error: { icon: '!', title: 'Something Went Quiet' },
 }
 
-function SiteFooter() {
+function SiteFooter({ showSignup = true }) {
   const query = new URLSearchParams(window.location.search)
   const confirmationOutcome = query.get('newsletter')
   const [confirmationToken] = useState(() => query.get('newsletter-confirm'))
@@ -73,7 +73,7 @@ function SiteFooter() {
 
   return (
     <>
-      <section className="signup-section" id="join" aria-labelledby="signup-title">
+      {showSignup && <section className="signup-section" id="join" aria-labelledby="signup-title">
         <div className="container-xl">
           <div className={`signup-frame text-center${signupStatus ? ` signup-frame-${signupStatus.type}` : ''}`}>
             <div className="signup-star" aria-hidden="true">✦</div>
@@ -128,7 +128,7 @@ function SiteFooter() {
             )}
           </div>
         </div>
-      </section>
+      </section>}
 
       <footer className="site-footer">
         <div className="container-xl">
@@ -159,6 +159,16 @@ function SiteFooter() {
             <p>© 2026 Cyan Dream Creations</p>
             <p>Created with reflection, intention, and care.</p>
           </div>
+
+          <nav aria-label="Shop information">
+            <ul className="footer-policy-links">
+              <li><a href="#shipping">Shipping</a></li>
+              <li><a href="#returns">Returns &amp; Refunds</a></li>
+              <li><a href="#privacy">Privacy</a></li>
+              <li><a href="#terms">Terms</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </nav>
 
           <p className="quantum-footer-link">
             Curious about the ideas and technology behind the studio?{' '}

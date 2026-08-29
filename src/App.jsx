@@ -11,6 +11,7 @@ import QuantumPomSection from './components/QuantumPomSection.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
 import CheckoutPage from './components/CheckoutPage.jsx'
 import ShippingAdmin from './components/ShippingAdmin.jsx'
+import InfoPage from './components/InfoPage.jsx'
 
 function App() {
   const [quickViewProduct, setQuickViewProduct] = useState(null)
@@ -89,6 +90,13 @@ function App() {
   const activeProduct = productId ? findProduct(productId) : null
   const isCheckout = route === '#checkout'
   const isShippingAdmin = route === '#shipping-admin'
+  const infoPage = new Map([
+    ['#shipping', 'shipping'],
+    ['#returns', 'returns'],
+    ['#privacy', 'privacy'],
+    ['#terms', 'terms'],
+    ['#contact', 'contact'],
+  ]).get(route)
   const handleCheckout = () => {
     setIsCartOpen(false)
     window.location.hash = 'checkout'
@@ -154,6 +162,8 @@ function App() {
         <CheckoutPage items={cartItems} subtotal={cartSubtotal} onPaymentSuccess={handlePaymentSuccess} />
       ) : activeProduct ? (
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />
+      ) : infoPage ? (
+        <InfoPage page={infoPage} />
       ) : (
       <main id="top">
         <section className="hero-section" aria-labelledby="hero-title">
@@ -209,7 +219,7 @@ function App() {
       </main>
       )}
 
-      <SiteFooter />
+      <SiteFooter showSignup={!isShippingAdmin && !isCheckout && !activeProduct && !infoPage} />
       {quickViewProduct && (
         <QuickView
           product={quickViewProduct}

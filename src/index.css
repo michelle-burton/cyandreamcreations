@@ -1486,6 +1486,62 @@ body.cart-open { overflow: hidden; }
   margin: 0;
 }
 
+.footer-policy-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-policy-links a {
+  color: rgba(234, 246, 255, 0.62);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.footer-policy-links a:hover,
+.footer-policy-links a:focus-visible { color: var(--bright-cyan); }
+.footer-policy-links a:focus-visible { outline: 2px solid var(--bright-cyan); outline-offset: 3px; }
+
+.info-page {
+  min-height: 65vh;
+  padding: clamp(2rem, 5vw, 5rem) 0;
+  background: radial-gradient(circle at 50% 10%, rgba(77, 216, 230, 0.09), transparent 32rem);
+}
+
+.info-frame {
+  max-width: 58rem;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(217, 164, 65, 0.72);
+  border-radius: 1.25rem;
+  background: rgba(5, 11, 24, 0.86);
+  box-shadow: 0 24px 65px rgba(0, 0, 0, 0.3);
+}
+
+.info-heading {
+  padding: clamp(2.5rem, 6vw, 4.5rem);
+  border-bottom: 1px solid rgba(217, 164, 65, 0.35);
+  text-align: center;
+}
+
+.info-star { display: block; margin-bottom: 1rem; color: var(--old-gold); font-size: 1.45rem; }
+.info-heading h1 { margin: 0.35rem 0 1rem; color: var(--pale-gold); font-family: var(--display); font-size: clamp(2.5rem, 6vw, 4.4rem); font-weight: 500; text-transform: uppercase; }
+.info-heading > p:last-child { max-width: 38rem; margin: 0 auto; color: var(--muted-white); font-size: 1.15rem; line-height: 1.65; }
+.info-sections { display: grid; gap: 0; padding: clamp(1.5rem, 5vw, 3.5rem); }
+.info-sections section { padding: 1.5rem 0; border-bottom: 1px solid rgba(217, 164, 65, 0.2); }
+.info-sections section:first-child { padding-top: 0; }
+.info-sections section:last-child { padding-bottom: 0; border-bottom: 0; }
+.info-sections h2 { margin: 0 0 0.55rem; color: var(--bright-cyan); font-family: var(--display); font-size: 1rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.info-sections p { margin: 0; color: var(--muted-white); font-size: 1.05rem; line-height: 1.75; }
+.info-sections a { color: var(--bright-cyan); }
+.info-home-link { display: block; padding: 1.2rem; border-top: 1px solid rgba(217, 164, 65, 0.35); color: var(--pale-gold); font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.1em; text-align: center; text-decoration: none; text-transform: uppercase; }
+.info-home-link:hover,
+.info-home-link:focus-visible { color: var(--bright-cyan); background: rgba(77, 216, 230, 0.06); }
+
 @media (min-width: 992px) {
   .hero-frame {
     height: auto;
