@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import source from '../assets/oracle/source.md?raw'
-import housesImage from '../assets/oracle-four-houses.png'
 import sun from '../assets/oracle/emblem-sun.svg'
 import moon from '../assets/oracle/emblem-moon.svg'
 import creation from '../assets/oracle/emblem-creation.svg'
 import voidMark from '../assets/oracle/emblem-void.svg'
 import './OraclePage.css'
+import './OracleEntrance.css'
 
 const houses = [
   { name: 'Sun', word: 'Illuminate', symbol: '☀️', mark: sun, color: '#e8c57a', question: 'What light is mine to give?' },
@@ -62,19 +62,21 @@ export default function OraclePage() {
     } catch (error) { setReadingError(error.name === 'TimeoutError' ? 'The reading took too long. You can retry with these same cards.' : error.message) }
     finally { setIsReading(false) }
   }
-  return <main className="oracle-sanctuary">
+  return <main className={`oracle-sanctuary ${stage === 'ritual' ? 'oracle-at-threshold' : ''}`}>
+    <div className="oracle-cosmos" aria-hidden="true">{Array.from({ length: 48 }, (_, i) => <i key={i} style={{ left: `${(i * 37.7) % 100}%`, top: `${(i * 19.3) % 100}%`, '--delay': `${-(i % 9)}s`, '--size': `${i % 7 === 0 ? 3 : 1}px` }} />)}</div>
     <nav className="oracle-topline" aria-label="Oracle navigation"><a href="/#top">Cyan Dream Creations</a><span>A celestial mirror for the unseen</span><a href="/#shop">Return to the shop ↗</a></nav>
-    <div className="oracle-stars" aria-hidden="true">✧ · ✦ · ✧</div>
+    {stage !== 'ritual' && <div className="oracle-stars" aria-hidden="true">✧ · ✦ · ✧</div>}
     {stage === 'ritual' && <section className="oracle-arrival">
-      <p className="oracle-eyebrow">THE CYAN DREAM ORACLE</p>
-      <h1 ref={heading} tabIndex="-1">Between the question<br />and the light.</h1>
-      <p className="oracle-subtitle">It does not predict. It mirrors.</p>
-      <div className="oracle-orb" aria-hidden="true"><span>✦</span></div>
-      <p className="oracle-eyebrow">YOUR OPENING RITUAL · {ritual[0]}</p>
+      <div className="oracle-portal-scene" aria-hidden="true"><div className="oracle-portal-ring"><div className="oracle-portal-inner"><span className="oracle-portal-star">✦</span></div><span className="oracle-portal-crown">☾</span><span className="oracle-portal-seal">✧</span></div><div className="oracle-water" /></div>
+      <div className="oracle-threshold-copy"><p className="oracle-eyebrow">THE CYAN DREAM ORACLE</p>
+      <h1 ref={heading} tabIndex="-1">The quiet holds<br /><em>a little wonder.</em></h1>
+      <p className="oracle-subtitle">Bring your question to the light.</p>
+      <div className="oracle-ritual-divider" aria-hidden="true">✦</div>
       <p className="oracle-ritual">{ritual[1]}</p>
-      <form onSubmit={(event) => { event.preventDefault(); setStage('draw') }}><label className="oracle-intention">What question are you bringing?<span>Your question and three cards will be sent to OpenAI when you request your reading.</span><textarea required maxLength="600" rows="3" value={intention} onChange={(event) => setIntention(event.target.value)} placeholder="What is asking for my attention?" /></label>
-      <button className="oracle-enter" disabled={!intention.trim()}>✦ <span>Enter the Oracle</span> ✦</button></form>
-      <p className="oracle-small">When you feel ready, choose a card. There is no hurry.</p>
+      <form onSubmit={(event) => { event.preventDefault(); setStage('draw') }}><label className="oracle-intention">What is stirring within you?<textarea required maxLength="600" rows="2" value={intention} onChange={(event) => setIntention(event.target.value)} placeholder="A question, a crossroads, something you’re carrying…" /></label>
+      <button className="oracle-enter" disabled={!intention.trim()}>✦ <span>Enter the Oracle</span> ✦</button>
+      <p className="oracle-small oracle-privacy">Your question and cards are shared with OpenAI to create your reading.</p></form>
+      <p className="oracle-threshold-whisper">It does not predict. It mirrors.</p></div>
     </section>}
     {stage === 'draw' && <section className="oracle-draw">
       <p className="oracle-eyebrow">THREE CARDS · ONE CONNECTED READING</p>
@@ -95,7 +97,6 @@ export default function OraclePage() {
       {readingError && <button className="oracle-enter" onClick={interpret}>Try the interpretation again</button>}
       {!isReading && <div><button className="oracle-text-button" onClick={reset}>Begin another reflection</button></div>}
     </section>}
-    <section className="oracle-houses"><p className="oracle-eyebrow">FOUR HOUSES · ONE TURNING SKY</p><h2>Every light belongs to a greater cycle.</h2><div className="oracle-house-list">{houses.map((house, index) => <details key={house.name} style={{ '--house-light': house.color }}><summary><div className="oracle-house-art" style={{ backgroundImage: `url(${housesImage})`, backgroundPosition: `${index * 100 / 3}% center` }} /><span>House of {house.name}</span><em>{house.word}</em><small>Explore the Core cards +</small></summary><p>{house.question}</p><ul>{cards.filter((card) => card.house.length === 1 && card.house.includes(house)).map((card) => <li key={card.numeral}>{card.numeral} · {card.name}</li>)}</ul></details>)}</div><p className="oracle-small">Origin and Cyan Dream unite all four Houses. The 22 Core cards form this first experience.</p></section>
     <footer className="oracle-ending">Dream · Become · Illuminate · Reflect<br /><a href="/#top">Cyan Dream Creations</a></footer>
   </main>
 }
