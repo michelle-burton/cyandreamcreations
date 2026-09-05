@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<title>House of the Moon — Reflection</title>
+<desc>Glowing cyan crescent above still water, gold orbit, companion stars. Who am I becoming?</desc>
+<defs>
+<radialGradient id="bg" cx="50%" cy="42%" r="75%">
+  <stop offset="0%" stop-color="#0A1A2F"/>
+  <stop offset="100%" stop-color="#050B18"/>
+</radialGradient>
+<filter id="glow2" x="-120%" y="-120%" width="340%" height="340%">
+  <feGaussianBlur stdDeviation="7" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="glow1" x="-80%" y="-80%" width="260%" height="260%">
+  <feGaussianBlur stdDeviation="2.6" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="soft" x="-120%" y="-120%" width="340%" height="340%">
+  <feGaussianBlur stdDeviation="14"/>
+</filter>
+
+<radialGradient id="moonG" cx="38%" cy="35%" r="80%">
+  <stop offset="0%" stop-color="#D9FBFF"/>
+  <stop offset="45%" stop-color="#7FE9F5"/>
+  <stop offset="100%" stop-color="#4DD8E6"/>
+</radialGradient>
+<linearGradient id="waterline" x1="0%" y1="0%" x2="100%" y2="0%">
+  <stop offset="0%" stop-color="#4DD8E6" stop-opacity="0"/>
+  <stop offset="50%" stop-color="#7FE9F5" stop-opacity="0.75"/>
+  <stop offset="100%" stop-color="#4DD8E6" stop-opacity="0"/>
+</linearGradient>
+<mask id="cres">
+  <rect width="512" height="512" fill="white"/>
+  <circle cx="300" cy="205" r="92" fill="black"/>
+</mask></defs>
+<rect x="0" y="0" width="512" height="512" rx="26" fill="url(#bg)"/>
+<circle cx="461.6" cy="473.1" r="1.30" fill="#EAF6FF" opacity="0.16"/>
+<circle cx="300.5" cy="219.1" r="0.98" fill="#EAF6FF" opacity="0.18"/>
+<circle cx="106.9" cy="229.2" r="0.70" fill="#EAF6FF" opacity="0.32"/>
+<circle cx="26.0" cy="55.5" r="1.14" fill="#EAF6FF" opacity="0.30"/>
+<circle cx="262.1" cy="369.4" r="0.82" fill="#EAF6FF" opacity="0.14"/>
+<circle cx="393.0" cy="299.1" r="1.09" fill="#EAF6FF" opacity="0.39"/>
+<circle cx="483.8" cy="189.6" r="1.18" fill="#EAF6FF" opacity="0.28"/>
+<circle cx="290.9" cy="333.7" r="0.78" fill="#EAF6FF" opacity="0.16"/>
+<circle cx="243.4" cy="361.5" r="1.03" fill="#EAF6FF" opacity="0.31"/>
+<circle cx="324.9" cy="102.1" r="0.66" fill="#EAF6FF" opacity="0.26"/>
+<circle cx="408.9" cy="108.7" r="0.60" fill="#EAF6FF" opacity="0.16"/>
+<circle cx="32.8" cy="147.4" r="1.02" fill="#EAF6FF" opacity="0.47"/>
+<circle cx="174.1" cy="192.9" r="0.76" fill="#EAF6FF" opacity="0.25"/>
+<circle cx="390.3" cy="279.7" r="0.73" fill="#EAF6FF" opacity="0.17"/>
+<circle cx="393.4" cy="356.3" r="1.25" fill="#EAF6FF" opacity="0.22"/>
+<circle cx="278.0" cy="458.7" r="1.03" fill="#EAF6FF" opacity="0.53"/>
+<circle cx="95.0" cy="485.9" r="0.55" fill="#EAF6FF" opacity="0.30"/>
+<circle cx="25.3" cy="405.8" r="1.12" fill="#EAF6FF" opacity="0.54"/>
+<circle cx="403.6" cy="473.2" r="0.98" fill="#EAF6FF" opacity="0.54"/>
+<circle cx="376.5" cy="181.5" r="1.38" fill="#EAF6FF" opacity="0.28"/>
+<circle cx="107.6" cy="50.7" r="0.92" fill="#EAF6FF" opacity="0.20"/>
+<circle cx="465.9" cy="474.0" r="0.69" fill="#EAF6FF" opacity="0.16"/>
+<circle cx="270.0" cy="96.1" r="0.99" fill="#EAF6FF" opacity="0.47"/>
+<circle cx="136.5" cy="218.1" r="1.31" fill="#EAF6FF" opacity="0.31"/>
+<circle cx="179.9" cy="445.9" r="1.23" fill="#EAF6FF" opacity="0.50"/>
+<circle cx="346.9" cy="213.7" r="1.12" fill="#EAF6FF" opacity="0.48"/>
+<circle cx="323.5" cy="129.4" r="0.77" fill="#EAF6FF" opacity="0.30"/>
+<circle cx="387.5" cy="283.6" r="0.99" fill="#EAF6FF" opacity="0.48"/>
+<circle cx="66.5" cy="319.5" r="0.80" fill="#EAF6FF" opacity="0.36"/>
+<circle cx="418.3" cy="134.2" r="1.36" fill="#EAF6FF" opacity="0.15"/>
+<circle cx="286.0" cy="276.2" r="0.71" fill="#EAF6FF" opacity="0.36"/>
+<circle cx="241.8" cy="231.6" r="1.15" fill="#EAF6FF" opacity="0.12"/>
+<circle cx="196.6" cy="394.2" r="0.63" fill="#EAF6FF" opacity="0.49"/>
+<circle cx="112.5" cy="343.7" r="0.66" fill="#EAF6FF" opacity="0.31"/>
+<circle cx="218.5" cy="53.6" r="1.13" fill="#EAF6FF" opacity="0.33"/>
+<circle cx="347.5" cy="274.9" r="1.00" fill="#EAF6FF" opacity="0.35"/>
+<circle cx="158.1" cy="449.0" r="0.58" fill="#EAF6FF" opacity="0.50"/>
+<circle cx="431.9" cy="254.9" r="1.20" fill="#EAF6FF" opacity="0.41"/>
+<circle cx="306.9" cy="155.1" r="0.79" fill="#EAF6FF" opacity="0.27"/>
+<circle cx="160.3" cy="478.5" r="0.81" fill="#EAF6FF" opacity="0.29"/>
+<circle cx="217.1" cy="409.2" r="0.93" fill="#EAF6FF" opacity="0.36"/>
+<circle cx="137.7" cy="148.6" r="0.58" fill="#EAF6FF" opacity="0.21"/>
+<g transform="rotate(-18 256 225)"><ellipse cx="256" cy="225" rx="188" ry="64" fill="none" stroke="#E8C57A" stroke-width="0.7" opacity="0.5"/><circle cx="444" cy="225" r="2.4" fill="#E8C57A" opacity="0.9" filter="url(#glow1)"/></g>
+<circle cx="236" cy="225" r="96" fill="#4DD8E6" opacity="0.16" filter="url(#soft)"/>
+<g filter="url(#glow2)"><circle cx="256" cy="225" r="92" fill="url(#moonG)" mask="url(#cres)"/></g>
+<circle cx="256" cy="225" r="92" fill="none" stroke="#D9FBFF" stroke-width="0.7" opacity="0.5" mask="url(#cres)"/>
+<path d="M 314 143 Q 315.6 151.4 324 153 Q 315.6 154.6 314 163 Q 312.4 154.6 304 153 Q 312.4 151.4 314 143 Z" fill="#EAF6FF" opacity="0.95" filter="url(#glow1)"/>
+<path d="M 352 225 Q 352.96 230.04 358 231 Q 352.96 231.96 352 237 Q 351.04 231.96 346 231 Q 351.04 230.04 352 225 Z" fill="#7FE9F5" opacity="0.85" filter="url(#glow1)"/>
+<path d="M 294 286.5 Q 294.72 290.28 298.5 291 Q 294.72 291.72 294 295.5 Q 293.28 291.72 289.5 291 Q 293.28 290.28 294 286.5 Z" fill="#EAF6FF" opacity="0.7"/>
+<path d="M 112 124 Q 112.96 129.04 118 130 Q 112.96 130.96 112 136 Q 111.04 130.96 106 130 Q 111.04 129.04 112 124 Z" fill="#7FE9F5" opacity="0.6"/>
+<rect x="70" y="405" width="372" height="1.6" fill="url(#waterline)"/>
+<g transform="translate(0 810) scale(1 -1)" opacity="0.16"><circle cx="256" cy="385" r="92" fill="url(#moonG)" mask="url(#cres)" filter="url(#soft)"/></g>
+<line x1="204" y1="427" x2="244" y2="427" stroke="#7FE9F5" stroke-width="1" opacity="0.5" stroke-linecap="round"/>
+<line x1="266" y1="420" x2="292" y2="420" stroke="#7FE9F5" stroke-width="1" opacity="0.35" stroke-linecap="round"/>
+<line x1="238" y1="422" x2="252" y2="422" stroke="#7FE9F5" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+</svg>

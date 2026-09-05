@@ -13,6 +13,7 @@ import CheckoutPage from './components/CheckoutPage.jsx'
 import ShippingAdmin from './components/ShippingAdmin.jsx'
 import InfoPage from './components/InfoPage.jsx'
 import HomePathways from './components/HomePathways.jsx'
+import OraclePage from './components/OraclePage.jsx'
 
 function App() {
   const [quickViewProduct, setQuickViewProduct] = useState(null)
@@ -130,6 +131,8 @@ function App() {
     document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false')
   }
 
+  if (window.location.pathname.replace(/\/$/, '') === '/oracle') return <OraclePage />
+
   return (
     <div className="site-shell">
       <header className="site-header">
@@ -171,7 +174,7 @@ function App() {
                   <a className="nav-link" href="#story" onClick={closeMobileMenu}>The Dream</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#oracle" onClick={closeMobileMenu}>The Oracle</a>
+                  <a className="nav-link" href="/oracle" onClick={closeMobileMenu}>The Oracle</a>
                 </li>
               </ul>
             </div>

@@ -13,12 +13,12 @@ function OraclePreview() {
       <div className="container-xl">
         <div className="oracle-frame">
           <header className="oracle-copy text-center">
-            <p className="section-kicker">Coming Later</p>
+            <p className="section-kicker">A moment of reflection</p>
             <h2 id="oracle-title">Cyan Dream Oracle</h2>
             <p className="oracle-lead">A celestial mirror for the unseen.</p>
             <p className="oracle-statement">It does not predict. It mirrors.</p>
             <p className="oracle-emergence">Something is waiting to emerge.</p>
-            <span className="oracle-status">The Oracle is taking shape</span>
+            <a className="dream-button" href="/oracle">Enter the Oracle ✦</a>
           </header>
 
           <div className="row g-3 g-xl-4 oracle-house-grid">
