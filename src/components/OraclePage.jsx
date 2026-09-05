@@ -6,6 +6,7 @@ import creation from '../assets/oracle/emblem-creation.svg'
 import voidMark from '../assets/oracle/emblem-void.svg'
 import './OraclePage.css'
 import './OracleEntrance.css'
+import './OracleDraw.css'
 
 const houses = [
   { name: 'Sun', word: 'Illuminate', symbol: '☀️', mark: sun, color: '#e8c57a', question: 'What light is mine to give?' },
@@ -42,25 +43,36 @@ export default function OraclePage() {
   const [isReading, setIsReading] = useState(false)
   const [intention, setIntention] = useState('')
   const heading = useRef(null)
+  const chosenRef = useRef([])
+  const requestLock = useRef(false)
   useEffect(() => {
     document.title = 'The Oracle · Cyan Dream Creations'
     heading.current?.focus({ preventScroll: true })
   }, [stage])
   const reset = () => {
+    chosenRef.current = []
     setDeck(shuffled()); setSelected([]); setReading(null); setReadingError(''); setIntention(''); setRitual(rituals[Math.floor(Math.random() * rituals.length)]); setStage('ritual')
   }
   const positions = ['What shaped this', 'What is present', 'What is emerging']
-  const interpret = async () => {
-    if (isReading) return
+  const interpret = async (spread = selected) => {
+    if (requestLock.current || spread.length !== 3) return
+    requestLock.current = true
     setIsReading(true); setReadingError(''); setStage('reading')
     try {
-      const response = await fetch('/api/oracle-reading', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: intention, cardIds: selected.map((card) => card.numeral) }), signal: AbortSignal.timeout(50000) })
+      const response = await fetch('/api/oracle-reading', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: intention, cardIds: spread.map((card) => card.numeral) }), signal: AbortSignal.timeout(50000) })
       if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Personalized readings are not connected in this preview yet. Explore your selected cards below.')
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'Please try your reading again.')
       setReading(result)
     } catch (error) { setReadingError(error.name === 'TimeoutError' ? 'The reading took too long. You can retry with these same cards.' : error.message) }
-    finally { setIsReading(false) }
+    finally { requestLock.current = false; setIsReading(false) }
+  }
+  const chooseCard = (card) => {
+    if (chosenRef.current.length >= 3 || chosenRef.current.includes(card)) return
+    const next = [...chosenRef.current, card]
+    chosenRef.current = next
+    setSelected(next)
+    if (next.length === 3) void interpret(next)
   }
   return <main className={`oracle-sanctuary ${stage === 'ritual' ? 'oracle-at-threshold' : ''}`}>
     <div className="oracle-cosmos" aria-hidden="true">{Array.from({ length: 48 }, (_, i) => <i key={i} style={{ left: `${(i * 37.7) % 100}%`, top: `${(i * 19.3) % 100}%`, '--delay': `${-(i % 9)}s`, '--size': `${i % 7 === 0 ? 3 : 1}px` }} />)}</div>
@@ -83,10 +95,10 @@ export default function OraclePage() {
       <h1 ref={heading} tabIndex="-1">Let your attention settle.</h1>
       <p className="oracle-subtitle" aria-live="polite">{selected.length < 3 ? `Choose card ${selected.length + 1} of 3 · ${positions[selected.length]}` : 'Your three cards are ready.'}</p>
       {intention && <p className="oracle-held">Your intention: {intention}</p>}
-      <div className="oracle-spread-slots">{positions.map((position, i) => <div key={position}><small>{position}</small><p>{selected[i] ? `${selected[i].numeral} · ${selected[i].name}` : '✧'}</p></div>)}</div>
-      <div className="oracle-deck">{deck.map((card, i) => <button key={card.numeral} className="oracle-card-back" disabled={selected.includes(card) || selected.length === 3} aria-label={`Choose face-down card ${i + 1}`} onClick={() => setSelected((current) => current.length < 3 && !current.includes(card) ? [...current, card] : current)}><span className="oracle-mandala" aria-hidden="true">☼<br />☾ ✦ ◯<br />⌁</span><span>{selected.includes(card) ? 'SELECTED' : 'CYAN DREAM'}</span></button>)}</div>
-      {selected.length === 3 && <button className="oracle-enter" onClick={interpret}>Reveal the meaning ✦</button>}
-      <div><button className="oracle-text-button" onClick={() => { setSelected([]); setStage('ritual') }}>Return to the ritual</button></div>
+      <div className="oracle-spread-slots oracle-chosen-spread">{positions.map((position, i) => <div key={position}><small>{position}</small>{selected[i] ? <div className="oracle-mini-reveal" key={selected[i].numeral} style={{ '--house-light': selected[i].house[0].color }}><span>{selected[i].numeral}</span><img src={selected[i].house[0].mark} alt="" /><p>{selected[i].name}</p></div> : <div className="oracle-empty-card"><span>✧</span><small>{i + 1}</small></div>}</div>)}</div>
+      <p className="oracle-small">Let your hand follow your attention. Choose three.</p>
+      <div className="oracle-fan-scroll"><div className="oracle-deck oracle-fanned-deck">{[0, 1].map((row) => <div className="oracle-fan-row" key={row}>{deck.slice(row * 11, row * 11 + 11).map((card, column) => <button key={card.numeral} className="oracle-card-back" style={{ '--angle': `${(column - 5) * 3}deg`, '--rise': `${Math.abs(column - 5) ** 2 * 1.5}px`, '--order': column }} disabled={selected.includes(card) || selected.length === 3} aria-label={`Choose face-down card ${row * 11 + column + 1}`} onClick={() => chooseCard(card)}><span className="oracle-card-ornament" aria-hidden="true">✧</span><span className="oracle-mandala" aria-hidden="true"><img src={moon} alt="" /><b>✦</b><img src={sun} alt="" /></span><span>CYAN DREAM</span></button>)}</div>)}</div></div>
+      <div><button className="oracle-text-button" onClick={() => { chosenRef.current = []; setSelected([]); setStage('ritual') }}>Return to the ritual</button></div>
     </section>}
     {stage === 'reading' && selected.length === 3 && <section className="oracle-reading">
       <p className="oracle-eyebrow">THREE LIGHTS · ONE CONSTELLATION</p>
@@ -94,7 +106,7 @@ export default function OraclePage() {
       <div className="oracle-three-cards">{selected.map((card, i) => <article key={card.numeral} style={{ '--house-light': card.house[0].color }}><p className="oracle-eyebrow">{positions[i]}</p><div className="oracle-revealed"><span>{card.numeral}</span><div className="oracle-reading-marks">{card.house.map((house) => <img key={house.name} src={house.mark} alt={`House of ${house.name}`} />)}</div><h2>{card.name}</h2><p>{card.house.length === 4 ? 'All four Houses' : `House of ${card.house[0].name}`}</p></div><details><summary>Explore this card’s meaning</summary><p>{card.message}</p><p>{card.reflection}</p><p>{card.invitation}</p></details></article>)}</div>
       <div aria-live="polite">{isReading && <div><div className="oracle-orb" aria-hidden="true">✦</div><p>Weaving your question through the three cards…</p></div>}{readingError && <p className="oracle-held" role="alert">{readingError}</p>}</div>
       {reading && <><div className="oracle-woven"><p className="oracle-eyebrow">THE THREAD BETWEEN THE CARDS</p><p>{reading.reading}</p><p className="oracle-eyebrow">A SMALL INVITATION</p><p>{reading.invitation}</p></div><div className="oracle-question"><p className="oracle-eyebrow">A QUESTION TO CARRY</p><p>{reading.reflection}</p></div><p className="oracle-small">An AI-generated reflection grounded in the Cyan Dream deck. Take what resonates; leave room for your own knowing.</p></>}
-      {readingError && <button className="oracle-enter" onClick={interpret}>Try the interpretation again</button>}
+      {readingError && <button className="oracle-enter" onClick={() => interpret()}>Try the interpretation again</button>}
       {!isReading && <div><button className="oracle-text-button" onClick={reset}>Begin another reflection</button></div>}
     </section>}
     <footer className="oracle-ending">Dream · Become · Illuminate · Reflect<br /><a href="/#top">Cyan Dream Creations</a></footer>
