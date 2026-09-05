@@ -102,9 +102,11 @@ export default function OraclePage() {
     </section>}
     {stage === 'reading' && selected.length === 3 && <section className="oracle-reading">
       <p className="oracle-eyebrow">THREE LIGHTS · ONE CONSTELLATION</p>
-      <h1 ref={heading} tabIndex="-1">{reading?.title || 'Your question, reflected.'}</h1><p className="oracle-held">{intention}</p>
+      <h1 ref={heading} tabIndex="-1">{isReading ? 'Your constellation is gathering…' : reading?.title || 'Your question, reflected.'}</h1><p className="oracle-held">{intention}</p>
+      {!isReading && <>
       <div className="oracle-three-cards">{selected.map((card, i) => <article key={card.numeral} style={{ '--house-light': card.house[0].color }}><p className="oracle-eyebrow">{positions[i]}</p><div className="oracle-revealed"><span>{card.numeral}</span><div className="oracle-reading-marks">{card.house.map((house) => <img key={house.name} src={house.mark} alt={`House of ${house.name}`} />)}</div><h2>{card.name}</h2><p>{card.house.length === 4 ? 'All four Houses' : `House of ${card.house[0].name}`}</p></div><div className="oracle-card-whisper" style={{ '--reveal-delay': `${i * 150 + 350}ms` }}><span className="oracle-whisper-star" aria-hidden="true">✦</span><p className="oracle-card-message">{card.message}</p><p className="oracle-card-reflection">{card.reflection}</p><div className="oracle-card-invitation"><h3>A small invitation</h3><p>{card.invitation}</p></div></div></article>)}</div>
-      <div aria-live="polite">{isReading && <div><div className="oracle-orb" aria-hidden="true">✦</div><p>Weaving your question through the three cards…</p></div>}{readingError && <p className="oracle-held" role="alert">{readingError}</p>}</div>
+      </>}
+      <div aria-live="polite">{isReading && <div role="status"><div className="oracle-orb" aria-hidden="true">✦</div><p>Weaving your question through the three cards…</p></div>}{readingError && <p className="oracle-held" role="alert">{readingError}</p>}</div>
       {reading && <><div className="oracle-woven"><p className="oracle-eyebrow">THE THREAD BETWEEN THE CARDS</p><p>{reading.reading}</p><p className="oracle-eyebrow">A SMALL INVITATION</p><p>{reading.invitation}</p></div><div className="oracle-question"><p className="oracle-eyebrow">A QUESTION TO CARRY</p><p>{reading.reflection}</p></div><p className="oracle-small">An AI-generated reflection grounded in the Cyan Dream deck. Take what resonates; leave room for your own knowing.</p></>}
       {readingError && <button className="oracle-enter" onClick={() => interpret()}>Try the interpretation again</button>}
       {!isReading && <div><button className="oracle-text-button" onClick={reset}>Begin another reflection</button></div>}

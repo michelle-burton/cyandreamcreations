@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { guardReading } from './_oracle-guard.js'
 
 const source = readFileSync(new URL('../src/assets/oracle/source.md', import.meta.url), 'utf8')
 const cards = [...source.matchAll(/^### ([0IVX]+) · (.*?) — (.*?)\n([\s\S]*?)(?=\n### |\n---)/gm)].map((m) => ({ id: m[1], name: m[2], house: m[3], meaning: m[4] }))
@@ -11,6 +12,8 @@ export default async function handler(req, res) {
   const spread = cardIds.map((id, i) => ({ ...cards.find((card) => card.id === id), position: positions[i] }))
   if (spread.some((card) => !card.name)) return res.status(400).json({ error: 'Please choose cards from the Cyan Dream deck.' })
   if (!process.env.OPENAI_API_KEY || process.env.ORACLE_AI_ENABLED !== 'true') return res.status(503).json({ error: 'Personalized readings are not connected yet. Your three cards and their original meanings are available below.' })
+  const blocked = await guardReading(req)
+  if (blocked) return res.status(blocked.status).json({ error: blocked.error })
   try {
     const result = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
