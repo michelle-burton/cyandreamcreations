@@ -15,7 +15,8 @@ const statusDetails = {
   error: { icon: '!', title: 'Something Went Quiet' },
 }
 
-function SiteFooter({ showSignup = true }) {
+function SiteFooter({ showSignup = true, sectionBase = '' }) {
+  const sectionHref = (hash) => `${sectionBase}${hash}`
   const query = new URLSearchParams(window.location.search)
   const confirmationOutcome = query.get('newsletter')
   const [confirmationToken] = useState(() => query.get('newsletter-confirm'))
@@ -134,7 +135,7 @@ function SiteFooter({ showSignup = true }) {
         <div className="container-xl">
           <div className="row gy-4 align-items-center">
             <div className="col-lg-4 text-center text-lg-start">
-              <a className="brand-mark footer-brand" href="#top">
+              <a className="brand-mark footer-brand" href={sectionHref('#top')}>
                 <span className="brand-name">Cyan Dream</span>
                 <span className="brand-subtitle">Creations</span>
               </a>
@@ -143,9 +144,9 @@ function SiteFooter({ showSignup = true }) {
             <div className="col-lg-4">
               <nav aria-label="Footer navigation">
                 <ul className="footer-links">
-                  <li><a href="#shop">Sun Catchers</a></li>
-                  <li><a href="#story">The Dream</a></li>
-                  <li><a href="#oracle">The Oracle</a></li>
+                  <li><a href={sectionHref('#shop')}>Sun Catchers</a></li>
+                  <li><a href={sectionHref('#story')}>The Dream</a></li>
+                  <li><a href={sectionHref('#oracle')}>The Oracle</a></li>
                 </ul>
               </nav>
             </div>
@@ -162,11 +163,11 @@ function SiteFooter({ showSignup = true }) {
 
           <nav aria-label="Shop information">
             <ul className="footer-policy-links">
-              <li><a href="#shipping">Shipping</a></li>
-              <li><a href="#returns">Returns &amp; Refunds</a></li>
-              <li><a href="#privacy">Privacy</a></li>
-              <li><a href="#terms">Terms</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href={sectionHref('#shipping')}>Shipping</a></li>
+              <li><a href={sectionHref('#returns')}>Returns &amp; Refunds</a></li>
+              <li><a href={sectionHref('#privacy')}>Privacy</a></li>
+              <li><a href={sectionHref('#terms')}>Terms</a></li>
+              <li><a href={sectionHref('#contact')}>Contact</a></li>
             </ul>
           </nav>
 

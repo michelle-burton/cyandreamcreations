@@ -19,6 +19,7 @@ function App() {
   const squareCheckoutUrl = import.meta.env.VITE_SQUARE_CHECKOUT_URL?.trim()
   const pathname = window.location.pathname.replace(/\/$/, '')
   const isThankYou = pathname === '/thank-you'
+  const sectionHref = (hash) => `${isThankYou ? '/' : ''}${hash}`
   const [quickViewProduct, setQuickViewProduct] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [cart, setCart] = useState(() => {
@@ -152,7 +153,7 @@ function App() {
       <header className="site-header">
         <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
           <div className="container-xl">
-            <a className="brand-mark" href="#top" aria-label="Cyan Dream Creations home" onClick={closeMobileMenu}>
+            <a className="brand-mark" href={sectionHref('#top')} aria-label="Cyan Dream Creations home" onClick={closeMobileMenu}>
               <span className="brand-name">Cyan Dream</span>
               <span className="brand-subtitle">Creations</span>
             </a>
@@ -182,10 +183,10 @@ function App() {
             <div className="collapse navbar-collapse order-lg-2" id="mainMenu">
               <ul className="navbar-nav mx-auto align-items-lg-center">
                 <li className="nav-item">
-                  <a className="nav-link" href="#shop" onClick={closeMobileMenu}>Sun Catchers</a>
+                  <a className="nav-link" href={sectionHref('#shop')} onClick={closeMobileMenu}>Sun Catchers</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#story" onClick={closeMobileMenu}>The Dream</a>
+                  <a className="nav-link" href={sectionHref('#story')} onClick={closeMobileMenu}>The Dream</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="/oracle" onClick={closeMobileMenu}>The Oracle</a>
@@ -263,7 +264,10 @@ function App() {
       </main>
       )}
 
-      <SiteFooter showSignup={!isThankYou && !isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
+      <SiteFooter
+        showSignup={!isThankYou && !isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle}
+        sectionBase={isThankYou ? '/' : ''}
+      />
       {quickViewProduct && (
         <QuickView
           product={quickViewProduct}
