@@ -1,7 +1,10 @@
 const SQUARE_API_VERSION = '2026-08-19'
 
 const PRODUCTS = {
-  'radiance-within': 'radiance-within',
+  'radiance-within': {
+    sku: 'radiance-within',
+    name: 'Radiance Within Sun Catcher',
+  },
 }
 
 const getSquareBaseUrl = () => (
@@ -25,15 +28,30 @@ const squareRequest = async (path, options = {}) => {
   return response.json()
 }
 
-const findVariationIdBySku = async (sku) => {
-  const catalog = await squareRequest('/v2/catalog/search-catalog-items', {
+const findVariationId = async ({ sku, name }) => {
+  const skuCatalog = await squareRequest('/v2/catalog/search', {
     method: 'POST',
-    body: JSON.stringify({ text_filter: sku, product_types: ['REGULAR'], limit: 100 }),
+    body: JSON.stringify({
+      object_types: ['ITEM_VARIATION'],
+      query: { exact_query: { attribute_name: 'sku', attribute_value: sku } },
+      limit: 100,
+    }),
   })
 
-  for (const item of catalog.items || []) {
+  const skuMatch = (skuCatalog.objects || []).find((variation) => (
+    variation.item_variation_data?.sku?.toLowerCase() === sku.toLowerCase()
+  ))
+  if (skuMatch) return skuMatch.id
+
+  const nameCatalog = await squareRequest('/v2/catalog/search-catalog-items', {
+    method: 'POST',
+    body: JSON.stringify({ text_filter: name, product_types: ['REGULAR'], limit: 100 }),
+  })
+
+  for (const item of nameCatalog.items || []) {
+    if (item.item_data?.name?.toLowerCase() !== name.toLowerCase()) continue
     for (const variation of item.item_data?.variations || []) {
-      if (variation.item_variation_data?.sku === sku) return variation.id
+      return variation.id
     }
   }
 
@@ -63,8 +81,8 @@ export default async function handler(request, response) {
   }
 
   try {
-    const entries = await Promise.all(Object.entries(PRODUCTS).map(async ([productId, sku]) => {
-      const variationId = await findVariationIdBySku(sku)
+    const entries = await Promise.all(Object.entries(PRODUCTS).map(async ([productId, squareProduct]) => {
+      const variationId = await findVariationId(squareProduct)
       if (!variationId) throw new Error(`No Square variation found for ${productId}`)
       const available = await isVariationInStock(variationId)
       return [productId, available]
