@@ -1,8 +1,9 @@
-import products from '../data/products.js'
+import products, { applyProductAvailability } from '../data/products.js'
 import ProductCard from './ProductCard.jsx'
 
-function ProductGrid({ onQuickView, featured = false }) {
-  const visibleProducts = featured ? products.filter((product) => product.status === 'available').slice(0, 1) : products
+function ProductGrid({ onQuickView, availability, featured = false }) {
+  const liveProducts = products.map((product) => applyProductAvailability(product, availability))
+  const visibleProducts = featured ? liveProducts.slice(0, 1) : liveProducts
 
   return (
     <section className={`products-section${featured ? ' products-featured' : ''}`} id={featured ? 'featured' : 'shop'} aria-labelledby={featured ? 'featured-title' : 'products-title'}>

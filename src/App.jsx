@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import heroSuncatcher from './assets/hero-suncatcher.png'
-import { findProduct, isPurchasable } from './data/products.js'
+import { applyProductAvailability, findProduct, isPurchasable } from './data/products.js'
 import ProductGrid from './components/ProductGrid.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import QuickView from './components/QuickView.jsx'
@@ -31,6 +31,39 @@ function App() {
     }
   })
   const [route, setRoute] = useState(window.location.hash)
+  const [availability, setAvailability] = useState({})
+
+  useEffect(() => {
+    let cancelled = false
+
+    const refreshAvailability = async () => {
+      try {
+        const response = await fetch('/api/product-availability')
+        if (!response.ok) return
+        const result = await response.json()
+        if (!cancelled && result?.products) setAvailability(result.products)
+      } catch {
+        // Keep the most recent storefront status if Square is briefly unavailable.
+      }
+    }
+
+    const handleFocus = () => refreshAvailability()
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') refreshAvailability()
+    }
+
+    refreshAvailability()
+    const refreshTimer = window.setInterval(refreshAvailability, 60_000)
+    window.addEventListener('focus', handleFocus)
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      cancelled = true
+      window.clearInterval(refreshTimer)
+      window.removeEventListener('focus', handleFocus)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -57,44 +90,25 @@ function App() {
 
   const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
   const closeCart = useCallback(() => setIsCartOpen(false), [])
-  const addToCart = (product, quantity) => {
+  const addToCart = (product) => {
     if (!isPurchasable(product)) return
-    const maxQuantity = product.inventory ?? 99
     setCart((currentCart) => {
       const existing = currentCart.find((item) => item.productId === product.id)
-      if (existing) {
-        return currentCart.map((item) => item.productId === product.id
-          ? { ...item, quantity: Math.min(maxQuantity, item.quantity + quantity) }
-          : item)
-      }
-      return [...currentCart, { productId: product.id, quantity: Math.min(maxQuantity, quantity) }]
+      if (existing) return currentCart
+      return [...currentCart, { productId: product.id, quantity: 1 }]
     })
     setQuickViewProduct(null)
     setIsCartOpen(true)
   }
-  const updateCartQuantity = (productId, quantity) => {
-    if (quantity < 1) {
-      setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
-      return
-    }
-    const product = findProduct(productId)
-    if (!product || !isPurchasable(product)) {
-      setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
-      return
-    }
-    const maxQuantity = product?.inventory ?? 99
-    setCart((currentCart) => currentCart.map((item) => item.productId === productId
-      ? { ...item, quantity: Math.min(maxQuantity, quantity) }
-      : item))
-  }
   const removeFromCart = (productId) => setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
   const cartItems = cart
-    .map((item) => ({ ...item, product: findProduct(item.productId) }))
+    .map((item) => ({ ...item, product: applyProductAvailability(findProduct(item.productId), availability) }))
     .filter((item) => item.product && isPurchasable(item.product))
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
-  const activeProduct = productId ? findProduct(productId) : null
+  const activeProduct = productId ? applyProductAvailability(findProduct(productId), availability) : null
+  const liveQuickViewProduct = applyProductAvailability(quickViewProduct, availability)
   const isShippingAdmin = route === '#shipping-admin'
   const isShop = route === '#shop'
   const isStory = route === '#story'
@@ -206,7 +220,7 @@ function App() {
       ) : infoPage ? (
         <InfoPage page={infoPage} />
       ) : isShop ? (
-        <main id="top"><ProductGrid onQuickView={setQuickViewProduct} /></main>
+        <main id="top"><ProductGrid onQuickView={setQuickViewProduct} availability={availability} /></main>
       ) : isStory ? (
         <main id="top"><StorySection /><QuantumPomSection /></main>
       ) : isOracle ? (
@@ -259,7 +273,7 @@ function App() {
           </div>
         </section>
 
-        <ProductGrid onQuickView={setQuickViewProduct} featured />
+        <ProductGrid onQuickView={setQuickViewProduct} availability={availability} featured />
         <HomePathways />
       </main>
       )}
@@ -268,9 +282,9 @@ function App() {
         showSignup={!isThankYou && !isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle}
         sectionBase={isThankYou ? '/' : ''}
       />
-      {quickViewProduct && (
+      {liveQuickViewProduct && (
         <QuickView
-          product={quickViewProduct}
+          product={liveQuickViewProduct}
           onClose={closeQuickView}
           onAddToCart={addToCart}
         />
@@ -281,7 +295,6 @@ function App() {
         itemCount={cartCount}
         subtotal={cartSubtotal}
         onClose={closeCart}
-        onUpdateQuantity={updateCartQuantity}
         onRemove={removeFromCart}
         onCheckout={handleCheckout}
         checkoutAvailable={Boolean(squareCheckoutUrl)}
