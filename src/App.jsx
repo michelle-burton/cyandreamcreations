@@ -13,12 +13,16 @@ import ShippingAdmin from './components/ShippingAdmin.jsx'
 import InfoPage from './components/InfoPage.jsx'
 import HomePathways from './components/HomePathways.jsx'
 import OraclePage from './components/OraclePage.jsx'
+import ThankYouPage from './components/ThankYouPage.jsx'
 
 function App() {
   const squareCheckoutUrl = import.meta.env.VITE_SQUARE_CHECKOUT_URL?.trim()
+  const pathname = window.location.pathname.replace(/\/$/, '')
+  const isThankYou = pathname === '/thank-you'
   const [quickViewProduct, setQuickViewProduct] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [cart, setCart] = useState(() => {
+    if (isThankYou) return []
     try {
       return JSON.parse(window.localStorage.getItem('cyan-dream-cart')) || []
     } catch {
@@ -122,14 +126,15 @@ function App() {
       contact: 'Contact',
     }
     let pageTitle = 'Handmade Sun Catchers'
-    if (activeProduct) pageTitle = activeProduct.name
+    if (isThankYou) pageTitle = 'Order Received'
+    else if (activeProduct) pageTitle = activeProduct.name
     else if (isShippingAdmin) pageTitle = 'Shipping Notice'
     else if (infoPage) pageTitle = infoTitles[infoPage]
     else if (isShop) pageTitle = 'Sun Catchers'
     else if (isStory) pageTitle = 'The Dream'
     else if (isOracle) pageTitle = 'The Oracle'
     document.title = `${pageTitle} | Cyan Dream Creations`
-  }, [activeProduct, infoPage, isOracle, isShippingAdmin, isShop, isStory])
+  }, [activeProduct, infoPage, isOracle, isShippingAdmin, isShop, isStory, isThankYou])
   const handleCheckout = () => {
     if (!squareCheckoutUrl) return
     setIsCartOpen(false)
@@ -140,7 +145,7 @@ function App() {
     document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false')
   }
 
-  if (window.location.pathname.replace(/\/$/, '') === '/oracle') return <OraclePage />
+  if (pathname === '/oracle') return <OraclePage />
 
   return (
     <div className="site-shell">
@@ -191,7 +196,9 @@ function App() {
         </nav>
       </header>
 
-      {isShippingAdmin ? (
+      {isThankYou ? (
+        <ThankYouPage />
+      ) : isShippingAdmin ? (
         <ShippingAdmin />
       ) : activeProduct ? (
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />
@@ -256,7 +263,7 @@ function App() {
       </main>
       )}
 
-      <SiteFooter showSignup={!isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
+      <SiteFooter showSignup={!isThankYou && !isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
       {quickViewProduct && (
         <QuickView
           product={quickViewProduct}

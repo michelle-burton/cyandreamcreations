@@ -1,5 +1,10 @@
 {
-  "rewrites": [{ "source": "/oracle", "destination": "/index.html" }, { "source": "/oracle/", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/oracle", "destination": "/index.html" },
+    { "source": "/oracle/", "destination": "/index.html" },
+    { "source": "/thank-you", "destination": "/index.html" },
+    { "source": "/thank-you/", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
