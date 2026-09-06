@@ -9,7 +9,6 @@ import StorySection from './components/StorySection.jsx'
 import OraclePreview from './components/OraclePreview.jsx'
 import QuantumPomSection from './components/QuantumPomSection.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
-import CheckoutPage from './components/CheckoutPage.jsx'
 import ShippingAdmin from './components/ShippingAdmin.jsx'
 import InfoPage from './components/InfoPage.jsx'
 import HomePathways from './components/HomePathways.jsx'
@@ -91,7 +90,6 @@ function App() {
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
   const activeProduct = productId ? findProduct(productId) : null
-  const isCheckout = route === '#checkout'
   const isShippingAdmin = route === '#shipping-admin'
   const isShop = route === '#shop'
   const isStory = route === '#story'
@@ -105,6 +103,17 @@ function App() {
   ]).get(route)
 
   useEffect(() => {
+    if (route !== '#checkout') return
+
+    if (squareCheckoutUrl) {
+      window.location.replace(squareCheckoutUrl)
+      return
+    }
+
+    window.location.replace(`${window.location.pathname}${window.location.search}#shop`)
+  }, [route, squareCheckoutUrl])
+
+  useEffect(() => {
     const infoTitles = {
       shipping: 'Shipping',
       returns: 'Returns & Refunds',
@@ -114,23 +123,18 @@ function App() {
     }
     let pageTitle = 'Handmade Sun Catchers'
     if (activeProduct) pageTitle = activeProduct.name
-    else if (isCheckout) pageTitle = 'Checkout'
     else if (isShippingAdmin) pageTitle = 'Shipping Notice'
     else if (infoPage) pageTitle = infoTitles[infoPage]
     else if (isShop) pageTitle = 'Sun Catchers'
     else if (isStory) pageTitle = 'The Dream'
     else if (isOracle) pageTitle = 'The Oracle'
     document.title = `${pageTitle} | Cyan Dream Creations`
-  }, [activeProduct, infoPage, isCheckout, isOracle, isShippingAdmin, isShop, isStory])
+  }, [activeProduct, infoPage, isOracle, isShippingAdmin, isShop, isStory])
   const handleCheckout = () => {
+    if (!squareCheckoutUrl) return
     setIsCartOpen(false)
-    if (squareCheckoutUrl) {
-      window.location.assign(squareCheckoutUrl)
-      return
-    }
-    window.location.hash = 'checkout'
+    window.location.assign(squareCheckoutUrl)
   }
-  const handlePaymentSuccess = () => setCart([])
   const closeMobileMenu = () => {
     document.getElementById('mainMenu')?.classList.remove('show')
     document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false')
@@ -189,8 +193,6 @@ function App() {
 
       {isShippingAdmin ? (
         <ShippingAdmin />
-      ) : isCheckout ? (
-        <CheckoutPage items={cartItems} subtotal={cartSubtotal} onPaymentSuccess={handlePaymentSuccess} />
       ) : activeProduct ? (
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />
       ) : infoPage ? (
@@ -254,7 +256,7 @@ function App() {
       </main>
       )}
 
-      <SiteFooter showSignup={!isShippingAdmin && !isCheckout && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
+      <SiteFooter showSignup={!isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
       {quickViewProduct && (
         <QuickView
           product={quickViewProduct}
@@ -271,6 +273,7 @@ function App() {
         onUpdateQuantity={updateCartQuantity}
         onRemove={removeFromCart}
         onCheckout={handleCheckout}
+        checkoutAvailable={Boolean(squareCheckoutUrl)}
       />
     </div>
   )
