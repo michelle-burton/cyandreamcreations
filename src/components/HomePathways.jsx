@@ -1,37 +1,23 @@
-const pathways = [
-  {
-    kicker: 'The Dream',
-    title: 'Made With Intention',
-    copy: 'Step into the story, symbols, and cycle at the heart of Cyan Dream Creations.',
-    href: '#story',
-    link: 'Read The Dream',
-  },
-  {
-    kicker: 'The Oracle',
-    title: 'A Mirror for the Unseen',
-    copy: 'Meet the four houses and glimpse the symbolic world that is still taking shape.',
-    href: '#oracle',
-    link: 'Explore The Oracle',
-  },
-]
+import oracleBannerLeft from '../assets/oracle-banner-left-v1.png'
+import oracleBannerRight from '../assets/oracle-banner-right-v1.png'
+import oracleBannerScene from '../assets/oracle-home-banner-v2.png'
 
 function HomePathways() {
   return (
-    <section className="home-pathways" aria-label="Explore Cyan Dream">
+    <section className="home-pathways" aria-label="Explore the Cyan Dream Oracle">
       <div className="container-xl">
-        <div className="row g-4">
-          {pathways.map((pathway) => (
-            <div className="col-12 col-lg-6" key={pathway.href}>
-              <article className="pathway-card">
-                <span className="pathway-star" aria-hidden="true">✦</span>
-                <p className="section-kicker">{pathway.kicker}</p>
-                <h2>{pathway.title}</h2>
-                <p>{pathway.copy}</p>
-                <a href={pathway.href}>{pathway.link} <span aria-hidden="true">→</span></a>
-              </article>
-            </div>
-          ))}
-        </div>
+        <a className="oracle-home-banner" href="/oracle" aria-label="Explore the Cyan Dream Oracle">
+          <img className="oracle-banner-scene" src={oracleBannerScene} alt="" aria-hidden="true" />
+          <span className="oracle-banner-mobile-art" aria-hidden="true">
+            <img className="oracle-banner-left" src={oracleBannerLeft} alt="" />
+            <img className="oracle-banner-right" src={oracleBannerRight} alt="" />
+          </span>
+
+          <span className="oracle-banner-copy">
+            <span className="oracle-banner-title">Cyan Dream Oracle</span>
+            <span className="oracle-banner-button">Explore the Oracle <b aria-hidden="true">✦</b></span>
+          </span>
+        </a>
       </div>
     </section>
   )

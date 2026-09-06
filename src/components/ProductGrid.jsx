@@ -1,12 +1,19 @@
 import products, { applyProductAvailability } from '../data/products.js'
 import ProductCard from './ProductCard.jsx'
+import floralSpray from '../assets/floral-spray-extracted-v1.png'
 
 function ProductGrid({ onQuickView, availability, featured = false }) {
   const liveProducts = products.map((product) => applyProductAvailability(product, availability))
-  const visibleProducts = featured ? liveProducts.slice(0, 1) : liveProducts
+  const visibleProducts = liveProducts
 
   return (
     <section className={`products-section${featured ? ' products-featured' : ''}`} id={featured ? 'featured' : 'shop'} aria-labelledby={featured ? 'featured-title' : 'products-title'}>
+      {featured && (
+        <>
+          <img className="section-botanical section-botanical-left" src={floralSpray} alt="" aria-hidden="true" />
+          <img className="section-botanical section-botanical-right" src={floralSpray} alt="" aria-hidden="true" />
+        </>
+      )}
       <div className="container-xl">
         <header className="section-heading text-center">
           <div className="celestial-divider mx-auto" aria-hidden="true">
@@ -20,12 +27,11 @@ function ProductGrid({ onQuickView, availability, featured = false }) {
 
         <div className="row g-4">
           {visibleProducts.map((product) => (
-            <div className={featured ? 'col-12 col-md-8 col-lg-5 mx-auto' : 'col-12 col-md-6 col-lg-4'} key={product.id}>
+            <div className="col-12 col-md-6 col-xl-4" key={product.id}>
               <ProductCard product={product} onQuickView={onQuickView} />
             </div>
           ))}
         </div>
-        {featured && <div className="featured-shop-link"><a className="dream-button" href="#shop"><span aria-hidden="true">✦</span> View All Sun Catchers <span aria-hidden="true">✦</span></a></div>}
         {!featured && <a className="section-home-link" href="#top">Return Home <span aria-hidden="true">✦</span></a>}
       </div>
     </section>

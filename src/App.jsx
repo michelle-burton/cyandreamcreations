@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import heroSuncatcher from './assets/hero-suncatcher.png'
+import heroSuncatcher from './assets/hero-radiance-wide-v1.png'
+import floralCorner from './assets/floral-corner-extracted-v1.png'
 import { applyProductAvailability, findProduct, isPurchasable } from './data/products.js'
 import ProductGrid from './components/ProductGrid.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
@@ -165,6 +166,7 @@ function App() {
   return (
     <div className="site-shell">
       <header className="site-header">
+        <img className="header-botanical" src={floralCorner} alt="" aria-hidden="true" />
         <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
           <div className="container-xl">
             <a className="brand-mark" href={sectionHref('#top')} aria-label="Cyan Dream Creations home" onClick={closeMobileMenu}>
@@ -230,6 +232,7 @@ function App() {
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="container-xl">
             <div className="hero-frame">
+              <img className="hero-botanical hero-botanical-bottom-left" src={floralCorner} alt="" aria-hidden="true" />
               <span className="hero-flourish hero-flourish-left" aria-hidden="true">✦</span>
               <span className="hero-flourish hero-flourish-right" aria-hidden="true">✦</span>
 
@@ -242,10 +245,10 @@ function App() {
                       <span />
                     </div>
 
-                    <h1 id="hero-title">Where Dreams Become Light.</h1>
+                    <h1 id="hero-title">Catch the light.<br />Carry the magic.</h1>
                     <p>
-                      Handmade sun catchers and symbolic creations for
-                      reflection, ritual, and the sacred within.
+                      Handmade sun catchers for<br />
+                      color, wonder, and intention.
                     </p>
 
                     <a className="dream-button" href="#shop">
@@ -261,10 +264,10 @@ function App() {
                     <img
                       src={heroSuncatcher}
                       className="hero-image"
-                      alt="A temporary concept image of a crystal sun catcher casting rainbow light beside a dark window"
+                      alt="The Radiance Within sun catcher hanging in a dark window and casting prismatic light across a warm wall"
                     />
                     <figcaption className="visually-hidden">
-                      Temporary concept artwork; final product photography will replace this image.
+                      The Radiance Within sun catcher in afternoon window light.
                     </figcaption>
                   </figure>
                 </div>

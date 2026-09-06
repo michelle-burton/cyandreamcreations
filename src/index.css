@@ -40,6 +40,16 @@ body {
     var(--abyss);
 }
 
+body::before {
+  position: fixed;
+  z-index: 10000;
+  inset: 0.65rem;
+  border: 1px solid rgba(217, 164, 65, 0.22);
+  border-radius: 1.4rem;
+  content: '';
+  pointer-events: none;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -62,17 +72,36 @@ a {
 .site-header {
   position: relative;
   z-index: 10;
+  overflow: visible;
   border-bottom: 1px solid rgba(217, 164, 65, 0.45);
-  background: rgba(5, 11, 24, 0.95);
+  background:
+    linear-gradient(90deg, rgba(217, 164, 65, 0.08), transparent 14%, transparent 86%, rgba(217, 164, 65, 0.08)),
+    rgba(3, 9, 20, 0.97);
   backdrop-filter: blur(12px);
 }
 
+.header-botanical {
+  position: absolute;
+  z-index: 2;
+  top: -3.6rem;
+  left: -2.8rem;
+  width: clamp(9rem, 12vw, 13rem);
+  height: auto;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.38));
+  pointer-events: none;
+}
+
+.site-header .container-xl { padding-left: clamp(8rem, 10vw, 11rem); }
+
 .navbar {
-  min-height: 5.5rem;
-  padding-block: 0.75rem;
+  position: relative;
+  z-index: 1;
+  min-height: 6.6rem;
+  padding-block: 0.9rem;
 }
 
 .brand-mark {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -83,7 +112,7 @@ a {
 .brand-name {
   color: var(--bright-cyan);
   font-family: var(--display);
-  font-size: clamp(1rem, 2vw, 1.55rem);
+  font-size: clamp(1.2rem, 2vw, 1.85rem);
   line-height: 1.05;
   letter-spacing: 0.09em;
   text-shadow: 0 0 18px rgba(77, 216, 230, 0.46);
@@ -93,14 +122,22 @@ a {
   margin-top: 0.28rem;
   color: var(--old-gold);
   font-family: var(--display);
-  font-size: clamp(0.62rem, 1.2vw, 0.78rem);
+  font-size: clamp(0.68rem, 1.2vw, 0.86rem);
   line-height: 1;
   letter-spacing: 0.38em;
   text-align: center;
 }
 
 .navbar-nav {
-  gap: 0.65rem;
+  gap: 1.4rem;
+}
+
+.navbar-nav .nav-item + .nav-item::before {
+  position: absolute;
+  margin: 0.78rem 0 0 -0.85rem;
+  color: var(--old-gold);
+  content: '✦';
+  font-size: 0.45rem;
 }
 
 .navbar .nav-link {
@@ -108,7 +145,7 @@ a {
   padding: 0.75rem 1rem;
   color: var(--star-white);
   font-family: var(--display);
-  font-size: 0.86rem;
+  font-size: 0.92rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
@@ -140,8 +177,8 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  min-width: 3.5rem;
-  padding: 0.65rem 0.8rem;
+  min-width: 8rem;
+  padding: 0.75rem 1rem;
   font-family: var(--display);
   font-size: 0.82rem;
   letter-spacing: 0.1em;
@@ -173,20 +210,40 @@ a {
   border-top: 1px solid rgba(217, 164, 65, 0.25);
 }
 
-.hero-section {
-  padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(2rem, 4vw, 3.5rem);
+.hero-section { padding: clamp(0.65rem, 1.2vw, 1rem) 0 clamp(1rem, 2vw, 1.5rem); }
+
+.site-header .container-xl,
+.hero-section .container-xl,
+.products-featured .container-xl,
+.home-pathways .container-xl {
+  max-width: min(1840px, calc(100% - 3rem));
 }
 
 .hero-frame {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--old-gold);
-  border-radius: clamp(1rem, 2.2vw, 1.75rem);
+  border-radius: clamp(0.7rem, 1.4vw, 1.25rem);
   background:
     radial-gradient(circle at 20% 40%, rgba(77, 216, 230, 0.075), transparent 23rem),
     linear-gradient(135deg, rgba(10, 26, 47, 0.74), rgba(5, 11, 24, 0.96));
-  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.42);
+  box-shadow: 0 26px 90px rgba(0, 0, 0, 0.5), inset 0 0 55px rgba(77, 216, 230, 0.035);
 }
+
+.hero-frame .row { min-height: clamp(24rem, 48vh, 29rem); }
+
+.hero-botanical {
+  position: absolute;
+  z-index: 3;
+  width: clamp(11rem, 15vw, 18rem);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.36));
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.hero-botanical-bottom-left { bottom: -1.7rem; left: -1.7rem; }
+.hero-botanical-top-right { top: -1.7rem; right: -1.7rem; transform: rotate(180deg); }
 
 .hero-frame::before,
 .hero-frame::after {
@@ -233,7 +290,7 @@ a {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 6vw, 6rem);
+  padding: clamp(3.3rem, 5vw, 4.6rem) clamp(2.5rem, 5vw, 5.5rem);
 }
 
 .celestial-divider {
@@ -261,24 +318,24 @@ a {
 }
 
 .hero-copy h1 {
-  max-width: 13ch;
+  max-width: 12ch;
   margin: 0;
   color: var(--pale-gold);
-  font-family: var(--display);
-  font-size: clamp(2.15rem, 3.35vw, 3.5rem);
+  font-family: var(--body);
+  font-size: clamp(3.25rem, 4.4vw, 5.35rem);
   font-weight: 500;
-  line-height: 1.13;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
+  line-height: 0.93;
+  letter-spacing: -0.015em;
+  text-transform: none;
   text-wrap: balance;
 }
 
 .hero-copy p {
   max-width: 30rem;
-  margin: 1.7rem 0 2.25rem;
+  margin: 1.25rem 0 1.6rem;
   color: var(--star-white);
-  font-size: clamp(1.15rem, 1.45vw, 1.38rem);
-  line-height: 1.4;
+  font-size: clamp(1.2rem, 1.5vw, 1.55rem);
+  line-height: 1.45;
 }
 
 .dream-button {
@@ -308,32 +365,64 @@ a {
 }
 
 .hero-image-wrap {
+  position: relative;
   height: 100%;
-  min-height: 32rem;
+  min-height: 34rem;
   margin: 0;
   border-left: 1px solid rgba(217, 164, 65, 0.42);
   background: var(--midnight);
+}
+
+.hero-image-wrap::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0 auto 0 0;
+  width: 24%;
+  background: linear-gradient(90deg, rgba(5, 11, 24, 0.94), transparent);
+  content: '';
+  pointer-events: none;
 }
 
 .hero-image {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 32rem;
+  min-height: 34rem;
   object-fit: cover;
-  object-position: 64% center;
+  object-position: center;
 }
 
 .products-section {
-  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  position: relative;
+  padding: clamp(3.25rem, 5vw, 5rem) 0;
+  overflow: hidden;
   border-top: 1px solid rgba(217, 164, 65, 0.3);
   background:
     radial-gradient(circle at 50% 0%, rgba(77, 216, 230, 0.07), transparent 28rem),
     rgba(5, 11, 24, 0.76);
 }
 
-.products-featured { padding-block: clamp(3.5rem, 6vw, 5rem); }
-.products-featured .section-heading { margin-bottom: 2.5rem; }
+.products-section > .container-xl {
+  position: relative;
+  z-index: 1;
+}
+
+.section-botanical {
+  position: absolute;
+  z-index: 0;
+  top: 1.25rem;
+  width: clamp(9rem, 11vw, 13.5rem);
+  height: auto;
+  opacity: 0.52;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.34));
+  pointer-events: none;
+}
+
+.section-botanical-left { left: -2.5rem; transform: rotate(-6deg); }
+.section-botanical-right { right: -2.5rem; transform: scaleX(-1) rotate(-6deg); }
+
+.products-featured { padding-block: clamp(1.75rem, 3vw, 2.75rem); }
+.products-featured .section-heading { margin-bottom: 1.4rem; }
 .featured-shop-link { margin-top: 2.25rem; text-align: center; }
 
 .section-home-link {
@@ -353,28 +442,92 @@ a {
 .section-home-link:focus-visible { outline: 2px solid var(--bright-cyan); outline-offset: 3px; }
 
 .home-pathways {
-  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  padding: clamp(2.25rem, 4vw, 3.5rem) 0;
   border-top: 1px solid rgba(217, 164, 65, 0.3);
   background: linear-gradient(180deg, rgba(5, 11, 24, 0.78), rgba(10, 26, 47, 0.5));
 }
 
-.pathway-card {
+.oracle-home-banner {
   position: relative;
-  height: 100%;
-  padding: clamp(2rem, 4vw, 3.5rem);
+  display: flex;
+  min-height: clamp(12rem, 15vw, 15.5rem);
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  border: 1px solid rgba(217, 164, 65, 0.68);
-  border-radius: 1rem;
-  background: radial-gradient(circle at 100% 0%, rgba(77, 216, 230, 0.11), transparent 18rem), rgba(5, 11, 24, 0.85);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(217, 164, 65, 0.82);
+  border-radius: 1.15rem;
+  color: inherit;
+  background: linear-gradient(90deg, #061122, #07172a 48%, #050b18);
+  box-shadow: 0 22px 65px rgba(0, 0, 0, 0.36), inset 0 0 40px rgba(77, 216, 230, 0.03);
+  text-decoration: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
-.pathway-star { position: absolute; top: 1.5rem; right: 1.75rem; color: var(--old-gold); }
-.pathway-card h2 { max-width: 18ch; margin: 0 0 1rem; color: var(--pale-gold); font-family: var(--display); font-size: clamp(1.65rem, 3vw, 2.4rem); font-weight: 500; line-height: 1.18; text-transform: uppercase; }
-.pathway-card > p:not(.section-kicker) { max-width: 32rem; margin: 0 0 1.4rem; color: var(--muted-white); font-size: 1.05rem; line-height: 1.65; }
-.pathway-card a { color: var(--bright-cyan); font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; }
-.pathway-card a:hover,
-.pathway-card a:focus-visible { color: var(--pale-gold); }
+.oracle-home-banner:hover {
+  border-color: var(--pale-gold);
+  box-shadow: 0 25px 75px rgba(0, 0, 0, 0.42), 0 0 28px rgba(77, 216, 230, 0.08);
+  transform: translateY(-2px);
+}
+
+.oracle-home-banner:focus-visible { outline: 2px solid var(--bright-cyan); outline-offset: 4px; }
+
+.oracle-banner-scene {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.oracle-banner-mobile-art { display: none; }
+
+.oracle-banner-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem clamp(2rem, 5vw, 5rem);
+  border-radius: 1rem;
+  background: radial-gradient(ellipse at center, rgba(5, 11, 24, 0.98) 0%, rgba(5, 11, 24, 0.88) 50%, transparent 75%);
+  text-align: center;
+}
+
+.oracle-banner-title {
+  color: var(--pale-gold);
+  font-family: var(--display);
+  font-size: clamp(1.55rem, 2.5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.oracle-banner-button {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.35rem;
+  border: 1px solid var(--bright-cyan);
+  border-radius: 0.55rem;
+  color: var(--bright-cyan);
+  background: rgba(7, 32, 52, 0.82);
+  box-shadow: 0 0 11px rgba(77, 216, 230, 0.55), 0 0 28px rgba(77, 216, 230, 0.2), inset 0 0 14px rgba(77, 216, 230, 0.08);
+  font-family: var(--display);
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.oracle-banner-button b { font-size: 0.8rem; font-weight: 400; }
+.oracle-home-banner:hover .oracle-banner-button { color: var(--abyss); background: var(--bright-cyan); box-shadow: 0 0 16px rgba(77, 216, 230, 0.9), 0 0 38px rgba(77, 216, 230, 0.45); transform: translateY(-1px); }
 
 .section-heading {
   max-width: 52rem;
@@ -401,12 +554,12 @@ a {
 .section-heading h2 {
   margin: 0;
   color: var(--pale-gold);
-  font-family: var(--display);
-  font-size: clamp(1.85rem, 3.2vw, 3rem);
+  font-family: var(--body);
+  font-size: clamp(2.3rem, 3.5vw, 3.8rem);
   font-weight: 500;
   line-height: 1.18;
-  letter-spacing: 0.025em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: none;
   text-wrap: balance;
 }
 
@@ -418,22 +571,39 @@ a {
 }
 
 .product-card {
+  position: relative;
+  display: grid;
+  height: 100%;
+  grid-template-columns: minmax(0, 1.05fr) minmax(10.5rem, 0.95fr);
   overflow: hidden;
   border: 1px solid rgba(217, 164, 65, 0.76);
-  border-radius: 1rem;
+  border-radius: 0.7rem;
   background: linear-gradient(145deg, rgba(10, 26, 47, 0.88), rgba(5, 11, 24, 0.96));
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
+}
+
+.product-card::after {
+  position: absolute;
+  z-index: 2;
+  top: 0.65rem;
+  left: 0.7rem;
+  color: var(--pale-gold);
+  content: '✦';
+  font-size: 0.85rem;
+  pointer-events: none;
 }
 
 .product-image-wrap {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
+  min-height: 20rem;
   padding: 0;
   overflow: hidden;
   border: 0;
-  border-bottom: 1px solid rgba(217, 164, 65, 0.5);
+  border-right: 1px solid rgba(217, 164, 65, 0.5);
+  border-bottom: 0;
   background: var(--midnight);
 }
 
@@ -461,7 +631,7 @@ a {
   bottom: 1rem;
   padding: 0.55rem 0.8rem;
   border: 1px solid var(--old-gold);
-  border-radius: 999px;
+  border-radius: 0.35rem;
   color: var(--bright-cyan);
   background: rgba(5, 11, 24, 0.9);
   font-family: var(--display);
@@ -473,7 +643,8 @@ a {
 .product-image-wrap > .product-status-wrap {
   position: absolute;
   top: 1rem;
-  left: 1rem;
+  right: 0.75rem;
+  left: auto;
 }
 
 .product-status-wrap { margin: 0 0 0.9rem; }
@@ -504,7 +675,8 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.65rem;
+  justify-content: center;
+  padding: 1.4rem 1.15rem;
   text-align: center;
 }
 
@@ -513,7 +685,7 @@ a {
   margin: 0;
   color: var(--star-white);
   font-family: var(--body);
-  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  font-size: clamp(1.35rem, 1.75vw, 1.75rem);
   font-weight: 500;
   line-height: 1.15;
 }
@@ -559,7 +731,7 @@ a {
   min-height: 3rem;
   padding: 0.7rem 1rem;
   border: 1px solid var(--old-gold);
-  border-radius: 0.55rem;
+  border-radius: 0.35rem;
   color: var(--bright-cyan);
   background: rgba(5, 11, 24, 0.7);
   font-family: var(--display);
@@ -1662,12 +1834,12 @@ body.cart-open { overflow: hidden; }
   }
 
   .hero-copy {
-    padding: clamp(2.25rem, 4.5vh, 3.5rem) clamp(2.25rem, 4vw, 4.5rem);
+    padding: clamp(2.2rem, 4vh, 3.4rem) clamp(2.75rem, 5vw, 5.5rem);
   }
 
   .hero-copy h1 {
-    font-size: clamp(2.15rem, 3vw, 3.15rem);
-    line-height: 1.08;
+    font-size: clamp(3.6rem, 4.2vw, 5.1rem);
+    line-height: 0.93;
   }
 
   .hero-copy p {
@@ -1676,12 +1848,30 @@ body.cart-open { overflow: hidden; }
 
   .hero-image-wrap,
   .hero-image {
-    height: clamp(32rem, calc(100svh - 8rem), 38rem);
+    height: clamp(24rem, 48svh, 29rem);
     min-height: 0;
   }
 }
 
+@media (max-width: 1199.98px) {
+  .section-botanical {
+    display: none;
+  }
+
+  .product-card { display: block; }
+  .product-image-wrap {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    border-right: 0;
+    border-bottom: 1px solid rgba(217, 164, 65, 0.5);
+  }
+}
+
 @media (max-width: 991.98px) {
+  .header-botanical { display: none; }
+  .site-header .container-xl { padding-left: calc(var(--bs-gutter-x) * 0.5); }
+
   .navbar {
     min-height: 4.75rem;
   }
@@ -1691,11 +1881,15 @@ body.cart-open { overflow: hidden; }
     padding-block: 0.5rem;
   }
 
+  .navbar-nav .nav-item + .nav-item::before { display: none; }
+
   .thank-you-steps { grid-template-columns: 1fr; text-align: center; }
 
   .navbar .nav-link {
     padding-inline: 0;
   }
+
+  .oracle-banner-copy { padding-inline: 2rem; }
 
   .hero-copy {
     align-items: center;
@@ -1705,6 +1899,8 @@ body.cart-open { overflow: hidden; }
 
   .hero-copy h1 {
     max-width: 15ch;
+    font-size: clamp(3.25rem, 9vw, 5.5rem);
+    line-height: 0.92;
   }
 
   .hero-frame {
@@ -1742,13 +1938,49 @@ body.cart-open { overflow: hidden; }
     gap: 0.65rem;
   }
 
-  .brand-name {
-    font-size: 0.82rem;
+  body::before { display: none; }
+
+  .brand-name { font-size: 0.82rem; }
+  .brand-subtitle { font-size: 0.5rem; }
+
+  .oracle-home-banner {
+    min-height: 14rem;
   }
 
-  .brand-subtitle {
-    font-size: 0.5rem;
+  .oracle-banner-scene { display: none; }
+
+  .oracle-banner-mobile-art {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: block;
+    overflow: hidden;
   }
+
+  .oracle-banner-mobile-art img {
+    position: absolute;
+    top: 0;
+    width: 54%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .oracle-banner-left { left: 0; object-position: right center; }
+  .oracle-banner-right { right: 0; object-position: left center; }
+
+  .oracle-banner-mobile-art::after {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(5, 11, 24, 0.98) 0%, rgba(5, 11, 24, 0.9) 38%, transparent 68%);
+    content: '';
+  }
+
+  .oracle-banner-copy {
+    padding: 1.4rem 1rem;
+  }
+
+  .oracle-banner-title { font-size: 1.2rem; }
+  .oracle-banner-button { min-height: 2.65rem; padding: 0.62rem 0.65rem; font-size: 0.58rem; letter-spacing: 0.08em; }
 
   .hero-section {
     padding-top: 0.75rem;
@@ -1760,7 +1992,7 @@ body.cart-open { overflow: hidden; }
   }
 
   .hero-copy h1 {
-    font-size: clamp(2rem, 10vw, 3rem);
+    font-size: clamp(3rem, 14vw, 4.35rem);
   }
 
   .hero-copy p {
@@ -1789,6 +2021,14 @@ body.cart-open { overflow: hidden; }
   .hero-flourish {
     display: none;
   }
+
+  .hero-botanical {
+    width: 9.5rem;
+    opacity: 0.82;
+  }
+
+  .hero-botanical-bottom-left { bottom: -1rem; left: -1rem; }
+  .hero-botanical-top-right { top: -1rem; right: -1rem; }
 
   .products-section {
     padding-block: 4rem;
