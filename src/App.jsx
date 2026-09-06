@@ -16,6 +16,7 @@ import HomePathways from './components/HomePathways.jsx'
 import OraclePage from './components/OraclePage.jsx'
 
 function App() {
+  const squareCheckoutUrl = import.meta.env.VITE_SQUARE_CHECKOUT_URL?.trim()
   const [quickViewProduct, setQuickViewProduct] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [cart, setCart] = useState(() => {
@@ -123,6 +124,10 @@ function App() {
   }, [activeProduct, infoPage, isCheckout, isOracle, isShippingAdmin, isShop, isStory])
   const handleCheckout = () => {
     setIsCartOpen(false)
+    if (squareCheckoutUrl) {
+      window.location.assign(squareCheckoutUrl)
+      return
+    }
     window.location.hash = 'checkout'
   }
   const handlePaymentSuccess = () => setCart([])

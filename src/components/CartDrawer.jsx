@@ -87,8 +87,8 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuant
                 <span>Subtotal · {itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
-              <p>Shipping and taxes are being finalized before production launch.</p>
-              <button className="checkout-button" type="button" onClick={onCheckout}>Continue to Sandbox Checkout</button>
+              <p>Shipping and applicable taxes are calculated during secure checkout.</p>
+              <button className="checkout-button" type="button" onClick={onCheckout}>Continue to Secure Checkout</button>
               <button className="continue-shopping" type="button" onClick={onClose}>Continue Shopping</button>
             </footer>
           </>
