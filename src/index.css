@@ -59,6 +59,14 @@ a {
   background-size: 17rem 19rem, 23rem 21rem, 29rem 27rem;
 }
 
+.site-top-frame:has(.hero-section) {
+  margin: 0.75rem auto 0;
+  overflow: hidden;
+  border: 1px solid var(--old-gold);
+  border-radius: clamp(0.8rem, 1.8vw, 1.5rem);
+  background: var(--abyss);
+}
+
 .site-header {
   position: relative;
   z-index: 10;
@@ -69,6 +77,10 @@ a {
     rgba(3, 9, 20, 0.97);
   backdrop-filter: blur(12px);
 }
+
+.site-top-frame:has(.hero-section) .site-header { border-bottom: 0; }
+.site-top-frame:has(.hero-section) .hero-section { padding-top: 0; }
+.site-top-frame:has(.hero-section) .hero-frame { border: 0; border-radius: 0; }
 
 .header-botanical { display: none; }
 

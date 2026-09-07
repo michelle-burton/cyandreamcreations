@@ -165,6 +165,7 @@ function App() {
 
   return (
     <div className="site-shell">
+      <div className="site-top-frame">
       <header className="site-header">
         <img className="header-botanical" src={floralCorner} alt="" aria-hidden="true" />
         <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
@@ -280,6 +281,7 @@ function App() {
         <HomePathways />
       </main>
       )}
+      </div>
 
       <SiteFooter
         showSignup={!isThankYou && !isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle}
