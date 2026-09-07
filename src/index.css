@@ -40,16 +40,6 @@ body {
     var(--abyss);
 }
 
-body::before {
-  position: fixed;
-  z-index: 10000;
-  inset: 0.65rem;
-  border: 1px solid rgba(217, 164, 65, 0.22);
-  border-radius: 1.4rem;
-  content: '';
-  pointer-events: none;
-}
-
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -80,18 +70,9 @@ a {
   backdrop-filter: blur(12px);
 }
 
-.header-botanical {
-  position: absolute;
-  z-index: 2;
-  top: -3.6rem;
-  left: -2.8rem;
-  width: clamp(9rem, 12vw, 13rem);
-  height: auto;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.38));
-  pointer-events: none;
-}
+.header-botanical { display: none; }
 
-.site-header .container-xl { padding-left: clamp(8rem, 10vw, 11rem); }
+.site-header .container-xl { padding-left: calc(var(--bs-gutter-x) * 0.5); }
 
 .navbar {
   position: relative;
