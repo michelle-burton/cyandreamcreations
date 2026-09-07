@@ -1835,7 +1835,7 @@ body.cart-open { overflow: hidden; }
   }
 
   .hero-frame .row {
-    height: clamp(24rem, 48svh, 29rem);
+    height: clamp(32rem, 62svh, 40rem);
     min-height: 0;
   }
 
@@ -1846,6 +1846,7 @@ body.cart-open { overflow: hidden; }
   }
 
   .hero-copy h1 {
+    max-width: 14ch;
     font-size: clamp(3.6rem, 4.2vw, 5.1rem);
     line-height: 0.93;
   }
