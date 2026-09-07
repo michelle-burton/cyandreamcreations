@@ -4,6 +4,8 @@ import sun from '../assets/oracle/emblem-sun.svg'
 import moon from '../assets/oracle/emblem-moon.svg'
 import creation from '../assets/oracle/emblem-creation.svg'
 import voidMark from '../assets/oracle/emblem-void.svg'
+const cardArt = import.meta.glob('../assets/site-ornaments/*-OracleCard_Web.png', { eager: true, query: '?url', import: 'default' })
+const cardArtByNumeral = Object.fromEntries(Object.entries(cardArt).map(([path, url]) => [path.match(/\/(\d{2})-/)?.[1], url]))
 import './OraclePage.css'
 import './OracleEntrance.css'
 import './OracleDraw.css'
@@ -16,7 +18,8 @@ const houses = [
 ]
 const cards = [...source.matchAll(/^### ([0IVX]+) · (.*?) — (.*?)\n([\s\S]*?)(?=\n### |\n---)/gm)].map((match) => {
   const fields = Object.fromEntries([...match[4].matchAll(/^- \*\*(\w+):\*\* (.*)$/gm)].map((field) => [field[1].toLowerCase(), field[2]]))
-  return { numeral: match[1], name: match[2], house: houses.filter((house) => match[3].includes(house.symbol)), ...fields }
+  const padded = match[1] === '0' ? '00' : String(['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI'].indexOf(match[1])).padStart(2, '0')
+  return { numeral: match[1], name: match[2], art: cardArtByNumeral[padded], house: houses.filter((house) => match[3].includes(house.symbol)), ...fields }
 })
 const rituals = [
   ['A small eclipse', 'Let your shoulders soften. Take three gentle breaths, at your own pace. With each exhale, let the day grow a little quieter. Silently offer: “I am here. I am listening.”'],
@@ -95,7 +98,7 @@ export default function OraclePage() {
       <h1 ref={heading} tabIndex="-1">Let your attention settle.</h1>
       <p className="oracle-subtitle" aria-live="polite">{selected.length < 3 ? `Choose card ${selected.length + 1} of 3 · ${positions[selected.length]}` : 'Your three cards are ready.'}</p>
       {intention && <p className="oracle-held">Your intention: {intention}</p>}
-      <div className="oracle-spread-slots oracle-chosen-spread">{positions.map((position, i) => <div key={position}><small>{position}</small>{selected[i] ? <div className="oracle-mini-reveal" key={selected[i].numeral} style={{ '--house-light': selected[i].house[0].color }}><span>{selected[i].numeral}</span><img src={selected[i].house[0].mark} alt="" /><p>{selected[i].name}</p></div> : <div className="oracle-empty-card"><span>✧</span><small>{i + 1}</small></div>}</div>)}</div>
+      <div className="oracle-spread-slots oracle-chosen-spread">{positions.map((position, i) => <div key={position}><small>{position}</small>{selected[i] ? <div className="oracle-mini-reveal" key={selected[i].numeral} style={{ '--house-light': selected[i].house[0].color }}><span>{selected[i].numeral}</span>{selected[i].art ? <img className="oracle-mini-art" src={selected[i].art} alt={`${selected[i].name} oracle card`} /> : <img src={selected[i].house[0].mark} alt="" />}<p>{selected[i].name}</p></div> : <div className="oracle-empty-card"><span>✧</span><small>{i + 1}</small></div>}</div>)}</div>
       <p className="oracle-small">Let your hand follow your attention. Choose three.</p>
       <div className="oracle-fan-scroll"><div className="oracle-deck oracle-fanned-deck">{[0, 1].map((row) => <div className="oracle-fan-row" key={row}>{deck.slice(row * 11, row * 11 + 11).map((card, column) => <button key={card.numeral} className="oracle-card-back" style={{ '--angle': `${(column - 5) * 3}deg`, '--rise': `${Math.abs(column - 5) ** 2 * 1.5}px`, '--order': column }} disabled={selected.includes(card) || selected.length === 3} aria-label={`Choose face-down card ${row * 11 + column + 1}`} onClick={() => chooseCard(card)}><span className="oracle-card-ornament" aria-hidden="true">✧</span><span className="oracle-mandala" aria-hidden="true"><img src={moon} alt="" /><b>✦</b><img src={sun} alt="" /></span><span>CYAN DREAM</span></button>)}</div>)}</div></div>
       <div><button className="oracle-text-button" onClick={() => { chosenRef.current = []; setSelected([]); setStage('ritual') }}>Return to the ritual</button></div>
@@ -104,7 +107,7 @@ export default function OraclePage() {
       <p className="oracle-eyebrow">THREE LIGHTS · ONE CONSTELLATION</p>
       <h1 ref={heading} tabIndex="-1">{isReading ? 'Your constellation is gathering…' : reading?.title || 'Your question, reflected.'}</h1><p className="oracle-held">{intention}</p>
       {!isReading && <>
-      <div className="oracle-three-cards">{selected.map((card, i) => <article key={card.numeral} style={{ '--house-light': card.house[0].color }}><p className="oracle-eyebrow">{positions[i]}</p><div className="oracle-revealed"><span>{card.numeral}</span><div className="oracle-reading-marks">{card.house.map((house) => <img key={house.name} src={house.mark} alt={`House of ${house.name}`} />)}</div><h2>{card.name}</h2><p>{card.house.length === 4 ? 'All four Houses' : `House of ${card.house[0].name}`}</p></div><div className="oracle-card-whisper" style={{ '--reveal-delay': `${i * 150 + 350}ms` }}><span className="oracle-whisper-star" aria-hidden="true">✦</span><p className="oracle-card-message">{card.message}</p><p className="oracle-card-reflection">{card.reflection}</p><div className="oracle-card-invitation"><h3>A small invitation</h3><p>{card.invitation}</p></div></div></article>)}</div>
+      <div className="oracle-three-cards">{selected.map((card, i) => <article key={card.numeral} style={{ '--house-light': card.house[0].color }}><p className="oracle-eyebrow">{positions[i]}</p><div className="oracle-revealed"><span>{card.numeral}</span>{card.art && <img className="oracle-card-art" src={card.art} alt={`${card.name} oracle card`} />}<div className="oracle-reading-marks">{card.house.map((house) => <img key={house.name} src={house.mark} alt={`House of ${house.name}`} />)}</div><h2>{card.name}</h2><p>{card.house.length === 4 ? 'All four Houses' : `House of ${card.house[0].name}`}</p></div><div className="oracle-card-whisper" style={{ '--reveal-delay': `${i * 150 + 350}ms` }}><span className="oracle-whisper-star" aria-hidden="true">✦</span><p className="oracle-card-message">{card.message}</p><p className="oracle-card-reflection">{card.reflection}</p><div className="oracle-card-invitation"><h3>A small invitation</h3><p>{card.invitation}</p></div></div></article>)}</div>
       </>}
       <div aria-live="polite">{isReading && <div role="status"><div className="oracle-orb" aria-hidden="true">✦</div><p>Weaving your question through the three cards…</p></div>}{readingError && <p className="oracle-held" role="alert">{readingError}</p>}</div>
       {reading && <><div className="oracle-woven"><p className="oracle-eyebrow">THE THREAD BETWEEN THE CARDS</p><p>{reading.reading}</p><p className="oracle-eyebrow">A SMALL INVITATION</p><p>{reading.invitation}</p></div><div className="oracle-question"><p className="oracle-eyebrow">A QUESTION TO CARRY</p><p>{reading.reflection}</p></div><p className="oracle-small">An AI-generated reflection grounded in the Cyan Dream deck. Take what resonates; leave room for your own knowing.</p></>}
