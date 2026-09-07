@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 1050" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8E5B16"/><stop offset=".24" stop-color="#F3C866"/><stop offset=".52" stop-color="#B77920"/><stop offset=".78" stop-color="#FFE08A"/><stop offset="1" stop-color="#8E5B16"/>
+    </linearGradient>
+    <filter id="softGold" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation=".45"/></filter>
+    <g id="star" stroke="url(#gold)" stroke-linecap="round"><path d="M0-10 2.2-2.2 10 0 2.2 2.2 0 10-2.2 2.2-10 0-2.2-2.2Z" stroke-width="1.6"/></g>
+    <g id="leaf" stroke="url(#gold)" stroke-width="1.4"><path d="M0 0C10-18 25-19 32-12 24 0 11 5 0 0Z"/><path d="M2-1 28-13"/></g>
+    <g id="corner" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 93V54C0 22 22 0 54 0h39" stroke-width="2.4"/>
+      <path d="M12 93V58c0-25 21-46 46-46h35" stroke-width="1.05"/>
+      <path d="M18 76c11-23 25-37 47-48M25 69c17-6 26-17 34-33" stroke-width="1.15"/>
+      <path d="M22 55c-1-17 8-27 22-32 2 12-4 24-22 32Z" stroke-width="1.05"/>
+      <path d="M39 37c4-18 15-27 29-26-1 15-11 24-29 26Z" stroke-width="1.05"/>
+      <path d="M55 23c8-13 20-17 31-13-4 12-14 16-31 13Z" stroke-width="1.05"/>
+      <path d="M15 15c12 2 20 8 25 18M72 12c-2 10 2 18 11 23" stroke-width="1.1"/>
+      <circle cx="25" cy="25" r="2.4" stroke-width="1"/><circle cx="73" cy="17" r="2.3" stroke-width="1"/>
+    </g>
+  </defs>
+  <g opacity=".25" filter="url(#softGold)" stroke="#F3C866"><rect x="26" y="24" width="698" height="1002" rx="41" stroke-width="4"/><rect x="39" y="37" width="672" height="976" rx="31" stroke-width="2"/></g>
+  <rect x="26" y="24" width="698" height="1002" rx="41" stroke="url(#gold)" stroke-width="2.2"/>
+  <rect x="39" y="37" width="672" height="976" rx="31" stroke="url(#gold)" stroke-width="1.05"/>
+  <use href="#corner" x="39" y="37"/>
+  <use href="#corner" transform="translate(711 37) scale(-1 1)"/>
+  <use href="#corner" transform="translate(39 1013) scale(1 -1)"/>
+  <use href="#corner" transform="translate(711 1013) scale(-1 -1)"/>
+  <g stroke="url(#gold)" stroke-linecap="round">
+    <path d="M132 37h191c16 0 28 5 37 16M618 37H427c-16 0-28 5-37 16M132 1013h191c16 0 28-5 37-16M618 1013H427c-16 0-28-5-37-16" stroke-width="1.4"/>
+    <path d="M65 160v330M685 160v330M65 560v330M685 560v330" stroke-width=".9"/>
+    <path d="M65 480v22M685 480v22M65 528v22M685 528v22" stroke-width="2"/>
+  </g>
+  <use href="#star" transform="translate(66 88) scale(.7)"/><use href="#star" transform="translate(684 88) scale(.7)"/>
+  <use href="#star" transform="translate(66 962) scale(.7)"/><use href="#star" transform="translate(684 962) scale(.7)"/>
+  <use href="#star" transform="translate(64 525) scale(.45)"/><use href="#star" transform="translate(686 525) scale(.45)"/>
+  <g fill="url(#gold)"><circle cx="89" cy="111" r="2"/><circle cx="661" cy="111" r="2"/><circle cx="89" cy="939" r="2"/><circle cx="661" cy="939" r="2"/><circle cx="126" cy="54" r="1.6"/><circle cx="624" cy="54" r="1.6"/><circle cx="126" cy="996" r="1.6"/><circle cx="624" cy="996" r="1.6"/></g>
+</svg>
