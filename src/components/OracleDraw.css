@@ -5,3 +5,6 @@
 @keyframes oracle-card-turn{from{opacity:0;transform:perspective(700px) rotateY(-85deg) translateY(15px)}to{opacity:1;transform:perspective(700px) rotateY(0) translateY(0)}}
 @media(max-width:600px){.oracle-chosen-spread{gap:10px}.oracle-empty-card,.oracle-mini-reveal{height:145px}.oracle-mini-reveal img{width:48px;height:60px}.oracle-mini-reveal .oracle-mini-art{width:48px;height:70px}.oracle-mini-reveal p{font-size:15px!important}.oracle-chosen-spread>div>small{font-size:10px;min-height:25px}.oracle-fan-scroll{margin:0 -18px;padding-left:25px;padding-right:25px}.oracle-fanned-deck{min-width:745px}.oracle-fanned-deck .oracle-card-back{flex-basis:120px;margin-left:-50px}.oracle-fan-row{height:235px}.oracle-three-cards .oracle-card-art{width:145px}}
 @media(prefers-reduced-motion:reduce){.oracle-mini-reveal,.oracle-three-cards .oracle-revealed{animation:none}.oracle-fanned-deck .oracle-card-back{transition:none}}
+/* Larger revealed artwork keeps the card itself as the focus. */
+.oracle-three-cards .oracle-card-art{width:min(100%,245px);margin:14px auto 18px}
+@media(max-width:600px){.oracle-three-cards .oracle-card-art{width:190px}}
