@@ -61,10 +61,9 @@ a {
 
 .site-top-frame:has(.hero-section) {
   margin: 0.75rem auto 0;
-  overflow: hidden;
-  border: 1px solid var(--old-gold);
-  border-radius: clamp(0.8rem, 1.8vw, 1.5rem);
-  background: var(--abyss);
+  overflow: visible;
+  border: 0;
+  background: transparent;
 }
 
 .site-header {
@@ -78,9 +77,15 @@ a {
   backdrop-filter: blur(12px);
 }
 
-.site-top-frame:has(.hero-section) .site-header { border-bottom: 0; }
+.site-top-frame:has(.hero-section) .site-header {
+  border: 1px solid var(--old-gold);
+  border-bottom: 0;
+  border-radius: clamp(0.8rem, 1.8vw, 1.5rem) clamp(0.8rem, 1.8vw, 1.5rem) 0 0;
+}
 .site-top-frame:has(.hero-section) .hero-section { padding-top: 0; }
-.site-top-frame:has(.hero-section) .hero-frame { border: 0; border-radius: 0; }
+.site-top-frame:has(.hero-section) .hero-frame {
+  border-radius: 0 0 clamp(0.8rem, 1.8vw, 1.5rem) clamp(0.8rem, 1.8vw, 1.5rem);
+}
 
 .header-botanical { display: none; }
 

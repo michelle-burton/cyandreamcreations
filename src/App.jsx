@@ -276,7 +276,6 @@ function App() {
             </div>
           </div>
         </section>
-
         <ProductGrid onQuickView={setQuickViewProduct} availability={availability} featured />
         <HomePathways />
       </main>
