@@ -242,7 +242,7 @@ a {
   pointer-events: none;
 }
 
-.hero-botanical-bottom-left { bottom: -1.7rem; left: -1.7rem; }
+.hero-botanical-bottom-left { bottom: 0.35rem; left: 0.35rem; }
 .hero-botanical-top-right { top: -1.7rem; right: -1.7rem; transform: rotate(180deg); }
 
 .hero-frame::before,
@@ -2027,7 +2027,7 @@ body.cart-open { overflow: hidden; }
     opacity: 0.82;
   }
 
-  .hero-botanical-bottom-left { bottom: -1rem; left: -1rem; }
+  .hero-botanical-bottom-left { bottom: 0.25rem; left: 0.25rem; }
   .hero-botanical-top-right { top: -1rem; right: -1rem; }
 
   .products-section {
