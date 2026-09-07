@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import source from '../assets/oracle/source.md?raw'
-import sun from '../assets/oracle/emblem-sun.svg'
-import moon from '../assets/oracle/emblem-moon.svg'
-import creation from '../assets/oracle/emblem-creation.svg'
-import voidMark from '../assets/oracle/emblem-void.svg'
+import sun from '../assets/oracle/house-sun-400.png'
+import moon from '../assets/oracle/house-moon-400.png'
+import creation from '../assets/oracle/house-creation-400.png'
+import voidMark from '../assets/oracle/house-void-400.png'
 const cardArt = import.meta.glob('../assets/site-ornaments/*-OracleCard_Web.png', { eager: true, query: '?url', import: 'default' })
 const cardArtByNumeral = Object.fromEntries(Object.entries(cardArt).map(([path, url]) => [path.match(/\/(\d{2})-/)?.[1], url]))
 import './OraclePage.css'
