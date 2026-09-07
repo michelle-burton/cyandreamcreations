@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import heroSuncatcher from './assets/hero-suncatcher.png'
-import { findProduct, isPurchasable } from './data/products.js'
+import heroSuncatcher from './assets/hero-radiance-wide-v1.png'
+import floralCorner from './assets/floral-corner-extracted-v1.png'
+import { applyProductAvailability, findProduct, isPurchasable } from './data/products.js'
 import ProductGrid from './components/ProductGrid.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import QuickView from './components/QuickView.jsx'
@@ -9,16 +10,21 @@ import StorySection from './components/StorySection.jsx'
 import OraclePreview from './components/OraclePreview.jsx'
 import QuantumPomSection from './components/QuantumPomSection.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
-import CheckoutPage from './components/CheckoutPage.jsx'
 import ShippingAdmin from './components/ShippingAdmin.jsx'
 import InfoPage from './components/InfoPage.jsx'
 import HomePathways from './components/HomePathways.jsx'
 import OraclePage from './components/OraclePage.jsx'
+import ThankYouPage from './components/ThankYouPage.jsx'
 
 function App() {
+  const squareCheckoutUrl = import.meta.env.VITE_SQUARE_CHECKOUT_URL?.trim()
+  const pathname = window.location.pathname.replace(/\/$/, '')
+  const isThankYou = pathname === '/thank-you'
+  const sectionHref = (hash) => `${isThankYou ? '/' : ''}${hash}`
   const [quickViewProduct, setQuickViewProduct] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [cart, setCart] = useState(() => {
+    if (isThankYou) return []
     try {
       return JSON.parse(window.localStorage.getItem('cyan-dream-cart')) || []
     } catch {
@@ -26,6 +32,39 @@ function App() {
     }
   })
   const [route, setRoute] = useState(window.location.hash)
+  const [availability, setAvailability] = useState({})
+
+  useEffect(() => {
+    let cancelled = false
+
+    const refreshAvailability = async () => {
+      try {
+        const response = await fetch('/api/product-availability')
+        if (!response.ok) return
+        const result = await response.json()
+        if (!cancelled && result?.products) setAvailability(result.products)
+      } catch {
+        // Keep the most recent storefront status if Square is briefly unavailable.
+      }
+    }
+
+    const handleFocus = () => refreshAvailability()
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') refreshAvailability()
+    }
+
+    refreshAvailability()
+    const refreshTimer = window.setInterval(refreshAvailability, 60_000)
+    window.addEventListener('focus', handleFocus)
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    return () => {
+      cancelled = true
+      window.clearInterval(refreshTimer)
+      window.removeEventListener('focus', handleFocus)
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [])
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -52,45 +91,25 @@ function App() {
 
   const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
   const closeCart = useCallback(() => setIsCartOpen(false), [])
-  const addToCart = (product, quantity) => {
+  const addToCart = (product) => {
     if (!isPurchasable(product)) return
-    const maxQuantity = product.inventory ?? 99
     setCart((currentCart) => {
       const existing = currentCart.find((item) => item.productId === product.id)
-      if (existing) {
-        return currentCart.map((item) => item.productId === product.id
-          ? { ...item, quantity: Math.min(maxQuantity, item.quantity + quantity) }
-          : item)
-      }
-      return [...currentCart, { productId: product.id, quantity: Math.min(maxQuantity, quantity) }]
+      if (existing) return currentCart
+      return [...currentCart, { productId: product.id, quantity: 1 }]
     })
     setQuickViewProduct(null)
     setIsCartOpen(true)
   }
-  const updateCartQuantity = (productId, quantity) => {
-    if (quantity < 1) {
-      setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
-      return
-    }
-    const product = findProduct(productId)
-    if (!product || !isPurchasable(product)) {
-      setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
-      return
-    }
-    const maxQuantity = product?.inventory ?? 99
-    setCart((currentCart) => currentCart.map((item) => item.productId === productId
-      ? { ...item, quantity: Math.min(maxQuantity, quantity) }
-      : item))
-  }
   const removeFromCart = (productId) => setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
   const cartItems = cart
-    .map((item) => ({ ...item, product: findProduct(item.productId) }))
+    .map((item) => ({ ...item, product: applyProductAvailability(findProduct(item.productId), availability) }))
     .filter((item) => item.product && isPurchasable(item.product))
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
-  const activeProduct = productId ? findProduct(productId) : null
-  const isCheckout = route === '#checkout'
+  const activeProduct = productId ? applyProductAvailability(findProduct(productId), availability) : null
+  const liveQuickViewProduct = applyProductAvailability(quickViewProduct, availability)
   const isShippingAdmin = route === '#shipping-admin'
   const isShop = route === '#shop'
   const isStory = route === '#story'
@@ -104,6 +123,17 @@ function App() {
   ]).get(route)
 
   useEffect(() => {
+    if (route !== '#checkout') return
+
+    if (squareCheckoutUrl) {
+      window.location.replace(squareCheckoutUrl)
+      return
+    }
+
+    window.location.replace(`${window.location.pathname}${window.location.search}#shop`)
+  }, [route, squareCheckoutUrl])
+
+  useEffect(() => {
     const infoTitles = {
       shipping: 'Shipping',
       returns: 'Returns & Refunds',
@@ -112,33 +142,34 @@ function App() {
       contact: 'Contact',
     }
     let pageTitle = 'Handmade Sun Catchers'
-    if (activeProduct) pageTitle = activeProduct.name
-    else if (isCheckout) pageTitle = 'Checkout'
+    if (isThankYou) pageTitle = 'Order Received'
+    else if (activeProduct) pageTitle = activeProduct.name
     else if (isShippingAdmin) pageTitle = 'Shipping Notice'
     else if (infoPage) pageTitle = infoTitles[infoPage]
     else if (isShop) pageTitle = 'Sun Catchers'
     else if (isStory) pageTitle = 'The Dream'
     else if (isOracle) pageTitle = 'The Oracle'
     document.title = `${pageTitle} | Cyan Dream Creations`
-  }, [activeProduct, infoPage, isCheckout, isOracle, isShippingAdmin, isShop, isStory])
+  }, [activeProduct, infoPage, isOracle, isShippingAdmin, isShop, isStory, isThankYou])
   const handleCheckout = () => {
+    if (!squareCheckoutUrl) return
     setIsCartOpen(false)
-    window.location.hash = 'checkout'
+    window.location.assign(squareCheckoutUrl)
   }
-  const handlePaymentSuccess = () => setCart([])
   const closeMobileMenu = () => {
     document.getElementById('mainMenu')?.classList.remove('show')
     document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false')
   }
 
-  if (window.location.pathname.replace(/\/$/, '') === '/oracle') return <OraclePage />
+  if (pathname === '/oracle') return <OraclePage />
 
   return (
     <div className="site-shell">
       <header className="site-header">
+        <img className="header-botanical" src={floralCorner} alt="" aria-hidden="true" />
         <nav className="navbar navbar-expand-lg" aria-label="Main navigation">
           <div className="container-xl">
-            <a className="brand-mark" href="#top" aria-label="Cyan Dream Creations home" onClick={closeMobileMenu}>
+            <a className="brand-mark" href={sectionHref('#top')} aria-label="Cyan Dream Creations home" onClick={closeMobileMenu}>
               <span className="brand-name">Cyan Dream</span>
               <span className="brand-subtitle">Creations</span>
             </a>
@@ -168,10 +199,10 @@ function App() {
             <div className="collapse navbar-collapse order-lg-2" id="mainMenu">
               <ul className="navbar-nav mx-auto align-items-lg-center">
                 <li className="nav-item">
-                  <a className="nav-link" href="#shop" onClick={closeMobileMenu}>Sun Catchers</a>
+                  <a className="nav-link" href={sectionHref('#shop')} onClick={closeMobileMenu}>Sun Catchers</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#story" onClick={closeMobileMenu}>The Dream</a>
+                  <a className="nav-link" href={sectionHref('#story')} onClick={closeMobileMenu}>The Dream</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="/oracle" onClick={closeMobileMenu}>The Oracle</a>
@@ -182,16 +213,16 @@ function App() {
         </nav>
       </header>
 
-      {isShippingAdmin ? (
+      {isThankYou ? (
+        <ThankYouPage />
+      ) : isShippingAdmin ? (
         <ShippingAdmin />
-      ) : isCheckout ? (
-        <CheckoutPage items={cartItems} subtotal={cartSubtotal} onPaymentSuccess={handlePaymentSuccess} />
       ) : activeProduct ? (
         <ProductDetail product={activeProduct} onAddToCart={addToCart} />
       ) : infoPage ? (
         <InfoPage page={infoPage} />
       ) : isShop ? (
-        <main id="top"><ProductGrid onQuickView={setQuickViewProduct} /></main>
+        <main id="top"><ProductGrid onQuickView={setQuickViewProduct} availability={availability} /></main>
       ) : isStory ? (
         <main id="top"><StorySection /><QuantumPomSection /></main>
       ) : isOracle ? (
@@ -201,6 +232,7 @@ function App() {
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="container-xl">
             <div className="hero-frame">
+              <img className="hero-botanical hero-botanical-bottom-left" src={floralCorner} alt="" aria-hidden="true" />
               <span className="hero-flourish hero-flourish-left" aria-hidden="true">✦</span>
               <span className="hero-flourish hero-flourish-right" aria-hidden="true">✦</span>
 
@@ -213,10 +245,10 @@ function App() {
                       <span />
                     </div>
 
-                    <h1 id="hero-title">Where Dreams Become Light.</h1>
+                    <h1 id="hero-title">Catch the light.<br />Carry the magic.</h1>
                     <p>
-                      Handmade sun catchers and symbolic creations for
-                      reflection, ritual, and the sacred within.
+                      Handmade sun catchers for<br />
+                      color, wonder, and intention.
                     </p>
 
                     <a className="dream-button" href="#shop">
@@ -232,10 +264,10 @@ function App() {
                     <img
                       src={heroSuncatcher}
                       className="hero-image"
-                      alt="A temporary concept image of a crystal sun catcher casting rainbow light beside a dark window"
+                      alt="The Radiance Within sun catcher hanging in a dark window and casting prismatic light across a warm wall"
                     />
                     <figcaption className="visually-hidden">
-                      Temporary concept artwork; final product photography will replace this image.
+                      The Radiance Within sun catcher in afternoon window light.
                     </figcaption>
                   </figure>
                 </div>
@@ -244,15 +276,18 @@ function App() {
           </div>
         </section>
 
-        <ProductGrid onQuickView={setQuickViewProduct} featured />
+        <ProductGrid onQuickView={setQuickViewProduct} availability={availability} featured />
         <HomePathways />
       </main>
       )}
 
-      <SiteFooter showSignup={!isShippingAdmin && !isCheckout && !activeProduct && !infoPage && !isShop && !isStory && !isOracle} />
-      {quickViewProduct && (
+      <SiteFooter
+        showSignup={!isThankYou && !isShippingAdmin && !activeProduct && !infoPage && !isShop && !isStory && !isOracle}
+        sectionBase={isThankYou ? '/' : ''}
+      />
+      {liveQuickViewProduct && (
         <QuickView
-          product={quickViewProduct}
+          product={liveQuickViewProduct}
           onClose={closeQuickView}
           onAddToCart={addToCart}
         />
@@ -263,9 +298,9 @@ function App() {
         itemCount={cartCount}
         subtotal={cartSubtotal}
         onClose={closeCart}
-        onUpdateQuantity={updateCartQuantity}
         onRemove={removeFromCart}
         onCheckout={handleCheckout}
+        checkoutAvailable={Boolean(squareCheckoutUrl)}
       />
     </div>
   )

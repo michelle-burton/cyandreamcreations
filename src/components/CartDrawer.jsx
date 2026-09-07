@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { formatPrice } from '../data/products.js'
 
-function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuantity, onRemove, onCheckout }) {
+function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onRemove, onCheckout, checkoutAvailable }) {
   useEffect(() => {
     if (!isOpen) return undefined
 
@@ -46,8 +46,7 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuant
         ) : (
           <>
             <div className="cart-items" aria-live="polite">
-              {items.map(({ product, quantity }) => {
-                const maxQuantity = product.inventory ?? 99
+              {items.map(({ product }) => {
                 return (
                   <article className="cart-item" key={product.id}>
                     <a className="cart-item-image" href={`#product/${product.id}`} onClick={onClose}>
@@ -60,20 +59,7 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuant
                       <h3><a href={`#product/${product.id}`} onClick={onClose}>{product.name}</a></h3>
                       <p className="cart-item-price">{formatPrice(product.price)}</p>
                       <div className="cart-item-controls">
-                        {maxQuantity === 1 ? (
-                          <span className="cart-one-of-kind">Quantity: 1 · One of a kind</span>
-                        ) : (
-                          <div className="quantity-control cart-quantity">
-                            <button type="button" onClick={() => onUpdateQuantity(product.id, quantity - 1)} aria-label={`Decrease ${product.name} quantity`}>−</button>
-                            <input value={quantity} readOnly aria-label={`${product.name} quantity`} />
-                            <button
-                              type="button"
-                              onClick={() => onUpdateQuantity(product.id, quantity + 1)}
-                              aria-label={`Increase ${product.name} quantity`}
-                              disabled={quantity >= maxQuantity}
-                            >+</button>
-                          </div>
-                        )}
+                        <span className="cart-one-of-kind">Quantity selected in secure checkout</span>
                         <button className="cart-remove" type="button" onClick={() => onRemove(product.id)}>Remove</button>
                       </div>
                     </div>
@@ -87,8 +73,10 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onUpdateQuant
                 <span>Subtotal · {itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
-              <p>Shipping and taxes are being finalized before production launch.</p>
-              <button className="checkout-button" type="button" onClick={onCheckout}>Continue to Sandbox Checkout</button>
+              <p>Shipping and applicable taxes are calculated during secure checkout.</p>
+              <button className="checkout-button" type="button" onClick={onCheckout} disabled={!checkoutAvailable}>
+                {checkoutAvailable ? 'Continue to Secure Checkout' : 'Checkout Temporarily Unavailable'}
+              </button>
               <button className="continue-shopping" type="button" onClick={onClose}>Continue Shopping</button>
             </footer>
           </>
