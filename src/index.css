@@ -81,7 +81,18 @@ a {
   border: 1px solid var(--old-gold);
   border-bottom: 0;
   border-radius: clamp(0.8rem, 1.8vw, 1.5rem) clamp(0.8rem, 1.8vw, 1.5rem) 0 0;
-  box-shadow: 0 2px 0 0 var(--old-gold);
+}
+
+.site-top-frame:has(.hero-section) .site-header::after {
+  content: "";
+  position: absolute;
+  z-index: 20;
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  background: var(--old-gold);
+  pointer-events: none;
 }
 .site-top-frame:has(.hero-section) .hero-section { padding-top: 0; }
 .site-top-frame:has(.hero-section) .hero-frame {
