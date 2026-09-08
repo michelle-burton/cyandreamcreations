@@ -79,8 +79,9 @@ a {
 
 .site-top-frame:has(.hero-section) .site-header {
   border: 1px solid var(--old-gold);
-  border-bottom: 2px solid var(--old-gold);
+  border-bottom: 0;
   border-radius: clamp(0.8rem, 1.8vw, 1.5rem) clamp(0.8rem, 1.8vw, 1.5rem) 0 0;
+  box-shadow: 0 2px 0 0 var(--old-gold);
 }
 .site-top-frame:has(.hero-section) .hero-section { padding-top: 0; }
 .site-top-frame:has(.hero-section) .hero-frame {
