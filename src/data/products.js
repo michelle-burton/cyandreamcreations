@@ -1,4 +1,8 @@
 import heroSuncatcher from '../assets/hero-suncatcher.png'
+import solarHero from '../assets/products/solar-radiance/solar-radiance-hero.png'
+import solarFull from '../assets/products/solar-radiance/solar-radiance-full.png'
+import solarHeart from '../assets/products/solar-radiance/solar-radiance-heart.png'
+import solarCrystals from '../assets/products/solar-radiance/solar-radiance-crystals.png'
 import radianceAtmospheric from '../assets/products/radiance-within/radiance-within-atmospheric.png'
 import radianceOne from '../assets/products/radiance-within/radiance-within-01.jpg'
 import radianceTwo from '../assets/products/radiance-within/radiance-within-02.jpg'
@@ -59,9 +63,15 @@ const products = [
     house: 'Sun',
     houseSymbol: '☀',
     shortDescription: 'A radiant crystal catcher created to celebrate presence, warmth, and being seen.',
-    image: heroSuncatcher,
-    imagePosition: '72% center',
-    gallery: [{ src: heroSuncatcher, position: '72% center', alt: 'Solar Radiance sun catcher concept' }],
+    image: solarHero,
+    imagePosition: 'center',
+    imageFit: 'contain',
+    gallery: [
+      { src: solarHero, position: 'center', fit: 'contain', alt: 'Solar Radiance heart sun catcher in a dark window setting' },
+      { src: solarFull, position: 'center', fit: 'contain', alt: 'Full hanging view of Solar Radiance with five crystal strands' },
+      { src: solarHeart, position: 'center', fit: 'contain', alt: 'Close-up of the iridescent heart and gold beaded hoops' },
+      { src: solarCrystals, position: 'center', fit: 'contain', alt: 'Detail of turquoise beads and gold-capped crystal pendants' },
+    ],
     details: ['Handmade', 'Ready to hang', 'One of a kind'],
   },
   {
