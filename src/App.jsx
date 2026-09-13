@@ -92,6 +92,10 @@ function App() {
   const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
   const closeCart = useCallback(() => setIsCartOpen(false), [])
   const addToCart = (product) => {
+    if (product.checkoutUrl && isPurchasable(product)) {
+      window.location.assign(product.checkoutUrl)
+      return
+    }
     if (!isPurchasable(product)) return
     setCart((currentCart) => {
       const existing = currentCart.find((item) => item.productId === product.id)
@@ -104,7 +108,7 @@ function App() {
   const removeFromCart = (productId) => setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
   const cartItems = cart
     .map((item) => ({ ...item, product: applyProductAvailability(findProduct(item.productId), availability) }))
-    .filter((item) => item.product && isPurchasable(item.product))
+    .filter((item) => item.product && isPurchasable(item.product) && !item.product.checkoutUrl)
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null

@@ -62,7 +62,7 @@ function QuickView({ product, onClose, onAddToCart }) {
             )}
 
             <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, 1)} disabled={!canPurchase}>
-              <span aria-hidden="true">✦</span> {canPurchase ? 'Add to Cart' : product.status === 'sold-out' ? 'Sold Out' : 'Not Yet Available'} <span aria-hidden="true">✦</span>
+              <span aria-hidden="true">✦</span> {canPurchase ? product.checkoutUrl ? 'Buy Now' : 'Add to Cart' : product.status === 'sold-out' ? 'Sold Out' : 'Not Yet Available'} <span aria-hidden="true">✦</span>
             </button>
             <a className="full-detail-link" href={`#product/${product.id}`} onClick={onClose}>View Full Details</a>
           </div>

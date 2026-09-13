@@ -38,7 +38,7 @@ function ProductDetail({ product, onAddToCart }) {
                 </div>
               )}
               <button className="add-cart-button" type="button" onClick={() => onAddToCart(product, 1)} disabled={!canPurchase}>
-                <span aria-hidden="true">✦</span> {canPurchase ? 'Add to Cart' : product.status === 'sold-out' ? 'Sold Out' : 'Not Yet Available'} <span aria-hidden="true">✦</span>
+                <span aria-hidden="true">✦</span> {canPurchase ? product.checkoutUrl ? 'Buy Now' : 'Add to Cart' : product.status === 'sold-out' ? 'Sold Out' : 'Not Yet Available'} <span aria-hidden="true">✦</span>
               </button>
             </div>
           </div>

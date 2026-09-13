@@ -1,6 +1,10 @@
 const SQUARE_API_VERSION = '2026-08-19'
 
 const PRODUCTS = {
+  'solar-radiance': {
+    sku: 'solar-radiance',
+    name: 'Solar Radiance Sun Catcher',
+  },
   'radiance-within': {
     sku: 'radiance-within',
     name: 'Radiance Within Sun Catcher',

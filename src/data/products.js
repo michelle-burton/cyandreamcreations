@@ -57,6 +57,8 @@ const products = [
   },
   {
     id: 'solar-radiance',
+    sku: 'solar-radiance',
+    checkoutUrl: 'https://square.link/u/ukVQgXBJ',
     status: 'available',
     name: 'Solar Radiance Sun Catcher',
     price: 62,
