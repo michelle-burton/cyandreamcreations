@@ -57,9 +57,9 @@ const products = [
   },
   {
     id: 'solar-radiance',
-    status: 'coming-soon',
+    status: 'available',
     name: 'Solar Radiance Sun Catcher',
-    price: 52,
+    price: 62,
     house: 'Sun',
     houseSymbol: '☀',
     shortDescription: 'A radiant crystal catcher created to celebrate presence, warmth, and being seen.',
