@@ -1,8 +1,8 @@
 import heroSuncatcher from '../assets/hero-suncatcher.png'
 import solarHero from '../assets/products/solar-radiance/solar-radiance-hero.png'
-import solarFull from '../assets/products/solar-radiance/solar-radiance-full.png'
-import solarHeart from '../assets/products/solar-radiance/solar-radiance-heart.png'
-import solarCrystals from '../assets/products/solar-radiance/solar-radiance-crystals.png'
+import solarFull from '../assets/products/solar-radiance/solar-radiance-full.jpg'
+import solarCenter from '../assets/products/solar-radiance/solar-radiance-center.jpg'
+import solarBeads from '../assets/products/solar-radiance/solar-radiance-beads.jpg'
 import radianceAtmospheric from '../assets/products/radiance-within/radiance-within-atmospheric.png'
 import radianceOne from '../assets/products/radiance-within/radiance-within-01.jpg'
 import radianceTwo from '../assets/products/radiance-within/radiance-within-02.jpg'
@@ -70,9 +70,9 @@ const products = [
     imageFit: 'contain',
     gallery: [
       { src: solarHero, position: 'center', fit: 'contain', alt: 'Solar Radiance heart sun catcher in a dark window setting' },
-      { src: solarFull, position: 'center', fit: 'contain', alt: 'Full hanging view of Solar Radiance with five crystal strands' },
-      { src: solarHeart, position: 'center', fit: 'contain', alt: 'Close-up of the iridescent heart and gold beaded hoops' },
-      { src: solarCrystals, position: 'center', fit: 'contain', alt: 'Detail of turquoise beads and gold-capped crystal pendants' },
+      { src: solarFull, position: 'center', fit: 'contain', alt: 'Full view of the Solar Radiance sun catcher with two crystal-wrapped hoops and an iridescent heart' },
+      { src: solarCenter, position: 'center', fit: 'contain', alt: 'Close-up of the iridescent heart framed by two crystal-wrapped gold hoops' },
+      { src: solarBeads, position: 'center', fit: 'contain', alt: 'Detail of the clear crystal drops and colorful faceted accents on Solar Radiance' },
     ],
     details: ['Handmade', 'Ready to hang', 'One of a kind'],
   },
