@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/oracle", "destination": "/index.html" },
-    { "source": "/oracle/", "destination": "/index.html" },
+    { "source": "/oracle", "destination": "/oracle/index.html" },
+    { "source": "/oracle/", "destination": "/oracle/index.html" },
     { "source": "/thank-you", "destination": "/index.html" },
     { "source": "/thank-you/", "destination": "/index.html" }
   ],
