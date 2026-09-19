@@ -33,7 +33,7 @@ const products = [
     gallery: [
       { src: radianceAtmospheric, position: 'center', fit: 'contain', alt: 'Radiance Within sun catcher hanging beside an elegant dark window' },
       { src: radianceOne, position: 'center 20%', fit: 'contain', alt: 'Close view of the celestial sun and crescent centerpiece' },
-      { src: radianceTwo, position: 'center', fit: 'contain', alt: 'Full view of Radiance Within hanging outdoors in sunlight' },
+      { src: radianceTwo, position: 'center', fit: 'contain', alt: 'Full view of the Radiance Within celestial sun catcher against a dark background' },
       { src: radianceThree, position: 'center 70%', fit: 'contain', alt: 'Close view of the three long hanging crystal prisms' },
     ],
     videoLabel: 'See the catcher move in sunlight',
