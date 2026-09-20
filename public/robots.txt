@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /thank-you
 
-Sitemap: https://cyandreamcreations.com/sitemap.xml
+Sitemap: https://www.cyandreamcreations.com/sitemap.xml

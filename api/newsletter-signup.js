@@ -52,7 +52,7 @@ export default async function handler(request, response) {
   }
 
   const token = createToken(JSON.stringify({ email, expires: Date.now() + (24 * 60 * 60 * 1000) }), signingSecret)
-  const confirmationUrl = `https://cyandreamcreations.com/?newsletter-confirm=${encodeURIComponent(token)}#join`
+  const confirmationUrl = `https://www.cyandreamcreations.com/?newsletter-confirm=${encodeURIComponent(token)}#join`
   const html = `<!doctype html>
     <html lang="en"><body style="margin:0;background:#050d1c;color:#dbe7f5;font-family:Arial,sans-serif;">
       <div style="display:none;max-height:0;overflow:hidden;">Confirm your place on the Cyan Dream List.</div>
