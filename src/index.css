@@ -869,6 +869,11 @@ body.cart-open { overflow: hidden; }
 .quantity-control button:disabled:hover { color: var(--pale-gold); background: rgba(10, 26, 47, 0.8); }
 .cart-remove { padding: 0; border: 0; color: rgba(234, 246, 255, 0.62); background: transparent; font-family: var(--display); font-size: 0.58rem; letter-spacing: 0.08em; text-decoration: underline; text-underline-offset: 0.25rem; text-transform: uppercase; }
 .cart-one-of-kind { color: var(--pale-gold); font-family: var(--display); font-size: 0.56rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.cart-quantity { display: inline-flex; align-items: center; overflow: hidden; border: 1px solid rgba(215, 164, 63, 0.55); border-radius: 999px; color: var(--pale-gold); }
+.cart-quantity button { width: 2rem; height: 1.8rem; border: 0; color: var(--bright-cyan); background: transparent; font-size: 1rem; line-height: 1; }
+.cart-quantity button:hover,
+.cart-quantity button:focus-visible { color: var(--abyss); background: var(--bright-cyan); }
+.cart-quantity span { min-width: 1.5rem; text-align: center; font-family: var(--display); font-size: 0.7rem; }
 .cart-remove:hover { color: var(--pale-gold); }
 
 .cart-footer {
@@ -880,6 +885,7 @@ body.cart-open { overflow: hidden; }
 .cart-subtotal { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; color: var(--pale-gold); font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .cart-subtotal strong { color: var(--star-white); font-size: 1.15rem; font-weight: 500; }
 .cart-footer > p { margin: 0.7rem 0 1rem; color: rgba(234, 246, 255, 0.58); font-size: 0.95rem; }
+.cart-footer > .checkout-error { color: #ffb8b8; }
 .checkout-button { width: 100%; min-height: 3.4rem; padding: 0.75rem; border: 1px solid var(--old-gold); border-radius: 0.6rem; color: var(--bright-cyan); background: linear-gradient(180deg, rgba(17, 99, 121, 0.88), rgba(7, 42, 66, 0.95)); font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .checkout-button:hover,
 .checkout-button:focus-visible { color: var(--abyss); background: var(--bright-cyan); }

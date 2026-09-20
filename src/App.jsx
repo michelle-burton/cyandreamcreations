@@ -17,7 +17,6 @@ import OraclePage from './components/OraclePage.jsx'
 import ThankYouPage from './components/ThankYouPage.jsx'
 
 function App() {
-  const squareCheckoutUrl = import.meta.env.VITE_SQUARE_CHECKOUT_URL?.trim()
   const pathname = window.location.pathname.replace(/\/$/, '')
   const isThankYou = pathname === '/thank-you'
   const sectionHref = (hash) => `${isThankYou ? '/' : ''}${hash}`
@@ -33,6 +32,8 @@ function App() {
   })
   const [route, setRoute] = useState(window.location.hash)
   const [availability, setAvailability] = useState({})
+  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [checkoutError, setCheckoutError] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -90,25 +91,46 @@ function App() {
   }, [cart])
 
   const closeQuickView = useCallback(() => setQuickViewProduct(null), [])
-  const closeCart = useCallback(() => setIsCartOpen(false), [])
+  const closeCart = useCallback(() => {
+    setIsCartOpen(false)
+    setCheckoutError('')
+  }, [])
   const addToCart = (product) => {
-    if (product.checkoutUrl && isPurchasable(product)) {
-      window.location.assign(product.checkoutUrl)
-      return
-    }
     if (!isPurchasable(product)) return
+    setCheckoutError('')
     setCart((currentCart) => {
       const existing = currentCart.find((item) => item.productId === product.id)
-      if (existing) return currentCart
+      if (existing) {
+        return currentCart.map((item) => (
+          item.productId === product.id
+            ? { ...item, quantity: Math.min(item.quantity + 1, 10) }
+            : item
+        ))
+      }
       return [...currentCart, { productId: product.id, quantity: 1 }]
     })
     setQuickViewProduct(null)
     setIsCartOpen(true)
   }
-  const removeFromCart = (productId) => setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
+  const removeFromCart = (productId) => {
+    setCheckoutError('')
+    setCart((currentCart) => currentCart.filter((item) => item.productId !== productId))
+  }
+  const updateCartQuantity = (productId, quantity) => {
+    setCheckoutError('')
+    if (quantity < 1) {
+      removeFromCart(productId)
+      return
+    }
+    setCart((currentCart) => currentCart.map((item) => (
+      item.productId === productId
+        ? { ...item, quantity: Math.min(quantity, 10) }
+        : item
+    )))
+  }
   const cartItems = cart
     .map((item) => ({ ...item, product: applyProductAvailability(findProduct(item.productId), availability) }))
-    .filter((item) => item.product && isPurchasable(item.product) && !item.product.checkoutUrl)
+    .filter((item) => item.product && isPurchasable(item.product))
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const cartSubtotal = cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0)
   const productId = route.startsWith('#product/') ? route.replace('#product/', '') : null
@@ -125,17 +147,6 @@ function App() {
     ['#terms', 'terms'],
     ['#contact', 'contact'],
   ]).get(route)
-
-  useEffect(() => {
-    if (route !== '#checkout') return
-
-    if (squareCheckoutUrl) {
-      window.location.replace(squareCheckoutUrl)
-      return
-    }
-
-    window.location.replace(`${window.location.pathname}${window.location.search}#shop`)
-  }, [route, squareCheckoutUrl])
 
   useEffect(() => {
     const infoTitles = {
@@ -155,10 +166,38 @@ function App() {
     else if (isOracle) pageTitle = 'The Oracle'
     document.title = `${pageTitle} | Cyan Dream Creations`
   }, [activeProduct, infoPage, isOracle, isShippingAdmin, isShop, isStory, isThankYou])
-  const handleCheckout = () => {
-    if (!squareCheckoutUrl) return
-    setIsCartOpen(false)
-    window.location.assign(squareCheckoutUrl)
+  const handleCheckout = async () => {
+    if (cartItems.length === 0 || isCheckingOut) return
+
+    setIsCheckingOut(true)
+    setCheckoutError('')
+
+    try {
+      const response = await fetch('/api/create-square-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cartItems.map(({ productId: itemProductId, quantity }) => ({
+            productId: itemProductId,
+            quantity,
+          })),
+        }),
+      })
+      const result = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(result.error || 'We could not open secure checkout.')
+
+      const checkoutUrl = new URL(result.url)
+      const isSquareUrl = checkoutUrl.protocol === 'https:' && (
+        checkoutUrl.hostname === 'square.link'
+        || checkoutUrl.hostname === 'checkout.square.site'
+      )
+      if (!isSquareUrl) throw new Error('Square returned an unexpected checkout address.')
+
+      window.location.assign(checkoutUrl.href)
+    } catch (error) {
+      setCheckoutError(error.message || 'We could not open secure checkout. Please try again.')
+      setIsCheckingOut(false)
+    }
   }
   const closeMobileMenu = () => {
     document.getElementById('mainMenu')?.classList.remove('show')
@@ -304,8 +343,11 @@ function App() {
         subtotal={cartSubtotal}
         onClose={closeCart}
         onRemove={removeFromCart}
+        onChangeQuantity={updateCartQuantity}
         onCheckout={handleCheckout}
-        checkoutAvailable={Boolean(squareCheckoutUrl)}
+        checkoutAvailable={cartItems.length > 0}
+        isCheckingOut={isCheckingOut}
+        checkoutError={checkoutError}
       />
     </div>
   )

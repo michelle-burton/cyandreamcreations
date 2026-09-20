@@ -1,7 +1,19 @@
 import { useEffect } from 'react'
 import { formatPrice } from '../data/products.js'
 
-function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onRemove, onCheckout, checkoutAvailable }) {
+function CartDrawer({
+  isOpen,
+  items,
+  itemCount,
+  subtotal,
+  onClose,
+  onRemove,
+  onChangeQuantity,
+  onCheckout,
+  checkoutAvailable,
+  isCheckingOut,
+  checkoutError,
+}) {
   useEffect(() => {
     if (!isOpen) return undefined
 
@@ -46,7 +58,7 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onRemove, onC
         ) : (
           <>
             <div className="cart-items" aria-live="polite">
-              {items.map(({ product }) => {
+              {items.map(({ product, quantity }) => {
                 return (
                   <article className="cart-item" key={product.id}>
                     <a className="cart-item-image" href={`#product/${product.id}`} onClick={onClose}>
@@ -59,7 +71,11 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onRemove, onC
                       <h3><a href={`#product/${product.id}`} onClick={onClose}>{product.name}</a></h3>
                       <p className="cart-item-price">{formatPrice(product.price)}</p>
                       <div className="cart-item-controls">
-                        <span className="cart-one-of-kind">Quantity selected in secure checkout</span>
+                        <div className="cart-quantity" aria-label={`Quantity for ${product.name}`}>
+                          <button type="button" onClick={() => onChangeQuantity(product.id, quantity - 1)} aria-label={`Decrease ${product.name} quantity`}>−</button>
+                          <span aria-live="polite">{quantity}</span>
+                          <button type="button" onClick={() => onChangeQuantity(product.id, quantity + 1)} aria-label={`Increase ${product.name} quantity`}>+</button>
+                        </div>
                         <button className="cart-remove" type="button" onClick={() => onRemove(product.id)}>Remove</button>
                       </div>
                     </div>
@@ -73,9 +89,14 @@ function CartDrawer({ isOpen, items, itemCount, subtotal, onClose, onRemove, onC
                 <span>Subtotal · {itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
-              <p>Shipping and applicable taxes are calculated during secure checkout.</p>
-              <button className="checkout-button" type="button" onClick={onCheckout} disabled={!checkoutAvailable}>
-                {checkoutAvailable ? 'Continue to Secure Checkout' : 'Checkout Temporarily Unavailable'}
+              <p>Flat $9.95 U.S. shipping and applicable taxes are added during secure checkout.</p>
+              {checkoutError && <p className="checkout-error" role="alert">{checkoutError}</p>}
+              <button className="checkout-button" type="button" onClick={onCheckout} disabled={!checkoutAvailable || isCheckingOut}>
+                {isCheckingOut
+                  ? 'Opening Secure Checkout…'
+                  : checkoutAvailable
+                    ? 'Continue to Secure Checkout'
+                    : 'Checkout Temporarily Unavailable'}
               </button>
               <button className="continue-shopping" type="button" onClick={onClose}>Continue Shopping</button>
             </footer>

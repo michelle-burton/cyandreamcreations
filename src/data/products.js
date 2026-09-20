@@ -77,7 +77,6 @@ const products = [
   {
     id: 'solar-radiance',
     sku: 'solar-radiance',
-    checkoutUrl: 'https://square.link/u/ukVQgXBJ',
     status: 'available',
     name: 'Solar Radiance Sun Catcher',
     price: 62,
@@ -101,7 +100,7 @@ const products = [
   {
     id: 'best-friends-light',
     sku: 'best-friends-light',
-    status: 'coming-soon',
+    status: 'available',
     name: 'Best Friend’s Light Sun Catcher',
     price: 42,
     house: 'Moon',
@@ -132,7 +131,7 @@ const products = [
   {
     id: 'gilded-dusk',
     sku: 'gilded-dusk',
-    status: 'coming-soon',
+    status: 'available',
     name: 'Gilded Dusk Sun Catcher',
     price: 58,
     house: 'Sun',
@@ -163,7 +162,7 @@ const products = [
   {
     id: 'midnight-wings',
     sku: 'midnight-wings',
-    status: 'coming-soon',
+    status: 'available',
     name: 'Midnight Wings Sun Catcher',
     price: 54,
     house: 'Creation',
@@ -195,7 +194,7 @@ const products = [
   {
     id: 'circles-of-dreams',
     sku: 'circles-of-dreams',
-    status: 'coming-soon',
+    status: 'available',
     name: 'Circles of Dreams Sun Catcher',
     price: 44,
     house: 'Void',
