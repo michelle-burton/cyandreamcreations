@@ -2,6 +2,7 @@ import solarHero from '../assets/products/solar-radiance/solar-radiance-hero.png
 import solarFull from '../assets/products/solar-radiance/solar-radiance-full.jpg'
 import solarCenter from '../assets/products/solar-radiance/solar-radiance-center.jpg'
 import solarBeads from '../assets/products/solar-radiance/solar-radiance-beads.jpg'
+import solarVideo from '../assets/products/solar-radiance/solar-radiance-video.mp4'
 import radianceAtmospheric from '../assets/products/radiance-within/radiance-within-atmospheric.png'
 import radianceOne from '../assets/products/radiance-within/radiance-within-01.jpg'
 import radianceTwo from '../assets/products/radiance-within/radiance-within-02.jpg'
@@ -11,14 +12,17 @@ import bestFriendHero from '../assets/products/best-friends-light/best-friends-l
 import bestFriendOne from '../assets/products/best-friends-light/best-friends-light-01.jpg'
 import bestFriendTwo from '../assets/products/best-friends-light/best-friends-light-02.jpg'
 import bestFriendThree from '../assets/products/best-friends-light/best-friends-light-03.jpg'
+import bestFriendVideo from '../assets/products/best-friends-light/best-friends-light-video.mp4'
 import gildedDuskHero from '../assets/products/gilded-dusk/gilded-dusk-hero.png'
 import gildedDuskOne from '../assets/products/gilded-dusk/gilded-dusk-01.jpg'
 import gildedDuskTwo from '../assets/products/gilded-dusk/gilded-dusk-02.jpg'
 import gildedDuskThree from '../assets/products/gilded-dusk/gilded-dusk-03.jpg'
+import gildedDuskVideo from '../assets/products/gilded-dusk/gilded-dusk-video.mp4'
 import midnightWingsHero from '../assets/products/midnight-wings/midnight-wings-hero.png'
 import midnightWingsOne from '../assets/products/midnight-wings/midnight-wings-01.jpg'
 import midnightWingsTwo from '../assets/products/midnight-wings/midnight-wings-02.jpg'
 import midnightWingsThree from '../assets/products/midnight-wings/midnight-wings-03.jpg'
+import midnightWingsVideo from '../assets/products/midnight-wings/midnight-wings-video.mp4'
 import circlesOfDreamsHero from '../assets/products/circles-of-dreams/circles-of-dreams-hero.png'
 import circlesOfDreamsOne from '../assets/products/circles-of-dreams/circles-of-dreams-01.jpg'
 import circlesOfDreamsTwo from '../assets/products/circles-of-dreams/circles-of-dreams-02.jpg'
@@ -51,7 +55,7 @@ const products = [
       { src: radianceTwo, position: 'center', fit: 'contain', alt: 'Full view of the Radiance Within celestial sun catcher against a dark background' },
       { src: radianceThree, position: 'center 70%', fit: 'contain', alt: 'Close view of the three long hanging crystal prisms' },
     ],
-    videoLabel: 'See the catcher move in sunlight',
+    videoLabel: 'See the catcher in motion',
     videoSrc: radianceVideo,
     videoPoster: radianceAtmospheric,
     details: [
@@ -89,6 +93,9 @@ const products = [
       { src: solarCenter, position: 'center', fit: 'contain', alt: 'Close-up of the iridescent heart framed by two crystal-wrapped gold hoops' },
       { src: solarBeads, position: 'center', fit: 'contain', alt: 'Detail of the clear crystal drops and colorful faceted accents on Solar Radiance' },
     ],
+    videoLabel: 'See the catcher in motion',
+    videoSrc: solarVideo,
+    videoPoster: solarHero,
     details: ['Handmade', 'Ready to hang', 'One of a kind'],
   },
   {
@@ -110,6 +117,9 @@ const products = [
       { src: bestFriendTwo, position: 'center', fit: 'contain', alt: 'Close-up of the pink heart bead and Best Friend paw-print heart charm' },
       { src: bestFriendThree, position: 'center', fit: 'contain', alt: 'Close-up of a clear faceted prism framed by pale aqua crystal beads' },
     ],
+    videoLabel: 'See the catcher in motion',
+    videoSrc: bestFriendVideo,
+    videoPoster: bestFriendHero,
     details: [
       'Handmade and one of a kind',
       'Three connected silver-toned hoops',
@@ -138,6 +148,9 @@ const products = [
       { src: gildedDuskTwo, position: 'center', fit: 'contain', alt: 'Close-up of the sun-face centerpiece with a crescent moon on its forehead' },
       { src: gildedDuskThree, position: 'center', fit: 'contain', alt: 'Close-up of three ornate clear crystal prisms and blush crystal accents' },
     ],
+    videoLabel: 'See the catcher in motion',
+    videoSrc: gildedDuskVideo,
+    videoPoster: gildedDuskHero,
     details: [
       'Handmade and one of a kind',
       'Antique-gold-toned celestial centerpiece',
@@ -166,6 +179,9 @@ const products = [
       { src: midnightWingsTwo, position: 'center', fit: 'contain', alt: 'Close-up of the filigree butterfly centerpiece and mixed-link strands' },
       { src: midnightWingsThree, position: 'center', fit: 'contain', alt: 'Close-up of the iridescent heart prism, stars, and crystal accents' },
     ],
+    videoLabel: 'See the catcher in motion',
+    videoSrc: midnightWingsVideo,
+    videoPoster: midnightWingsHero,
     details: [
       'Handmade and one of a kind',
       'Dark filigree butterfly centerpiece',

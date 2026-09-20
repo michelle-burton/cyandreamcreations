@@ -21,8 +21,11 @@ function ProductMediaGallery({ product, variant = 'quick' }) {
             className="product-video"
             src={product.videoSrc}
             poster={product.videoPoster || product.image}
+            autoPlay
+            muted
             controls
             playsInline
+            preload="metadata"
           >
             Your browser does not support the product video.
           </video>
@@ -55,8 +58,27 @@ function ProductMediaGallery({ product, variant = 'quick' }) {
           aria-label={product.videoLabel || 'View product video'}
           aria-pressed={selectedMedia.type === 'video'}
         >
-          <span aria-hidden="true">▶</span>
-          <small>Video</small>
+          {product.videoSrc ? (
+            <>
+              <video
+                className="video-thumbnail-preview"
+                src={product.videoSrc}
+                muted
+                autoPlay
+                loop
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+              />
+              <span className="video-thumbnail-play" aria-hidden="true">▶</span>
+              <small>Video</small>
+            </>
+          ) : (
+            <>
+              <span aria-hidden="true">▶</span>
+              <small>Video</small>
+            </>
+          )}
         </button>
       </div>
     </div>

@@ -1173,9 +1173,12 @@ body.cart-open { overflow: hidden; }
 .media-thumbnail:hover,
 .media-thumbnail:focus-visible { border-color: var(--bright-cyan); box-shadow: 0 0 0 1px var(--bright-cyan); }
 .media-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-.video-thumbnail { align-content: center; gap: 0.25rem; }
+.video-thumbnail { position: relative; align-content: center; gap: 0.25rem; }
+.video-thumbnail-preview { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .video-thumbnail span { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border: 1px solid var(--old-gold); border-radius: 50%; font-size: 0.8rem; }
+.video-thumbnail .video-thumbnail-play { position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(3, 14, 29, 0.78); }
 .video-thumbnail small { font-family: var(--display); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.video-thumbnail-preview + .video-thumbnail-play + small { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; padding: 0.25rem; color: var(--pale-gold); background: linear-gradient(transparent, rgba(3, 14, 29, 0.9)); }
 
 .quick-view-copy,
 .detail-purchase-copy { display: flex; flex-direction: column; align-items: flex-start; }
