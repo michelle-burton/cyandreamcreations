@@ -27,6 +27,7 @@ import circlesOfDreamsHero from '../assets/products/circles-of-dreams/circles-of
 import circlesOfDreamsOne from '../assets/products/circles-of-dreams/circles-of-dreams-01.jpg'
 import circlesOfDreamsTwo from '../assets/products/circles-of-dreams/circles-of-dreams-02.jpg'
 import circlesOfDreamsThree from '../assets/products/circles-of-dreams/circles-of-dreams-03.jpg'
+import circlesOfDreamsVideo from '../assets/products/circles-of-dreams/circles-of-dreams-video.mp4'
 
 const radianceStory = [
   'Radiance Within belongs to the House of the Sun—the realm of presence, courage, warmth, and the light that asks to be seen. The Sun does not wait for certainty before it rises. It illuminates what is already here and invites us to meet ourselves with the same openness.',
@@ -210,6 +211,9 @@ const products = [
       { src: circlesOfDreamsTwo, position: 'center', fit: 'contain', alt: 'Close-up of the inner crystal ring and central faceted prism' },
       { src: circlesOfDreamsThree, position: 'center', fit: 'contain', alt: 'Close-up of the hand-wrapped clear, aqua, teal, and iridescent beads' },
     ],
+    videoLabel: 'See Circles of Dreams in motion',
+    videoSrc: circlesOfDreamsVideo,
+    videoPoster: circlesOfDreamsHero,
     details: [
       'Handmade and one of a kind',
       'Two nested gold-toned hoops',
